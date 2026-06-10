@@ -147,6 +147,41 @@
     wrow(`calibrated, shipped (${h.max_weight_ratio}× cap)`, d.weights.bounded)
   );
 
+  // --- lineage -------------------------------------------------------------
+  document.getElementById("db-release").textContent =
+    "release " + (d.release || "—") + " · " + d.generated_at;
+  const lin = d.lineage || [];
+  const ltable = $("db-lineage");
+  const lnote = $("db-lineage-note");
+  const renderLineage = (q) => {
+    ltable.replaceChildren();
+    const head = el("tr");
+    for (const t of ["variable", "fill", "total", "eCPS fill", "eCPS total", "status"])
+      head.append(el("th", null, t));
+    ltable.append(head);
+    const ql = (q || "").toLowerCase();
+    const rows = lin.filter((r) => !ql || r.variable.includes(ql));
+    for (const r of rows.slice(0, 60)) {
+      const tr = el("tr");
+      tr.append(el("td", null, r.variable));
+      tr.append(el("td", "num", r.fill == null ? "—" : pct(r.fill, 1)));
+      tr.append(el("td", "num", r.total_B == null ? "—" : compact(r.total_B * 1e9)));
+      tr.append(el("td", "num", r.ecps_fill == null ? "—" : pct(r.ecps_fill, 1)));
+      tr.append(el("td", "num", r.ecps_total_B == null ? "—" : compact(r.ecps_total_B * 1e9)));
+      tr.append(el("td", r.status === "gap" ? "hot" : null, r.status));
+      ltable.append(tr);
+    }
+    const gaps = lin.filter((r) => r.status === "gap").length;
+    lnote.textContent =
+      `${rows.length} of ${lin.length} variables shown` +
+      (rows.length > 60 ? " (first 60; refine the filter)" : "") +
+      ` · ${gaps} gaps remain vs the incumbent in this release.`;
+  };
+  renderLineage("");
+  document
+    .getElementById("db-lineage-search")
+    .addEventListener("input", (e) => renderLineage(e.target.value));
+
   // --- score ---------------------------------------------------------------------
   const text = $("db-score-text");
   const sm = $("db-score-metrics");

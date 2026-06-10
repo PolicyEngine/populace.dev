@@ -23,7 +23,14 @@ ART = Path("/Users/maxghenis/.claude-worktrees/microplex-spec-build/artifacts")
 SCORE_JSON = Path.home() / "populace-score-work" / "score_out" / (
     "sound_ecps_replacement_comparison.json"
 )
-OUT = Path(__file__).resolve().parent.parent / "data" / "calibration.json"
+RELEASE = "us-2024-v1"
+DATA_DIR = Path(__file__).resolve().parent.parent / "data"
+OUT = DATA_DIR / "calibration.json"  # alias of the latest release
+ECPS = Path(
+    "/Users/maxghenis/CosilicoAI/microplex-us/artifacts/baselines/"
+    "enhanced_cps_2024_hf_main.h5"
+)
+POP_TP = ART / "populace_us_2024_timeperiod.h5"
 
 
 def loss_and_hits(A: np.ndarray, b: np.ndarray, w: np.ndarray):
@@ -43,6 +50,68 @@ def family_of(name: str) -> str:
     if len(parts) >= 2:
         return f"{parts[0]} · {parts[1]}"
     return name
+
+
+def _profile_flat(path):
+    """Per-variable (entity_n, fill, weighted_total) from a flat h5."""
+    import h5py
+
+    out = {}
+    with h5py.File(path) as f:
+        hw = f["household_weight/2024"][:].astype(np.float64)
+        phh = f["person_household_id/2024"][:]
+        hid = f["household_id/2024"][:]
+        wmap = dict(zip(hid.tolist(), hw.tolist()))
+        pw = np.fromiter(
+            (wmap.get(h, 0.0) for h in phh.tolist()), dtype=np.float64
+        )
+        for k in f:
+            g = f[k]
+            if "2024" not in g:
+                continue
+            v = g["2024"][:]
+            if v.dtype.kind not in "fiu":
+                out[k] = (len(v), None, None)
+                continue
+            v = v.astype(np.float64)
+            wt = (
+                float((v * pw).sum())
+                if len(v) == len(pw)
+                else (float((v * hw).sum()) if len(v) == len(hw) else None)
+            )
+            out[k] = (len(v), float((v != 0).mean()), wt)
+    return out
+
+
+def build_lineage():
+    """Variable-level lineage: populace vs eCPS fill and weighted totals."""
+    pop = _profile_flat(POP_TP)
+    ecps = _profile_flat(ECPS)
+    rows = []
+    for var in sorted(set(pop) | set(ecps)):
+        if var.endswith("_id") or "weight" in var:
+            continue
+        p_n, p_fill, p_wt = pop.get(var, (None, None, None))
+        e_n, e_fill, e_wt = ecps.get(var, (None, None, None))
+        if p_fill is None and e_fill is None:
+            continue
+        alive_p = (p_fill or 0) > 1e-9
+        alive_e = (e_fill or 0) > 0.005
+        status = (
+            "live" if alive_p else ("gap" if alive_e else "degenerate-both")
+        )
+        rows.append(
+            {
+                "variable": var,
+                "fill": round(p_fill, 4) if p_fill is not None else None,
+                "total_B": round((p_wt or 0) / 1e9, 2) if p_wt is not None else None,
+                "ecps_fill": round(e_fill, 4) if e_fill is not None else None,
+                "ecps_total_B": round((e_wt or 0) / 1e9, 2) if e_wt is not None else None,
+                "status": status,
+            }
+        )
+    rows.sort(key=lambda r: -abs(r["ecps_total_B"] or 0))
+    return rows
 
 
 def main() -> None:
@@ -216,7 +285,16 @@ def main() -> None:
             },
         ],
     }
+    payload["release"] = RELEASE
+    payload["lineage"] = build_lineage()
     OUT.parent.mkdir(parents=True, exist_ok=True)
+    releases_dir = DATA_DIR / "releases"
+    releases_dir.mkdir(parents=True, exist_ok=True)
+    (releases_dir / f"{RELEASE}.json").write_text(json.dumps(payload, indent=1))
+    known = sorted(
+        f.stem for f in releases_dir.glob("*.json") if f.stem != "index"
+    )
+    (releases_dir / "index.json").write_text(json.dumps(known))
     OUT.write_text(json.dumps(payload, indent=1))
     print(f"wrote {OUT} ({OUT.stat().st_size/1024:.0f} KB)")
     print(
