@@ -1,0 +1,1613 @@
+{
+ "generated_at": "2026-06-10 21:22 UTC",
+ "headline": {
+  "n_targets": 3704,
+  "n_households": 64728,
+  "n_persons": 142125,
+  "weighted_persons": 332541895,
+  "loss_initial": 1.2231,
+  "loss_final": 0.049,
+  "within10_initial": 0.2181,
+  "within10_final": 0.9058,
+  "within10_unbounded": 0.9066,
+  "loss_unbounded": 0.0487,
+  "max_weight_ratio": 50
+ },
+ "weights": {
+  "design": {
+   "sum_M": 134.96,
+   "p50": 1910,
+   "p99": 5868,
+   "max": 13122,
+   "n_gt_100k": 0,
+   "n_gt_500k": 0
+  },
+  "unbounded": {
+   "sum_M": 154.4,
+   "p50": 58,
+   "p99": 64063,
+   "max": 1294689,
+   "n_gt_100k": 370,
+   "n_gt_500k": 16
+  },
+  "bounded": {
+   "sum_M": 149.43,
+   "p50": 60,
+   "p99": 70700,
+   "max": 317613,
+   "n_gt_100k": 375,
+   "n_gt_500k": 0
+  }
+ },
+ "histogram": {
+  "labels": [
+   "<1%",
+   "1\u20132.5%",
+   "2.5\u20135%",
+   "5\u201310%",
+   "10\u201325%",
+   "25\u201350%",
+   ">50%"
+  ],
+  "counts": [
+   2553,
+   390,
+   227,
+   185,
+   133,
+   34,
+   182
+  ]
+ },
+ "families": [
+  {
+   "family": "state \u00b7 census",
+   "n": 1106,
+   "within10": 0.9313,
+   "median_abs_rel_err": 0.0016
+  },
+  {
+   "family": "irs \u00b7 eitc",
+   "n": 314,
+   "within10": 0.9108,
+   "median_abs_rel_err": 0.0099
+  },
+  {
+   "family": "state \u00b7 irs",
+   "n": 204,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0011
+  },
+  {
+   "family": "irs \u00b7 aca_ptc",
+   "n": 102,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0007
+  },
+  {
+   "family": "census \u00b7 population_by_age",
+   "n": 86,
+   "within10": 0.9302,
+   "median_abs_rel_err": 0.01
+  },
+  {
+   "family": "irs \u00b7 adjusted gross income",
+   "n": 70,
+   "within10": 0.8714,
+   "median_abs_rel_err": 0.0236
+  },
+  {
+   "family": "irs \u00b7 count",
+   "n": 70,
+   "within10": 0.9143,
+   "median_abs_rel_err": 0.0261
+  },
+  {
+   "family": "state \u00b7 bea",
+   "n": 51,
+   "within10": 0.7451,
+   "median_abs_rel_err": 0.0545
+  },
+  {
+   "family": "irs \u00b7 capital gains gross",
+   "n": 40,
+   "within10": 0.9,
+   "median_abs_rel_err": 0.0047
+  },
+  {
+   "family": "irs \u00b7 ordinary dividends",
+   "n": 40,
+   "within10": 0.875,
+   "median_abs_rel_err": 0.0049
+  },
+  {
+   "family": "irs \u00b7 qualified dividends",
+   "n": 40,
+   "within10": 0.875,
+   "median_abs_rel_err": 0.0114
+  },
+  {
+   "family": "irs \u00b7 taxable interest income",
+   "n": 40,
+   "within10": 0.875,
+   "median_abs_rel_err": 0.0067
+  },
+  {
+   "family": "irs \u00b7 long term capital gains",
+   "n": 38,
+   "within10": 0.8947,
+   "median_abs_rel_err": 0.0038
+  },
+  {
+   "family": "irs \u00b7 capital gains losses",
+   "n": 32,
+   "within10": 0.75,
+   "median_abs_rel_err": 0.0055
+  },
+  {
+   "family": "irs \u00b7 business net losses",
+   "n": 30,
+   "within10": 0.7667,
+   "median_abs_rel_err": 0.0021
+  },
+  {
+   "family": "irs \u00b7 business net profits",
+   "n": 30,
+   "within10": 0.9333,
+   "median_abs_rel_err": 0.0044
+  },
+  {
+   "family": "irs \u00b7 employment income",
+   "n": 30,
+   "within10": 0.8667,
+   "median_abs_rel_err": 0.0198
+  },
+  {
+   "family": "irs \u00b7 partnership and s corp income",
+   "n": 30,
+   "within10": 0.8,
+   "median_abs_rel_err": 0.0056
+  },
+  {
+   "family": "irs \u00b7 partnership and s corp losses",
+   "n": 28,
+   "within10": 0.8214,
+   "median_abs_rel_err": 0.0017
+  },
+  {
+   "family": "irs \u00b7 rent and royalty net losses",
+   "n": 28,
+   "within10": 0.0,
+   "median_abs_rel_err": 1.0
+  },
+  {
+   "family": "irs \u00b7 total pension income",
+   "n": 26,
+   "within10": 0.9231,
+   "median_abs_rel_err": 0.002
+  },
+  {
+   "family": "irs \u00b7 total social security",
+   "n": 26,
+   "within10": 0.9615,
+   "median_abs_rel_err": 0.007
+  },
+  {
+   "family": "state \u00b7 AL",
+   "n": 20,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0048
+  },
+  {
+   "family": "state \u00b7 AK",
+   "n": 20,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0026
+  },
+  {
+   "family": "state \u00b7 AZ",
+   "n": 20,
+   "within10": 0.9,
+   "median_abs_rel_err": 0.009
+  },
+  {
+   "family": "state \u00b7 AR",
+   "n": 20,
+   "within10": 0.95,
+   "median_abs_rel_err": 0.0032
+  },
+  {
+   "family": "state \u00b7 CA",
+   "n": 20,
+   "within10": 0.8,
+   "median_abs_rel_err": 0.0411
+  },
+  {
+   "family": "state \u00b7 CO",
+   "n": 20,
+   "within10": 0.85,
+   "median_abs_rel_err": 0.0082
+  },
+  {
+   "family": "state \u00b7 CT",
+   "n": 20,
+   "within10": 0.8,
+   "median_abs_rel_err": 0.007
+  },
+  {
+   "family": "state \u00b7 DE",
+   "n": 20,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.001
+  },
+  {
+   "family": "state \u00b7 DC",
+   "n": 20,
+   "within10": 0.9,
+   "median_abs_rel_err": 0.0044
+  },
+  {
+   "family": "state \u00b7 FL",
+   "n": 20,
+   "within10": 0.9,
+   "median_abs_rel_err": 0.0218
+  },
+  {
+   "family": "state \u00b7 GA",
+   "n": 20,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0099
+  },
+  {
+   "family": "state \u00b7 HI",
+   "n": 20,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.002
+  },
+  {
+   "family": "state \u00b7 ID",
+   "n": 20,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.004
+  },
+  {
+   "family": "state \u00b7 IL",
+   "n": 20,
+   "within10": 0.95,
+   "median_abs_rel_err": 0.0159
+  },
+  {
+   "family": "state \u00b7 IN",
+   "n": 20,
+   "within10": 0.9,
+   "median_abs_rel_err": 0.0055
+  },
+  {
+   "family": "state \u00b7 IA",
+   "n": 20,
+   "within10": 0.9,
+   "median_abs_rel_err": 0.0036
+  },
+  {
+   "family": "state \u00b7 KS",
+   "n": 20,
+   "within10": 0.9,
+   "median_abs_rel_err": 0.0026
+  },
+  {
+   "family": "state \u00b7 KY",
+   "n": 20,
+   "within10": 0.95,
+   "median_abs_rel_err": 0.0041
+  },
+  {
+   "family": "state \u00b7 LA",
+   "n": 20,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0034
+  },
+  {
+   "family": "state \u00b7 ME",
+   "n": 20,
+   "within10": 0.9,
+   "median_abs_rel_err": 0.0024
+  },
+  {
+   "family": "state \u00b7 MD",
+   "n": 20,
+   "within10": 0.9,
+   "median_abs_rel_err": 0.0085
+  },
+  {
+   "family": "state \u00b7 MA",
+   "n": 20,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0102
+  },
+  {
+   "family": "state \u00b7 MI",
+   "n": 20,
+   "within10": 0.8,
+   "median_abs_rel_err": 0.0117
+  },
+  {
+   "family": "state \u00b7 MN",
+   "n": 20,
+   "within10": 0.95,
+   "median_abs_rel_err": 0.0077
+  },
+  {
+   "family": "state \u00b7 MS",
+   "n": 20,
+   "within10": 0.9,
+   "median_abs_rel_err": 0.0027
+  },
+  {
+   "family": "state \u00b7 MO",
+   "n": 20,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0062
+  },
+  {
+   "family": "state \u00b7 MT",
+   "n": 20,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0013
+  },
+  {
+   "family": "state \u00b7 NE",
+   "n": 20,
+   "within10": 0.95,
+   "median_abs_rel_err": 0.0018
+  },
+  {
+   "family": "state \u00b7 NV",
+   "n": 20,
+   "within10": 0.95,
+   "median_abs_rel_err": 0.0039
+  },
+  {
+   "family": "state \u00b7 NH",
+   "n": 20,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0015
+  },
+  {
+   "family": "state \u00b7 NJ",
+   "n": 20,
+   "within10": 0.9,
+   "median_abs_rel_err": 0.0093
+  },
+  {
+   "family": "state \u00b7 NM",
+   "n": 20,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0026
+  },
+  {
+   "family": "state \u00b7 NY",
+   "n": 20,
+   "within10": 0.9,
+   "median_abs_rel_err": 0.0211
+  },
+  {
+   "family": "state \u00b7 NC",
+   "n": 20,
+   "within10": 0.9,
+   "median_abs_rel_err": 0.0118
+  },
+  {
+   "family": "state \u00b7 ND",
+   "n": 20,
+   "within10": 0.9,
+   "median_abs_rel_err": 0.0012
+  },
+  {
+   "family": "state \u00b7 OH",
+   "n": 20,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0097
+  },
+  {
+   "family": "state \u00b7 OK",
+   "n": 20,
+   "within10": 0.95,
+   "median_abs_rel_err": 0.0038
+  },
+  {
+   "family": "state \u00b7 OR",
+   "n": 20,
+   "within10": 0.9,
+   "median_abs_rel_err": 0.0053
+  },
+  {
+   "family": "state \u00b7 PA",
+   "n": 20,
+   "within10": 0.9,
+   "median_abs_rel_err": 0.0121
+  },
+  {
+   "family": "state \u00b7 SC",
+   "n": 20,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0052
+  },
+  {
+   "family": "state \u00b7 SD",
+   "n": 20,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0012
+  },
+  {
+   "family": "state \u00b7 TN",
+   "n": 20,
+   "within10": 0.9,
+   "median_abs_rel_err": 0.0052
+  },
+  {
+   "family": "state \u00b7 TX",
+   "n": 20,
+   "within10": 0.9,
+   "median_abs_rel_err": 0.0248
+  },
+  {
+   "family": "state \u00b7 UT",
+   "n": 20,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0032
+  },
+  {
+   "family": "state \u00b7 VT",
+   "n": 20,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0011
+  },
+  {
+   "family": "state \u00b7 VA",
+   "n": 20,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0082
+  },
+  {
+   "family": "state \u00b7 WA",
+   "n": 20,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0127
+  },
+  {
+   "family": "state \u00b7 WV",
+   "n": 20,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0013
+  },
+  {
+   "family": "state \u00b7 WI",
+   "n": 20,
+   "within10": 0.9,
+   "median_abs_rel_err": 0.0081
+  },
+  {
+   "family": "state \u00b7 WY",
+   "n": 20,
+   "within10": 0.9,
+   "median_abs_rel_err": 0.0012
+  },
+  {
+   "family": "soi \u00b7 filer_count",
+   "n": 19,
+   "within10": 0.8421,
+   "median_abs_rel_err": 0.0497
+  },
+  {
+   "family": "state \u00b7 RI",
+   "n": 19,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0009
+  },
+  {
+   "family": "irs \u00b7 estate losses",
+   "n": 16,
+   "within10": 0.0,
+   "median_abs_rel_err": 1.0
+  },
+  {
+   "family": "census \u00b7 medicare_part_b_premium",
+   "n": 9,
+   "within10": 0.4444,
+   "median_abs_rel_err": 1.0
+  },
+  {
+   "family": "cbo \u00b7 income_by_source",
+   "n": 7,
+   "within10": 0.4286,
+   "median_abs_rel_err": 0.1482
+  },
+  {
+   "family": "ssa \u00b7 ssi_recipients",
+   "n": 4,
+   "within10": 0.0,
+   "median_abs_rel_err": 0.7844
+  },
+  {
+   "family": "irs \u00b7 capital gains distributions",
+   "n": 2,
+   "within10": 0.0,
+   "median_abs_rel_err": 1.0
+  },
+  {
+   "family": "irs \u00b7 estate income",
+   "n": 2,
+   "within10": 0.0,
+   "median_abs_rel_err": 1.0
+  },
+  {
+   "family": "irs \u00b7 ira distributions",
+   "n": 2,
+   "within10": 0.5,
+   "median_abs_rel_err": 0.0699
+  },
+  {
+   "family": "irs \u00b7 mortgage interest deductions",
+   "n": 2,
+   "within10": 0.0,
+   "median_abs_rel_err": 1.0
+  },
+  {
+   "family": "irs \u00b7 qualified business income deduction",
+   "n": 2,
+   "within10": 0.5,
+   "median_abs_rel_err": 0.1008
+  },
+  {
+   "family": "irs \u00b7 rent and royalty net income",
+   "n": 2,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0123
+  },
+  {
+   "family": "irs \u00b7 taxable pension income",
+   "n": 2,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0467
+  },
+  {
+   "family": "irs \u00b7 taxable social security",
+   "n": 2,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0385
+  },
+  {
+   "family": "irs \u00b7 unemployment compensation",
+   "n": 2,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0036
+  },
+  {
+   "family": "census \u00b7 acs",
+   "n": 2,
+   "within10": 0.5,
+   "median_abs_rel_err": 0.5006
+  },
+  {
+   "family": "irs \u00b7 exempt interest",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0105
+  },
+  {
+   "family": "source \u00b7 household_count",
+   "n": 1,
+   "within10": 0.0,
+   "median_abs_rel_err": 0.1072
+  },
+  {
+   "family": "source \u00b7 cps_household_count",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0867
+  },
+  {
+   "family": "source \u00b7 puf_clone_household_count",
+   "n": 1,
+   "within10": 0.0,
+   "median_abs_rel_err": 0.1278
+  },
+  {
+   "family": "cbo \u00b7 income_tax_positive",
+   "n": 1,
+   "within10": 0.0,
+   "median_abs_rel_err": 0.1181
+  },
+  {
+   "family": "cbo \u00b7 snap",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0001
+  },
+  {
+   "family": "cbo \u00b7 social_security",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0602
+  },
+  {
+   "family": "cbo \u00b7 ssi",
+   "n": 1,
+   "within10": 0.0,
+   "median_abs_rel_err": 0.4125
+  },
+  {
+   "family": "cbo \u00b7 unemployment_compensation",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0195
+  },
+  {
+   "family": "bea \u00b7 nipa_wages_and_salaries",
+   "n": 1,
+   "within10": 0.0,
+   "median_abs_rel_err": 0.1678
+  },
+  {
+   "family": "bea \u00b7 nipa_proprietors_income",
+   "n": 1,
+   "within10": 0.0,
+   "median_abs_rel_err": 0.3777
+  },
+  {
+   "family": "irs \u00b7 soi",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0418
+  },
+  {
+   "family": "hhs \u00b7 medicaid_spending",
+   "n": 1,
+   "within10": 0.0,
+   "median_abs_rel_err": 0.3331
+  },
+  {
+   "family": "hhs \u00b7 medicaid_enrollment",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0272
+  },
+  {
+   "family": "gov \u00b7 aca_spending",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0024
+  },
+  {
+   "family": "gov \u00b7 aca_enrollment",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0897
+  },
+  {
+   "family": "cms \u00b7 medicare_enrollment",
+   "n": 1,
+   "within10": 0.0,
+   "median_abs_rel_err": 0.1552
+  },
+  {
+   "family": "irs \u00b7 refundable_ctc",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.066
+  },
+  {
+   "family": "irs \u00b7 refundable_ctc_count",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0014
+  },
+  {
+   "family": "irs \u00b7 non_refundable_ctc",
+   "n": 1,
+   "within10": 0.0,
+   "median_abs_rel_err": 0.197
+  },
+  {
+   "family": "irs \u00b7 non_refundable_ctc_count",
+   "n": 1,
+   "within10": 0.0,
+   "median_abs_rel_err": 0.1172
+  },
+  {
+   "family": "irs \u00b7 refundable_american_opportunity_credit",
+   "n": 1,
+   "within10": 0.0,
+   "median_abs_rel_err": 1.0
+  },
+  {
+   "family": "irs \u00b7 refundable_american_opportunity_credit_count",
+   "n": 1,
+   "within10": 0.0,
+   "median_abs_rel_err": 1.0
+  },
+  {
+   "family": "irs \u00b7 education_tax_credits",
+   "n": 1,
+   "within10": 0.0,
+   "median_abs_rel_err": 1.0
+  },
+  {
+   "family": "irs \u00b7 education_tax_credits_count",
+   "n": 1,
+   "within10": 0.0,
+   "median_abs_rel_err": 1.0
+  },
+  {
+   "family": "irs \u00b7 real_estate_taxes",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0003
+  },
+  {
+   "family": "irs \u00b7 real_estate_taxes_count",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0007
+  },
+  {
+   "family": "census \u00b7 tanf",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0131
+  },
+  {
+   "family": "census \u00b7 tip_income",
+   "n": 1,
+   "within10": 0.0,
+   "median_abs_rel_err": 1.0
+  },
+  {
+   "family": "census \u00b7 social_security_retirement",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0858
+  },
+  {
+   "family": "census \u00b7 social_security_disability",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0273
+  },
+  {
+   "family": "census \u00b7 social_security_survivors",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0243
+  },
+  {
+   "family": "census \u00b7 social_security_dependents",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0146
+  },
+  {
+   "family": "census \u00b7 traditional_ira_contributions",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0119
+  },
+  {
+   "family": "census \u00b7 traditional_401k_contributions",
+   "n": 1,
+   "within10": 0.0,
+   "median_abs_rel_err": 1.0
+  },
+  {
+   "family": "census \u00b7 roth_401k_contributions",
+   "n": 1,
+   "within10": 0.0,
+   "median_abs_rel_err": 1.0
+  },
+  {
+   "family": "census \u00b7 self_employed_pension_contributions",
+   "n": 1,
+   "within10": 0.0,
+   "median_abs_rel_err": 1.0
+  },
+  {
+   "family": "census \u00b7 roth_ira_contributions",
+   "n": 1,
+   "within10": 0.0,
+   "median_abs_rel_err": 1.0
+  },
+  {
+   "family": "bls \u00b7 ce",
+   "n": 1,
+   "within10": 0.0,
+   "median_abs_rel_err": 1.0
+  },
+  {
+   "family": "census \u00b7 infants",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0153
+  },
+  {
+   "family": "net_worth \u00b7 total",
+   "n": 1,
+   "within10": 0.0,
+   "median_abs_rel_err": 1.0
+  },
+  {
+   "family": "jct \u00b7 salt_deduction_expenditure",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0391
+  },
+  {
+   "family": "jct \u00b7 medical_expense_deduction_expenditure",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0016
+  },
+  {
+   "family": "jct \u00b7 charitable_deduction_expenditure",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0187
+  },
+  {
+   "family": "jct \u00b7 interest_deduction_expenditure",
+   "n": 1,
+   "within10": 0.0,
+   "median_abs_rel_err": 1.0
+  },
+  {
+   "family": "jct \u00b7 qualified_business_income_deduction_expenditure",
+   "n": 1,
+   "within10": 0.0,
+   "median_abs_rel_err": 0.33
+  },
+  {
+   "family": "ssa \u00b7 ssn_card_type_none_count",
+   "n": 1,
+   "within10": 0.0,
+   "median_abs_rel_err": 1.0
+  },
+  {
+   "family": "US01 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.001
+  },
+  {
+   "family": "US02 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0066
+  },
+  {
+   "family": "US04 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0001
+  },
+  {
+   "family": "US05 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0007
+  },
+  {
+   "family": "US06 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0054
+  },
+  {
+   "family": "US08 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0017
+  },
+  {
+   "family": "US09 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0022
+  },
+  {
+   "family": "US10 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0005
+  },
+  {
+   "family": "US11 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0026
+  },
+  {
+   "family": "US12 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0019
+  },
+  {
+   "family": "US13 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0043
+  },
+  {
+   "family": "US15 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0003
+  },
+  {
+   "family": "US16 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0005
+  },
+  {
+   "family": "US17 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0025
+  },
+  {
+   "family": "US18 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.003
+  },
+  {
+   "family": "US19 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0012
+  },
+  {
+   "family": "US20 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0005
+  },
+  {
+   "family": "US21 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0008
+  },
+  {
+   "family": "US22 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.003
+  },
+  {
+   "family": "US23 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0023
+  },
+  {
+   "family": "US24 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0005
+  },
+  {
+   "family": "US25 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0027
+  },
+  {
+   "family": "US26 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0039
+  },
+  {
+   "family": "US27 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.002
+  },
+  {
+   "family": "US28 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0017
+  },
+  {
+   "family": "US29 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0042
+  },
+  {
+   "family": "US30 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0008
+  },
+  {
+   "family": "US31 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0005
+  },
+  {
+   "family": "US32 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.002
+  },
+  {
+   "family": "US33 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0013
+  },
+  {
+   "family": "US34 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0019
+  },
+  {
+   "family": "US35 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0
+  },
+  {
+   "family": "US36 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0041
+  },
+  {
+   "family": "US37 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0038
+  },
+  {
+   "family": "US38 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0002
+  },
+  {
+   "family": "US39 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0027
+  },
+  {
+   "family": "US40 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0004
+  },
+  {
+   "family": "US41 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0021
+  },
+  {
+   "family": "US42 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0026
+  },
+  {
+   "family": "US44 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0013
+  },
+  {
+   "family": "US45 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0042
+  },
+  {
+   "family": "US46 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0003
+  },
+  {
+   "family": "US47 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0006
+  },
+  {
+   "family": "US48 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0063
+  },
+  {
+   "family": "US49 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0014
+  },
+  {
+   "family": "US50 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0004
+  },
+  {
+   "family": "US51 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0007
+  },
+  {
+   "family": "US53 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0003
+  },
+  {
+   "family": "US54 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0005
+  },
+  {
+   "family": "US55 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0003
+  },
+  {
+   "family": "US56 \u00b7 snap-cost",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0012
+  },
+  {
+   "family": "US01 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0027
+  },
+  {
+   "family": "US02 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0053
+  },
+  {
+   "family": "US04 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0028
+  },
+  {
+   "family": "US05 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0009
+  },
+  {
+   "family": "US06 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0141
+  },
+  {
+   "family": "US08 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0054
+  },
+  {
+   "family": "US09 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0001
+  },
+  {
+   "family": "US10 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0
+  },
+  {
+   "family": "US11 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0019
+  },
+  {
+   "family": "US12 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0177
+  },
+  {
+   "family": "US13 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0026
+  },
+  {
+   "family": "US15 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0013
+  },
+  {
+   "family": "US16 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0069
+  },
+  {
+   "family": "US17 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0026
+  },
+  {
+   "family": "US18 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.002
+  },
+  {
+   "family": "US19 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.002
+  },
+  {
+   "family": "US20 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0019
+  },
+  {
+   "family": "US21 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0047
+  },
+  {
+   "family": "US22 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0022
+  },
+  {
+   "family": "US23 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0039
+  },
+  {
+   "family": "US24 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0078
+  },
+  {
+   "family": "US25 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0032
+  },
+  {
+   "family": "US26 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0029
+  },
+  {
+   "family": "US27 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0021
+  },
+  {
+   "family": "US28 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0009
+  },
+  {
+   "family": "US29 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0022
+  },
+  {
+   "family": "US30 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0009
+  },
+  {
+   "family": "US31 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0005
+  },
+  {
+   "family": "US32 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0035
+  },
+  {
+   "family": "US33 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0025
+  },
+  {
+   "family": "US34 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.007
+  },
+  {
+   "family": "US35 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.002
+  },
+  {
+   "family": "US36 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0037
+  },
+  {
+   "family": "US37 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.008
+  },
+  {
+   "family": "US38 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0001
+  },
+  {
+   "family": "US39 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0059
+  },
+  {
+   "family": "US40 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0009
+  },
+  {
+   "family": "US41 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0014
+  },
+  {
+   "family": "US42 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0064
+  },
+  {
+   "family": "US44 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0003
+  },
+  {
+   "family": "US45 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0031
+  },
+  {
+   "family": "US46 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0007
+  },
+  {
+   "family": "US47 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.004
+  },
+  {
+   "family": "US48 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0118
+  },
+  {
+   "family": "US49 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0015
+  },
+  {
+   "family": "US50 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0005
+  },
+  {
+   "family": "US51 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0037
+  },
+  {
+   "family": "US53 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0039
+  },
+  {
+   "family": "US54 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0016
+  },
+  {
+   "family": "US55 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.005
+  },
+  {
+   "family": "US56 \u00b7 snap-hhs",
+   "n": 1,
+   "within10": 1.0,
+   "median_abs_rel_err": 0.0008
+  }
+ ],
+ "worst": [
+  {
+   "name": "nation/census/population_by_age/80",
+   "target": 1766983.0,
+   "estimate": 4901873.894874021,
+   "abs_rel_err": 1.774
+  },
+  {
+   "name": "state/census/acs/rent/MD",
+   "target": 14212159200.0,
+   "estimate": 0.0,
+   "abs_rel_err": 1.0
+  },
+  {
+   "name": "nation/irs/rent and royalty net losses/total/AGI in 200k-500k/taxable/All",
+   "target": 7470177618.236473,
+   "estimate": 0.0,
+   "abs_rel_err": 1.0
+  },
+  {
+   "name": "nation/irs/rent and royalty net losses/count/AGI in 100k-200k/taxable/All",
+   "target": 908806.2715430862,
+   "estimate": 0.0,
+   "abs_rel_err": 1.0
+  },
+  {
+   "name": "nation/irs/rent and royalty net losses/total/AGI in 100k-200k/taxable/All",
+   "target": 9568525881.763527,
+   "estimate": 0.0,
+   "abs_rel_err": 1.0
+  },
+  {
+   "name": "nation/irs/estate losses/total/AGI in 1m-inf/taxable/All",
+   "target": 2775947295.3020134,
+   "estimate": 0.0,
+   "abs_rel_err": 1.0
+  },
+  {
+   "name": "nation/irs/estate losses/count/AGI in 500k-1m/taxable/All",
+   "target": 3725.543624161074,
+   "estimate": 0.0,
+   "abs_rel_err": 1.0
+  },
+  {
+   "name": "nation/irs/estate losses/total/AGI in 500k-1m/taxable/All",
+   "target": 390734671.1409396,
+   "estimate": 0.0,
+   "abs_rel_err": 1.0
+  },
+  {
+   "name": "nation/irs/rent and royalty net losses/count/AGI in 75k-100k/taxable/All",
+   "target": 419662.34168336674,
+   "estimate": 0.0,
+   "abs_rel_err": 1.0
+  },
+  {
+   "name": "nation/irs/estate losses/count/AGI in 200k-500k/taxable/All",
+   "target": 8097.464765100672,
+   "estimate": 0.0,
+   "abs_rel_err": 1.0
+  },
+  {
+   "name": "nation/irs/estate losses/total/AGI in 200k-500k/taxable/All",
+   "target": 278044505.03355706,
+   "estimate": 0.0,
+   "abs_rel_err": 1.0
+  },
+  {
+   "name": "nation/irs/estate losses/count/AGI in 100k-200k/taxable/All",
+   "target": 6437.963087248322,
+   "estimate": 0.0,
+   "abs_rel_err": 1.0
+  },
+  {
+   "name": "nation/irs/rent and royalty net losses/total/AGI in 75k-100k/taxable/All",
+   "target": 4441455568.136272,
+   "estimate": 0.0,
+   "abs_rel_err": 1.0
+  },
+  {
+   "name": "nation/irs/rent and royalty net losses/count/AGI in 50k-75k/taxable/All",
+   "target": 450991.1462925852,
+   "estimate": 0.0,
+   "abs_rel_err": 1.0
+  },
+  {
+   "name": "nation/irs/rent and royalty net losses/total/AGI in 50k-75k/taxable/All",
+   "target": 4808519406.813627,
+   "estimate": 0.0,
+   "abs_rel_err": 1.0
+  }
+ ],
+ "score": {
+  "status": "running"
+ },
+ "stages": [
+  {
+   "key": "pool",
+   "title": "pool",
+   "status": "done",
+   "note": "64,728 households \u00b7 142,125 persons, spec-built from CPS ASEC + IRS PUF + SCF"
+  },
+  {
+   "key": "fit",
+   "title": "fit",
+   "status": "done",
+   "note": "weight-aware regime-gated quantile forests (weighted bootstrap)"
+  },
+  {
+   "key": "calibrate",
+   "title": "calibrate",
+   "status": "done",
+   "note": "3,704 targets \u00b7 loss 1.22 \u2192 0.049 \u00b7 hard 50\u00d7 weight bound"
+  },
+  {
+   "key": "score",
+   "title": "score",
+   "status": "running",
+   "note": "matched-sample, symmetric-refit comparison vs the enhanced CPS"
+  },
+  {
+   "key": "publish",
+   "title": "publish",
+   "status": "pending",
+   "note": "Hugging Face artifact + populace.data registry entry"
+  }
+ ]
+}
