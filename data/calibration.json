@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-06-10 21:22 UTC",
+ "generated_at": "2026-06-10 21:30 UTC",
  "headline": {
   "n_targets": 3704,
   "n_households": 64728,
@@ -1583,7 +1583,7 @@
    "key": "pool",
    "title": "pool",
    "status": "done",
-   "note": "64,728 households \u00b7 142,125 persons, spec-built from CPS ASEC + IRS PUF + SCF"
+   "note": "64,728 households \u00b7 142,125 persons, spec-built from CPS ASEC + IRS PUF"
   },
   {
    "key": "fit",

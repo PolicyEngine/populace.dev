@@ -163,7 +163,7 @@ def main() -> None:
                 "title": "pool",
                 "status": "done",
                 "note": f"{n_households:,} households · {n_persons:,} persons, "
-                "spec-built from CPS ASEC + IRS PUF + SCF",
+                "spec-built from CPS ASEC + IRS PUF",
             },
             {
                 "key": "fit",
