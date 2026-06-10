@@ -150,38 +150,32 @@
   // --- score ---------------------------------------------------------------------
   const text = $("db-score-text");
   const sm = $("db-score-metrics");
-  if (d.score.status === "complete" && d.score.raw) {
-    const r = d.score.raw;
+  if (d.score.status === "complete" && d.score.candidate) {
+    const pt = d.score.per_target || {};
     text.textContent =
-      "The published artifact, scored by the matched-sample, symmetric-refit " +
-      "comparison against the enhanced CPS on the full target surface and " +
-      "held-out targets.";
-    const rows = [];
-    const grab = (obj, keys) =>
-      keys.reduce((o, k) => (o == null ? undefined : o[k]), obj);
-    // Render whatever headline pairs the result JSON carries.
-    const candidates = [
-      ["full loss", ["candidate", "full_loss"], ["baseline", "full_loss"]],
-      ["held-out loss", ["candidate", "holdout_loss"], ["baseline", "holdout_loss"]],
-      ["mean sq. rel. error", ["candidate", "msre"], ["baseline", "msre"]],
-    ];
-    for (const [label, ck, bk] of candidates) {
-      const c = grab(r, ck);
-      const b = grab(r, bk);
-      if (typeof c === "number" && typeof b === "number")
-        rows.push([label, c, b]);
-    }
-    for (const [label, c, b] of rows) {
+      "The shipped artifact, scored by the matched-sample, symmetric-refit " +
+      `comparison against the enhanced CPS (${(
+        d.score.matched_households || 0
+      ).toLocaleString()} matched households). Lower is better. The aggregate ` +
+      "wins are large; per individual target the incumbent still wins " +
+      `${(pt.baseline_wins || 0).toLocaleString()} of ${(
+        pt.n_targets || 0
+      ).toLocaleString()} to our ${(pt.candidate_wins || 0).toLocaleString()} — ` +
+      "we win big where we win and lose narrowly where we lose. Both facts " +
+      "are the story.";
+    for (const [label, key, note] of [
+      ["training loss", "train_loss", "calibration targets"],
+      ["held-out loss", "holdout_loss", `${pt.holdout_targets || ""} unseen targets`],
+      ["full-surface loss", "full_loss", "all targets"],
+    ]) {
       const m = el("div", "metric");
       m.append(el("span", "metric-label mono", label));
-      const v = el("span", "metric-val", c.toFixed(2));
-      v.append(el("span", "metric-vs", "vs " + b.toFixed(2)));
-      m.append(v, el("span", "metric-note", "populace vs enhanced CPS"));
+      const v = el("span", "metric-val", d.score.candidate[key].toFixed(3));
+      v.append(
+        el("span", "metric-vs", "vs " + d.score.baseline[key].toFixed(3))
+      );
+      m.append(v, el("span", "metric-note", note));
       sm.append(m);
-    }
-    if (!rows.length) {
-      text.textContent +=
-        " (Result file present; see the evidence section for the scored numbers.)";
     }
   } else {
     text.textContent =

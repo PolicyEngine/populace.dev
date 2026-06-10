@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-06-10 21:30 UTC",
+ "generated_at": "2026-06-10 21:45 UTC",
  "headline": {
   "n_targets": 3704,
   "n_households": 64728,
@@ -1576,7 +1576,25 @@
   }
  ],
  "score": {
-  "status": "running"
+  "status": "complete",
+  "matched_households": 41314,
+  "candidate": {
+   "train_loss": 0.1274,
+   "holdout_loss": 0.0319,
+   "full_loss": 0.1593
+  },
+  "baseline": {
+   "train_loss": 1.0888,
+   "holdout_loss": 0.3167,
+   "full_loss": 1.4055
+  },
+  "per_target": {
+   "candidate_wins": 1192,
+   "baseline_wins": 2458,
+   "ties": 54,
+   "n_targets": 3704,
+   "holdout_targets": 739
+  }
  },
  "stages": [
   {
@@ -1600,7 +1618,7 @@
   {
    "key": "score",
    "title": "score",
-   "status": "running",
+   "status": "complete",
    "note": "matched-sample, symmetric-refit comparison vs the enhanced CPS"
   },
   {

@@ -131,7 +131,29 @@ def main() -> None:
     score: dict = {"status": "running"}
     if SCORE_JSON.exists():
         raw = json.loads(SCORE_JSON.read_text())
-        score = {"status": "complete", "raw": raw}
+        cr, br = raw["candidate_refit"], raw["baseline_refit"]
+        summ = raw.get("target_diagnostics", {}).get("summary", {})
+        score = {
+            "status": "complete",
+            "matched_households": cr.get("household_count"),
+            "candidate": {
+                "train_loss": round(cr["optimized_train_loss"], 4),
+                "holdout_loss": round(cr["optimized_holdout_loss"], 4),
+                "full_loss": round(cr["optimized_full_loss"], 4),
+            },
+            "baseline": {
+                "train_loss": round(br["optimized_train_loss"], 4),
+                "holdout_loss": round(br["optimized_holdout_loss"], 4),
+                "full_loss": round(br["optimized_full_loss"], 4),
+            },
+            "per_target": {
+                "candidate_wins": summ.get("candidate_wins"),
+                "baseline_wins": summ.get("baseline_wins"),
+                "ties": summ.get("ties"),
+                "n_targets": summ.get("n_targets"),
+                "holdout_targets": summ.get("holdout_targets"),
+            },
+        }
 
     payload = {
         "generated_at": time.strftime("%Y-%m-%d %H:%M UTC", time.gmtime()),
