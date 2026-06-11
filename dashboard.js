@@ -3,20 +3,21 @@
 
 (async function () {
   // --- live build strip ----------------------------------------------------
-  // Polls the machine-updated status gist while a build chain runs; hides
-  // itself when there is no fresh status. Numbers come from the chain log.
-  const LIVE_GIST = "c245589ec19ec00b02756995a4af7b48";
-  const LIVE_FILE = "populace_build_status.json";
+  // Reads the latest machine-appended build_events row (PolicyEngine populace
+  // Supabase; RLS exposes read-only SELECT to this publishable key) while a
+  // chain runs; hides itself when there is no fresh status.
+  const LIVE_URL = "https://pgrhxxhiyqgngoffwden.supabase.co/rest/v1/build_events";
+  const LIVE_KEY = "sb_publishable_MmKzCHmEgOQNFlvj_RqZxQ_gPWRkrGh";
   async function pollLive() {
     try {
-      const res = await fetch(`https://api.github.com/gists/${LIVE_GIST}`, {
-        headers: { Accept: "application/vnd.github+json" },
-      });
+      const res = await fetch(
+        `${LIVE_URL}?select=status&order=created_at.desc&limit=1`,
+        { headers: { apikey: LIVE_KEY, Authorization: `Bearer ${LIVE_KEY}` } }
+      );
       if (!res.ok) return;
-      const gist = await res.json();
-      const raw = gist.files?.[LIVE_FILE]?.content;
-      if (!raw) return;
-      const st = JSON.parse(raw);
+      const rows = await res.json();
+      const st = rows?.[0]?.status;
+      if (!st) return;
       const box = document.getElementById("db-live");
       if (!box) return;
       const ageMin = (Date.now() - Date.parse(st.updated_at)) / 60000;
@@ -55,7 +56,7 @@
       document.getElementById("db-live-gates").textContent = bits.join("  ·  ");
       document.getElementById("db-live-updated").textContent =
         `updated ${Math.max(0, Math.round(ageMin))} min ago — refreshes while a build runs`;
-      if (st.state === "running") setTimeout(pollLive, 90000);
+      if (st.state === "running") setTimeout(pollLive, 60000);
     } catch (e) {
       /* live strip is best-effort; the rest of the page is release data */
     }
