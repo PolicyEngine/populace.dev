@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-06-10 22:35 UTC",
+ "generated_at": "2026-06-11 04:30 UTC",
  "headline": {
   "n_targets": 3704,
   "n_households": 64728,
@@ -1636,7 +1636,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.9972,
    "ecps_total_B": 163356.54,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "scf_primary_residence_value",
@@ -1644,7 +1645,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.7586,
    "ecps_total_B": 67764.31,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "scf_retirement_assets",
@@ -1652,7 +1654,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.6508,
    "ecps_total_B": 46357.29,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "scf_business_equity",
@@ -1660,7 +1663,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.2234,
    "ecps_total_B": 26320.05,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "scf_mortgage_debt",
@@ -1668,7 +1672,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.4799,
    "ecps_total_B": 21054.83,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "stock_assets",
@@ -1676,7 +1681,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.163,
    "ecps_total_B": 17781.65,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "scf_other_residential_real_estate",
@@ -1684,7 +1690,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.214,
    "ecps_total_B": 13194.05,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "unadjusted_basis_qualified_property",
@@ -1692,7 +1699,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.1679,
    "ecps_total_B": 12496.04,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "employment_income_before_lsr",
@@ -1700,7 +1708,8 @@
    "total_B": 10308.78,
    "ecps_fill": 0.5564,
    "ecps_total_B": 12384.94,
-   "status": "live"
+   "status": "live",
+   "source": "spec/structural"
   },
   {
    "variable": "miscellaneous_income",
@@ -1708,7 +1717,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.1383,
    "ecps_total_B": 9291.09,
-   "status": "gap"
+   "status": "gap",
+   "source": "cps-derived"
   },
   {
    "variable": "charitable_non_cash_donations",
@@ -1716,7 +1726,8 @@
    "total_B": 103.08,
    "ecps_fill": 0.2533,
    "ecps_total_B": 8304.0,
-   "status": "live"
+   "status": "live",
+   "source": "puf-imputed"
   },
   {
    "variable": "scf_nonresidential_real_estate_equity",
@@ -1724,7 +1735,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.1412,
    "ecps_total_B": 7979.41,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "scf_other_residential_debt",
@@ -1732,7 +1744,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.163,
    "ecps_total_B": 7695.32,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "bank_account_assets",
@@ -1740,7 +1753,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.5402,
    "ecps_total_B": 7115.52,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "charitable_cash_donations",
@@ -1748,7 +1762,8 @@
    "total_B": 394.8,
    "ecps_fill": 0.34,
    "ecps_total_B": 5824.44,
-   "status": "live"
+   "status": "live",
+   "source": "puf-imputed"
   },
   {
    "variable": "household_vehicles_value",
@@ -1756,7 +1771,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.8662,
    "ecps_total_B": 4428.97,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "qualified_reit_and_ptp_income",
@@ -1764,7 +1780,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.187,
    "ecps_total_B": 4199.43,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "scf_other_managed_assets",
@@ -1772,7 +1789,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.1401,
    "ecps_total_B": 4119.04,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "scf_student_loan_debt",
@@ -1780,7 +1798,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.2534,
    "ecps_total_B": 3488.09,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "w2_wages_from_qualified_business",
@@ -1788,7 +1807,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.1051,
    "ecps_total_B": 3158.63,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "unreimbursed_business_employee_expenses",
@@ -1796,7 +1816,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.3054,
    "ecps_total_B": 2936.29,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "scf_other_lines_of_credit",
@@ -1804,7 +1825,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0533,
    "ecps_total_B": 2556.61,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "scf_other_nonfinancial_assets",
@@ -1812,7 +1834,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.1899,
    "ecps_total_B": 2497.75,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "scf_other_debt",
@@ -1820,7 +1843,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.2036,
    "ecps_total_B": 2380.88,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "scf_cash_value_life_insurance",
@@ -1828,7 +1852,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.2401,
    "ecps_total_B": 1912.96,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "scf_other_installment_debt",
@@ -1836,7 +1861,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.2143,
    "ecps_total_B": 1758.13,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "scf_other_financial_assets",
@@ -1844,7 +1870,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.2018,
    "ecps_total_B": 1741.82,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "sstb_unadjusted_basis_qualified_property",
@@ -1852,7 +1879,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0353,
    "ecps_total_B": 1733.93,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "tax_exempt_private_pension_income",
@@ -1860,7 +1888,8 @@
    "total_B": 1173.44,
    "ecps_fill": 0.1972,
    "ecps_total_B": 1613.77,
-   "status": "live"
+   "status": "live",
+   "source": "spec/structural"
   },
   {
    "variable": "partnership_s_corp_income",
@@ -1868,7 +1897,8 @@
    "total_B": 775.3,
    "ecps_fill": 0.2259,
    "ecps_total_B": 1546.35,
-   "status": "live"
+   "status": "live",
+   "source": "puf-imputed"
   },
   {
    "variable": "scf_savings_bonds",
@@ -1876,7 +1906,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.1413,
    "ecps_total_B": 1425.28,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "scf_vehicle_installment_debt",
@@ -1884,7 +1915,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.3015,
    "ecps_total_B": 1346.79,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "auto_loan_balance",
@@ -1892,7 +1924,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.2897,
    "ecps_total_B": 1199.57,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "employer_sponsored_insurance_premiums",
@@ -1900,7 +1933,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.2247,
    "ecps_total_B": 1012.31,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "social_security_retirement",
@@ -1908,7 +1942,8 @@
    "total_B": 1151.0,
    "ecps_fill": 0.1529,
    "ecps_total_B": 1007.63,
-   "status": "live"
+   "status": "live",
+   "source": "cps-derived"
   },
   {
    "variable": "long_term_capital_gains_on_collectibles",
@@ -1916,7 +1951,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.073,
    "ecps_total_B": 981.59,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "investment_interest_expense",
@@ -1924,7 +1960,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.1795,
    "ecps_total_B": 923.38,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "scf_certificates_of_deposit",
@@ -1932,7 +1969,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.1324,
    "ecps_total_B": 890.96,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "bond_assets",
@@ -1940,7 +1978,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0344,
    "ecps_total_B": 886.33,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "pre_subsidy_rent",
@@ -1948,7 +1987,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.134,
    "ecps_total_B": 877.47,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "salt_refund_income",
@@ -1956,7 +1996,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.246,
    "ecps_total_B": 830.95,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "home_mortgage_interest",
@@ -1964,7 +2005,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.2122,
    "ecps_total_B": 805.07,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "scf_credit_card_debt",
@@ -1972,7 +2014,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.3605,
    "ecps_total_B": 778.2,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "estate_income",
@@ -1980,7 +2023,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0925,
    "ecps_total_B": -522.36,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "taxable_private_pension_income",
@@ -1988,7 +2032,8 @@
    "total_B": 1010.51,
    "ecps_fill": 0.1473,
    "ecps_total_B": 459.48,
-   "status": "live"
+   "status": "live",
+   "source": "spec/structural"
   },
   {
    "variable": "congressional_district_geoid",
@@ -1996,7 +2041,8 @@
    "total_B": 416.73,
    "ecps_fill": 1.0,
    "ecps_total_B": 447.36,
-   "status": "live"
+   "status": "live",
+   "source": "spec/structural"
   },
   {
    "variable": "health_insurance_premiums_without_medicare_part_b",
@@ -2004,7 +2050,8 @@
    "total_B": 399.61,
    "ecps_fill": 0.3635,
    "ecps_total_B": 377.42,
-   "status": "live"
+   "status": "live",
+   "source": "cps-derived"
   },
   {
    "variable": "real_estate_taxes",
@@ -2012,7 +2059,8 @@
    "total_B": 369.59,
    "ecps_fill": 0.2607,
    "ecps_total_B": 376.15,
-   "status": "live"
+   "status": "live",
+   "source": "puf-imputed"
   },
   {
    "variable": "traditional_401k_contributions",
@@ -2020,7 +2068,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.2311,
    "ecps_total_B": 359.69,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "other_health_insurance_premiums",
@@ -2028,7 +2077,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.3814,
    "ecps_total_B": 321.19,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "other_medical_expenses",
@@ -2036,7 +2086,8 @@
    "total_B": 318.61,
    "ecps_fill": 0.6262,
    "ecps_total_B": 307.15,
-   "status": "live"
+   "status": "live",
+   "source": "cps-derived"
   },
   {
    "variable": "partnership_se_income",
@@ -2044,7 +2095,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.097,
    "ecps_total_B": -280.2,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "long_term_capital_gains_before_response",
@@ -2052,7 +2104,8 @@
    "total_B": 1220.84,
    "ecps_fill": 0.1505,
    "ecps_total_B": 257.44,
-   "status": "live"
+   "status": "live",
+   "source": "spec/structural"
   },
   {
    "variable": "taxable_interest_income",
@@ -2060,7 +2113,8 @@
    "total_B": 281.14,
    "ecps_fill": 0.409,
    "ecps_total_B": 205.05,
-   "status": "live"
+   "status": "live",
+   "source": "puf-imputed"
   },
   {
    "variable": "non_qualified_dividend_income",
@@ -2068,7 +2122,8 @@
    "total_B": 112.33,
    "ecps_fill": 0.2101,
    "ecps_total_B": 190.2,
-   "status": "live"
+   "status": "live",
+   "source": "puf-imputed"
   },
   {
    "variable": "qualified_bdc_income",
@@ -2076,7 +2131,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0697,
    "ecps_total_B": 183.75,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "sstb_w2_wages_from_qualified_business",
@@ -2084,7 +2140,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0206,
    "ecps_total_B": 157.97,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "qualified_dividend_income",
@@ -2092,7 +2149,8 @@
    "total_B": 305.13,
    "ecps_fill": 0.2087,
    "ecps_total_B": 154.37,
-   "status": "live"
+   "status": "live",
+   "source": "puf-imputed"
   },
   {
    "variable": "investment_income_elected_form_4952",
@@ -2100,7 +2158,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0624,
    "ecps_total_B": 130.65,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "social_security_disability",
@@ -2108,7 +2167,8 @@
    "total_B": 152.04,
    "ecps_fill": 0.0227,
    "ecps_total_B": 126.67,
-   "status": "live"
+   "status": "live",
+   "source": "cps-derived"
   },
   {
    "variable": "regular_ira_distributions",
@@ -2116,7 +2176,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0167,
    "ecps_total_B": 118.2,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "taxable_ira_distributions",
@@ -2124,7 +2185,8 @@
    "total_B": 461.35,
    "ecps_fill": 0.0658,
    "ecps_total_B": 118.2,
-   "status": "live"
+   "status": "live",
+   "source": "puf-imputed"
   },
   {
    "variable": "veterans_benefits",
@@ -2132,7 +2194,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0353,
    "ecps_total_B": 110.98,
-   "status": "gap"
+   "status": "gap",
+   "source": "cps-derived"
   },
   {
    "variable": "rental_income",
@@ -2140,7 +2203,8 @@
    "total_B": 152.37,
    "ecps_fill": 0.1229,
    "ecps_total_B": 105.84,
-   "status": "live"
+   "status": "live",
+   "source": "puf-imputed"
   },
   {
    "variable": "social_security_survivors",
@@ -2148,7 +2212,8 @@
    "total_B": 156.11,
    "ecps_fill": 0.0109,
    "ecps_total_B": 100.29,
-   "status": "live"
+   "status": "live",
+   "source": "cps-derived"
   },
   {
    "variable": "tax_exempt_interest_income",
@@ -2156,7 +2221,8 @@
    "total_B": 86.28,
    "ecps_fill": 0.3392,
    "ecps_total_B": 96.5,
-   "status": "live"
+   "status": "live",
+   "source": "puf-imputed"
   },
   {
    "variable": "self_employment_income_last_year",
@@ -2164,7 +2230,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0863,
    "ecps_total_B": 80.06,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "social_security_dependents",
@@ -2172,7 +2239,8 @@
    "total_B": 82.77,
    "ecps_fill": 0.0088,
    "ecps_total_B": 77.36,
-   "status": "live"
+   "status": "live",
+   "source": "cps-derived"
   },
   {
    "variable": "auto_loan_interest",
@@ -2180,7 +2248,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.2897,
    "ecps_total_B": 75.47,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "educational_assistance",
@@ -2188,7 +2257,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0351,
    "ecps_total_B": 74.68,
-   "status": "gap"
+   "status": "gap",
+   "source": "cps-derived"
   },
   {
    "variable": "survivor_benefits",
@@ -2196,7 +2266,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0128,
    "ecps_total_B": 69.31,
-   "status": "gap"
+   "status": "gap",
+   "source": "cps-derived"
   },
   {
    "variable": "self_employment_income_before_lsr",
@@ -2204,7 +2275,8 @@
    "total_B": 444.02,
    "ecps_fill": 0.0897,
    "ecps_total_B": 66.05,
-   "status": "live"
+   "status": "live",
+   "source": "spec/structural"
   },
   {
    "variable": "financial_assistance",
@@ -2212,7 +2284,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0212,
    "ecps_total_B": 65.51,
-   "status": "gap"
+   "status": "gap",
+   "source": "cps-derived"
   },
   {
    "variable": "roth_401k_contributions",
@@ -2220,7 +2293,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.2311,
    "ecps_total_B": 63.48,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "over_the_counter_health_expenses",
@@ -2228,7 +2302,8 @@
    "total_B": 67.97,
    "ecps_fill": 0.731,
    "ecps_total_B": 63.2,
-   "status": "live"
+   "status": "live",
+   "source": "cps-derived"
   },
   {
    "variable": "tip_income",
@@ -2236,7 +2311,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0079,
    "ecps_total_B": 54.09,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "taxable_401k_distributions",
@@ -2244,7 +2320,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.037,
    "ecps_total_B": 45.31,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "sstb_self_employment_income_before_lsr",
@@ -2252,7 +2329,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.043,
    "ecps_total_B": 37.83,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "short_term_capital_gains",
@@ -2260,7 +2338,8 @@
    "total_B": -148.38,
    "ecps_fill": 0.1333,
    "ecps_total_B": 35.11,
-   "status": "live"
+   "status": "live",
+   "source": "puf-imputed"
   },
   {
    "variable": "unemployment_compensation",
@@ -2268,7 +2347,8 @@
    "total_B": 33.99,
    "ecps_fill": 0.0256,
    "ecps_total_B": 33.98,
-   "status": "live"
+   "status": "live",
+   "source": "puf-imputed"
   },
   {
    "variable": "qualified_tuition_expenses",
@@ -2276,7 +2356,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0157,
    "ecps_total_B": 33.72,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "farm_income",
@@ -2284,7 +2365,8 @@
    "total_B": 39.69,
    "ecps_fill": 0.0252,
    "ecps_total_B": 33.0,
-   "status": "live"
+   "status": "live",
+   "source": "puf-imputed"
   },
   {
    "variable": "roth_ira_contributions",
@@ -2292,7 +2374,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.2316,
    "ecps_total_B": 26.18,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "other_type_retirement_account_distributions",
@@ -2300,7 +2383,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0036,
    "ecps_total_B": 22.1,
-   "status": "degenerate-both"
+   "status": "degenerate-both",
+   "source": "spec/structural"
   },
   {
    "variable": "child_support_received",
@@ -2308,7 +2392,8 @@
    "total_B": 32.37,
    "ecps_fill": 0.034,
    "ecps_total_B": 21.21,
-   "status": "live"
+   "status": "live",
+   "source": "cps-derived"
   },
   {
    "variable": "non_sch_d_capital_gains",
@@ -2316,7 +2401,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0232,
    "ecps_total_B": 21.15,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "child_support_expense",
@@ -2324,7 +2410,8 @@
    "total_B": 17.38,
    "ecps_fill": 0.0339,
    "ecps_total_B": 20.84,
-   "status": "live"
+   "status": "live",
+   "source": "cps-derived"
   },
   {
    "variable": "student_loan_interest",
@@ -2332,7 +2419,8 @@
    "total_B": 23.26,
    "ecps_fill": 0.0278,
    "ecps_total_B": 19.03,
-   "status": "live"
+   "status": "live",
+   "source": "puf-imputed"
   },
   {
    "variable": "disability_benefits",
@@ -2340,7 +2428,8 @@
    "total_B": 46.24,
    "ecps_fill": 0.0264,
    "ecps_total_B": 18.52,
-   "status": "live"
+   "status": "live",
+   "source": "cps-derived"
   },
   {
    "variable": "traditional_ira_contributions",
@@ -2348,7 +2437,8 @@
    "total_B": 13.94,
    "ecps_fill": 0.2312,
    "ecps_total_B": 16.88,
-   "status": "live"
+   "status": "live",
+   "source": "puf-imputed"
   },
   {
    "variable": "age",
@@ -2356,7 +2446,8 @@
    "total_B": 13.09,
    "ecps_fill": 0.9912,
    "ecps_total_B": 13.17,
-   "status": "live"
+   "status": "live",
+   "source": "spec/structural"
   },
   {
    "variable": "treasury_tipped_occupation_code",
@@ -2364,7 +2455,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0709,
    "ecps_total_B": 11.84,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "roth_ira_distributions",
@@ -2372,7 +2464,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0042,
    "ecps_total_B": 10.64,
-   "status": "degenerate-both"
+   "status": "degenerate-both",
+   "source": "spec/structural"
   },
   {
    "variable": "tax_exempt_ira_distributions",
@@ -2380,7 +2473,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0042,
    "ecps_total_B": 10.64,
-   "status": "degenerate-both"
+   "status": "degenerate-both",
+   "source": "spec/structural"
   },
   {
    "variable": "detailed_occupation_recode",
@@ -2388,7 +2482,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.8224,
    "ecps_total_B": 10.35,
-   "status": "gap"
+   "status": "gap",
+   "source": "cps-derived"
   },
   {
    "variable": "workers_compensation",
@@ -2396,7 +2491,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0027,
    "ecps_total_B": 10.3,
-   "status": "degenerate-both"
+   "status": "degenerate-both",
+   "source": "cps-derived"
   },
   {
    "variable": "weeks_worked",
@@ -2404,7 +2500,8 @@
    "total_B": null,
    "ecps_fill": 0.5748,
    "ecps_total_B": 8.98,
-   "status": "gap"
+   "status": "gap",
+   "source": "cps-derived"
   },
   {
    "variable": "weekly_hours_worked_before_lsr",
@@ -2412,7 +2509,8 @@
    "total_B": 13.3,
    "ecps_fill": 0.5748,
    "ecps_total_B": 7.17,
-   "status": "live"
+   "status": "live",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "farm_operations_income",
@@ -2420,7 +2518,8 @@
    "total_B": 39.69,
    "ecps_fill": 0.0278,
    "ecps_total_B": 6.43,
-   "status": "live"
+   "status": "live",
+   "source": "spec/structural"
   },
   {
    "variable": "hours_worked_last_week",
@@ -2428,7 +2527,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.5193,
    "ecps_total_B": 6.43,
-   "status": "gap"
+   "status": "gap",
+   "source": "cps-derived"
   },
   {
    "variable": "hourly_wage",
@@ -2436,7 +2536,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.5562,
    "ecps_total_B": 5.96,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "state_fips",
@@ -2444,7 +2545,8 @@
    "total_B": 4.15,
    "ecps_fill": 1.0,
    "ecps_total_B": 4.46,
-   "status": "live"
+   "status": "live",
+   "source": "spec/structural"
   },
   {
    "variable": "alimony_income",
@@ -2452,7 +2554,8 @@
    "total_B": 23.75,
    "ecps_fill": 0.0009,
    "ecps_total_B": 3.43,
-   "status": "live"
+   "status": "live",
+   "source": "puf-imputed"
   },
   {
    "variable": "alimony_expense",
@@ -2460,7 +2563,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0012,
    "ecps_total_B": 3.35,
-   "status": "degenerate-both"
+   "status": "degenerate-both",
+   "source": "spec/structural"
   },
   {
    "variable": "taxable_403b_distributions",
@@ -2468,7 +2572,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0057,
    "ecps_total_B": 2.99,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "farm_rent_income",
@@ -2476,7 +2581,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.041,
    "ecps_total_B": 2.2,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "educator_expense",
@@ -2484,7 +2590,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0269,
    "ecps_total_B": 1.44,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "self_employed_pension_contributions",
@@ -2492,7 +2599,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0636,
    "ecps_total_B": 1.4,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "cps_race",
@@ -2500,7 +2608,8 @@
    "total_B": 0.53,
    "ecps_fill": 1.0,
    "ecps_total_B": 0.56,
-   "status": "live"
+   "status": "live",
+   "source": "cps-derived"
   },
   {
    "variable": "casualty_loss",
@@ -2508,7 +2617,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0027,
    "ecps_total_B": 0.33,
-   "status": "degenerate-both"
+   "status": "degenerate-both",
+   "source": "spec/structural"
   },
   {
    "variable": "weeks_unemployed",
@@ -2516,7 +2626,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0203,
    "ecps_total_B": 0.32,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "count_under_18",
@@ -2524,7 +2635,8 @@
    "total_B": 0.33,
    "ecps_fill": 0.4751,
    "ecps_total_B": 0.3,
-   "status": "live"
+   "status": "live",
+   "source": "cps-derived"
   },
   {
    "variable": "taxable_sep_distributions",
@@ -2532,7 +2644,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0132,
    "ecps_total_B": 0.26,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "household_vehicles_owned",
@@ -2540,7 +2653,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.8714,
    "ecps_total_B": 0.22,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "own_children_in_household",
@@ -2548,7 +2662,8 @@
    "total_B": 0.18,
    "ecps_fill": 0.293,
    "ecps_total_B": 0.15,
-   "status": "live"
+   "status": "live",
+   "source": "cps-derived"
   },
   {
    "variable": "keogh_distributions",
@@ -2556,7 +2671,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0,
    "ecps_total_B": 0.13,
-   "status": "degenerate-both"
+   "status": "degenerate-both",
+   "source": "spec/structural"
   },
   {
    "variable": "count_under_6",
@@ -2564,7 +2680,8 @@
    "total_B": 0.1,
    "ecps_fill": 0.1999,
    "ecps_total_B": 0.09,
-   "status": "live"
+   "status": "live",
+   "source": "cps-derived"
   },
   {
    "variable": "american_opportunity_credit_claimed_prior_years",
@@ -2572,7 +2689,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0,
    "ecps_total_B": 0.0,
-   "status": "degenerate-both"
+   "status": "degenerate-both",
+   "source": "spec/structural"
   },
   {
    "variable": "domestic_production_ald",
@@ -2580,7 +2698,8 @@
    "total_B": null,
    "ecps_fill": 0.1257,
    "ecps_total_B": null,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "family_is_puf_clone",
@@ -2588,7 +2707,8 @@
    "total_B": null,
    "ecps_fill": 0.5,
    "ecps_total_B": null,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "first_home_mortgage_balance",
@@ -2596,7 +2716,8 @@
    "total_B": null,
    "ecps_fill": 0.3885,
    "ecps_total_B": null,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "first_home_mortgage_interest",
@@ -2604,7 +2725,8 @@
    "total_B": null,
    "ecps_fill": 0.3885,
    "ecps_total_B": null,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "first_home_mortgage_origination_year",
@@ -2612,7 +2734,8 @@
    "total_B": null,
    "ecps_fill": 0.3885,
    "ecps_total_B": null,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "fsla_overtime_premium",
@@ -2620,7 +2743,8 @@
    "total_B": 0.0,
    "ecps_fill": null,
    "ecps_total_B": null,
-   "status": "degenerate-both"
+   "status": "degenerate-both",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "health_savings_account_ald",
@@ -2628,7 +2752,8 @@
    "total_B": null,
    "ecps_fill": 0.0962,
    "ecps_total_B": null,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "household_is_puf_clone",
@@ -2636,7 +2761,8 @@
    "total_B": null,
    "ecps_fill": 0.5,
    "ecps_total_B": 0.0,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "person_is_puf_clone",
@@ -2644,7 +2770,8 @@
    "total_B": null,
    "ecps_fill": 0.5,
    "ecps_total_B": 0.0,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "roth_401k_contributions_desired",
@@ -2652,7 +2779,8 @@
    "total_B": 0.0,
    "ecps_fill": null,
    "ecps_total_B": null,
-   "status": "degenerate-both"
+   "status": "degenerate-both",
+   "source": "cps-derived"
   },
   {
    "variable": "roth_ira_contributions_desired",
@@ -2660,7 +2788,8 @@
    "total_B": 0.0,
    "ecps_fill": null,
    "ecps_total_B": null,
-   "status": "degenerate-both"
+   "status": "degenerate-both",
+   "source": "cps-derived"
   },
   {
    "variable": "second_home_mortgage_balance",
@@ -2668,7 +2797,8 @@
    "total_B": null,
    "ecps_fill": 0.0,
    "ecps_total_B": null,
-   "status": "degenerate-both"
+   "status": "degenerate-both",
+   "source": "spec/structural"
   },
   {
    "variable": "second_home_mortgage_interest",
@@ -2676,7 +2806,8 @@
    "total_B": null,
    "ecps_fill": 0.0,
    "ecps_total_B": null,
-   "status": "degenerate-both"
+   "status": "degenerate-both",
+   "source": "spec/structural"
   },
   {
    "variable": "second_home_mortgage_origination_year",
@@ -2684,7 +2815,8 @@
    "total_B": null,
    "ecps_fill": 0.0,
    "ecps_total_B": null,
-   "status": "degenerate-both"
+   "status": "degenerate-both",
+   "source": "spec/structural"
   },
   {
    "variable": "selected_marketplace_plan_benchmark_ratio",
@@ -2692,7 +2824,8 @@
    "total_B": null,
    "ecps_fill": 1.0,
    "ecps_total_B": null,
-   "status": "live"
+   "status": "live",
+   "source": "spec/structural"
   },
   {
    "variable": "self_employed_pension_contributions_desired",
@@ -2700,7 +2833,8 @@
    "total_B": 0.0,
    "ecps_fill": null,
    "ecps_total_B": null,
-   "status": "degenerate-both"
+   "status": "degenerate-both",
+   "source": "cps-derived"
   },
   {
    "variable": "spm_unit_capped_work_childcare_expenses",
@@ -2708,7 +2842,8 @@
    "total_B": null,
    "ecps_fill": null,
    "ecps_total_B": null,
-   "status": "degenerate-both"
+   "status": "degenerate-both",
+   "source": "spec/structural"
   },
   {
    "variable": "spm_unit_energy_subsidy",
@@ -2716,7 +2851,8 @@
    "total_B": null,
    "ecps_fill": 0.0468,
    "ecps_total_B": null,
-   "status": "live"
+   "status": "live",
+   "source": "spec/structural"
   },
   {
    "variable": "spm_unit_is_puf_clone",
@@ -2724,7 +2860,8 @@
    "total_B": null,
    "ecps_fill": 0.5,
    "ecps_total_B": null,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "spm_unit_pre_subsidy_childcare_expenses",
@@ -2732,7 +2869,8 @@
    "total_B": null,
    "ecps_fill": 0.1022,
    "ecps_total_B": null,
-   "status": "gap"
+   "status": "gap",
+   "source": "ecps-donor-imputed"
   },
   {
    "variable": "strike_benefits",
@@ -2740,7 +2878,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0,
    "ecps_total_B": 0.0,
-   "status": "degenerate-both"
+   "status": "degenerate-both",
+   "source": "cps-derived"
   },
   {
    "variable": "tax_exempt_401k_distributions",
@@ -2748,7 +2887,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0,
    "ecps_total_B": 0.0,
-   "status": "degenerate-both"
+   "status": "degenerate-both",
+   "source": "spec/structural"
   },
   {
    "variable": "tax_exempt_403b_distributions",
@@ -2756,7 +2896,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0,
    "ecps_total_B": 0.0,
-   "status": "degenerate-both"
+   "status": "degenerate-both",
+   "source": "spec/structural"
   },
   {
    "variable": "tax_exempt_sep_distributions",
@@ -2764,7 +2905,8 @@
    "total_B": 0.0,
    "ecps_fill": 0.0,
    "ecps_total_B": 0.0,
-   "status": "degenerate-both"
+   "status": "degenerate-both",
+   "source": "spec/structural"
   },
   {
    "variable": "tax_unit_is_puf_clone",
@@ -2772,7 +2914,8 @@
    "total_B": null,
    "ecps_fill": 0.5,
    "ecps_total_B": null,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   },
   {
    "variable": "traditional_401k_contributions_desired",
@@ -2780,7 +2923,8 @@
    "total_B": 0.0,
    "ecps_fill": null,
    "ecps_total_B": null,
-   "status": "degenerate-both"
+   "status": "degenerate-both",
+   "source": "cps-derived"
   },
   {
    "variable": "traditional_ira_contributions_desired",
@@ -2788,7 +2932,8 @@
    "total_B": 0.0,
    "ecps_fill": null,
    "ecps_total_B": null,
-   "status": "degenerate-both"
+   "status": "degenerate-both",
+   "source": "cps-derived"
   },
   {
    "variable": "unrecaptured_section_1250_gain",
@@ -2796,7 +2941,8 @@
    "total_B": null,
    "ecps_fill": 0.1425,
    "ecps_total_B": null,
-   "status": "gap"
+   "status": "gap",
+   "source": "spec/structural"
   }
  ]
 }

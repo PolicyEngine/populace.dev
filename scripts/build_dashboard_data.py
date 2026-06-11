@@ -52,6 +52,45 @@ def family_of(name: str) -> str:
     return name
 
 
+WORKTREE = Path("/Users/maxghenis/.claude-worktrees/microplex-spec-build")
+
+
+def _parse_list(src: str, name: str) -> set[str]:
+    """Extract quoted strings from a `NAME = (...)` or `NAME = [...]` block."""
+    import re
+
+    m = re.search(rf"{name}\s*[:=].*?[\(\[{{](.*?)[\)\]}}]", src, re.S)
+    if not m:
+        return set()
+    return set(re.findall(r'"([a-z0-9_]+)"', m.group(1)))
+
+
+def build_source_map() -> dict[str, str]:
+    """Variable -> source family, parsed from the build scripts (never typed)."""
+    import re
+
+    driver = (WORKTREE / "scripts" / "build_us_candidate.py").read_text()
+    donor = (WORKTREE / "scripts" / "ecps_donor_impute.py").read_text()
+    src_map: dict[str, str] = {}
+    # CPS-derived: p["..."] assignments in _derive_person_columns + tenure map.
+    body = driver.split("def _derive_person_columns", 1)[-1].split("\ndef ", 1)[0]
+    for var in re.findall(r'p\["([a-z0-9_]+)"\]', body):
+        src_map[var] = "cps-derived"
+    src_map["tenure_type"] = "cps-derived"
+    for var in _parse_list(driver, "PERSON_INCOME_COLUMNS"):
+        src_map[var] = "cps-carried"
+    donor_to_pe = dict(
+        re.findall(r'"([a-z0-9_]+)":\s*"([a-z0-9_]+)"', driver.split("DONOR_TO_PE", 1)[-1].split("}", 1)[0])
+    )
+    for var in _parse_list(driver, "PUF_IMPUTE_VARS"):
+        src_map[donor_to_pe.get(var, var)] = "puf-imputed"
+    for var in _parse_list(donor, "PERSON_TARGETS") | _parse_list(donor, "HOUSEHOLD_TARGETS"):
+        src_map[var] = "ecps-donor-imputed"
+    for var in _parse_list(driver, "V1_ZERO_DEFAULTS"):
+        src_map.setdefault(var, "zero-default")
+    return src_map
+
+
 def _profile_flat(path):
     """Per-variable (entity_n, fill, weighted_total) from a flat h5."""
     import h5py
@@ -87,6 +126,7 @@ def build_lineage():
     """Variable-level lineage: populace vs eCPS fill and weighted totals."""
     pop = _profile_flat(POP_TP)
     ecps = _profile_flat(ECPS)
+    sources = build_source_map()
     rows = []
     for var in sorted(set(pop) | set(ecps)):
         if var.endswith("_id") or "weight" in var:
@@ -108,6 +148,7 @@ def build_lineage():
                 "ecps_fill": round(e_fill, 4) if e_fill is not None else None,
                 "ecps_total_B": round((e_wt or 0) / 1e9, 2) if e_wt is not None else None,
                 "status": status,
+                "source": sources.get(var, "spec/structural"),
             }
         )
     rows.sort(key=lambda r: -abs(r["ecps_total_B"] or 0))
