@@ -22,6 +22,9 @@
       const run = rows?.[0];
       const st = run?.build_events?.[0]?.status;
       if (!st) return;
+      // runs.state is the authoritative lifecycle (closed by the reporter,
+      // swept if a chain crashes); the event supplies step-level detail.
+      if (run.state) st.state = run.state;
       if (run.git_sha) st.run = `${st.run} @ ${run.git_sha}`;
       const box = document.getElementById("db-live");
       if (!box) return;
