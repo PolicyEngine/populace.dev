@@ -20,7 +20,7 @@ from pathlib import Path
 import numpy as np
 
 ART = Path("/Users/maxghenis/.claude-worktrees/microplex-spec-build/artifacts")
-SCORE_JSON = Path.home() / "populace-score-work" / "score_out_v2" / (
+SCORE_JSON = Path.home() / "populace-score-work" / "score_out" / (
     "sound_ecps_replacement_comparison.json"
 )
 RELEASE = "us-2024-20260611"
@@ -70,7 +70,7 @@ def build_source_map() -> dict[str, str]:
     import re
 
     driver = (WORKTREE / "scripts" / "build_us_candidate.py").read_text()
-    donor = (WORKTREE / "scripts" / "ecps_donor_impute.py").read_text()
+    donor = (WORKTREE / "scripts" / "primary_source_impute.py").read_text()
     src_map: dict[str, str] = {}
     # CPS-derived: p["..."] assignments in _derive_person_columns + tenure map.
     body = driver.split("def _derive_person_columns", 1)[-1].split("\ndef ", 1)[0]
@@ -156,7 +156,7 @@ def build_lineage():
 
 
 def main() -> None:
-    surf = np.load(ART / "v2_target_surface_raw.npz", allow_pickle=True)
+    surf = np.load(ART / "target_surface_raw.npz", allow_pickle=True)
     A = surf["A"].astype(np.float64)
     b = surf["b"].astype(np.float64)
     w0 = surf["w0"].astype(np.float64)
@@ -173,7 +173,7 @@ def main() -> None:
     # the engine's own loader rather than poking at the pytables layout.
     from policyengine_us.data import USSingleYearDataset
 
-    ds = USSingleYearDataset(file_path=str(ART / "populace_us_2024_v2.h5"))
+    ds = USSingleYearDataset(file_path=str(ART / "populace_us_2024.h5"))
     n_persons = len(ds.person)
     n_households = len(ds.household)
     assert n_households == len(bounded)
