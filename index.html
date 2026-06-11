@@ -128,37 +128,39 @@
       <p>
         PolicyEngine's enhanced Current Population Survey is the microdata behind
         millions of US policy calculations. The published populace-US release —
-        generated from a declarative spec, with full variable parity against the
-        incumbent — <strong>beats it on training, held-out, and full-surface
+        built <strong>entirely from primary sources</strong> (the incumbent is
+        the benchmark, never an input), with full variable parity —
+        <strong>beats it on training, held-out, and full-surface
         loss</strong> in the matched-sample, symmetric-refit comparison.
       </p>
     </div>
     <div class="metrics">
       <div class="metric">
         <span class="metric-label mono">training loss</span>
-        <span class="metric-val">0.13<span class="metric-vs">vs 1.09</span></span>
+        <span class="metric-val">0.19<span class="metric-vs">vs 1.09</span></span>
         <span class="metric-note">lower is better</span>
       </div>
       <div class="metric">
         <span class="metric-label mono">held-out loss</span>
-        <span class="metric-val">0.03<span class="metric-vs">vs 0.32</span></span>
+        <span class="metric-val">0.04<span class="metric-vs">vs 0.32</span></span>
         <span class="metric-note">739 unseen targets</span>
       </div>
       <div class="metric">
         <span class="metric-label mono">full-surface loss</span>
-        <span class="metric-val">0.16<span class="metric-vs">vs 1.41</span></span>
+        <span class="metric-val">0.23<span class="metric-vs">vs 1.41</span></span>
         <span class="metric-note">all 3,704 targets</span>
       </div>
     </div>
     <p class="caveat">
-      <span class="mono">build populace-us-2024-1abddeb · 2026-06-11 · matched 41,314 households, symmetric refit.</span>
-      Per individual target the incumbent still wins more often (2,484 of 3,704
-      to our 1,168) — we win big where we win and lose narrowly where we lose.
-      Short-term capital gains over-weight large losses, and several layers are
-      imputed from models trained on the incumbent itself; every gap is itemized
-      on the <a href="/dashboard">observatory</a>. The two populations share an
-      open-source unit-construction engine, so this measures synthesis quality on
-      a partly shared scaffold. We report the gaps, not just the wins.
+      <span class="mono">build populace-us-2024-9f1260b · 2026-06-11 · matched 41,314 households, symmetric refit.</span>
+      Per individual target the incumbent still wins more often (2,613 of 3,704
+      to our 1,040) — we win big where we win and lose narrowly where we lose.
+      Net short-term capital gains land on the signed PUF-anchored target
+      (−$77.5B), and every donor is a primary survey; every remaining gap is
+      itemized on the <a href="/dashboard">observatory</a>. The two populations
+      share an open-source unit-construction engine, so this measures synthesis
+      quality on a partly shared scaffold. We report the gaps, not just the
+      wins.
     </p>
   </section>
 

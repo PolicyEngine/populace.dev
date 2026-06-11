@@ -23,14 +23,14 @@ ART = Path("/Users/maxghenis/.claude-worktrees/microplex-spec-build/artifacts")
 SCORE_JSON = Path.home() / "populace-score-work" / "score_out" / (
     "sound_ecps_replacement_comparison.json"
 )
-RELEASE = "us-2024-20260611"
+RELEASE = "populace-us-2024-9f1260b-20260611"
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 OUT = DATA_DIR / "calibration.json"  # alias of the latest release
 ECPS = Path(
     "/Users/maxghenis/CosilicoAI/microplex-us/artifacts/baselines/"
     "enhanced_cps_2024_hf_main.h5"
 )
-POP_TP = ART / "populace_us_2024_v2_timeperiod.h5"
+POP_TP = ART / "populace_us_2024_timeperiod.h5"
 
 
 def loss_and_hits(A: np.ndarray, b: np.ndarray, w: np.ndarray):
@@ -162,12 +162,17 @@ def main() -> None:
     w0 = surf["w0"].astype(np.float64)
     names = [str(x) for x in surf["names"]]
 
-    bounded = np.load(ART / "populace_us_2024_v2_calibration.npz")["calibrated_weights"].astype(np.float64)
+    bounded = np.load(ART / "populace_us_2024_calibration.npz")["calibrated_weights"].astype(np.float64)
     # v2 was calibrated bounded from the start; the unbounded cautionary row
     # is the preserved v1 experiment (same pool family, same surface design).
-    unbounded = np.load(ART / "populace_us_2024_calibration_unbounded.npz")[
-        "calibrated_weights"
-    ].astype(np.float64)
+    # The unbounded cautionary run was a v2-era experiment; later builds are
+    # bounded from birth and ship no unbounded twin.
+    unbounded_path = ART / "populace_us_2024_calibration_unbounded.npz"
+    unbounded = (
+        np.load(unbounded_path)["calibrated_weights"].astype(np.float64)
+        if unbounded_path.exists()
+        else np.array([])
+    )
 
     # The artifact is a pandas-HDF5 USSingleYearDataset; count rows through
     # the engine's own loader rather than poking at the pytables layout.
