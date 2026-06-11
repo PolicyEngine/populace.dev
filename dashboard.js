@@ -203,7 +203,7 @@
     document.getElementById("db-sources-diagram").innerHTML = p.join("");
     document.getElementById("db-sources-note").textContent =
       "Variable counts are live from this release's lineage table. The dashed " +
-      "block is the v2 transitional donor — the in-flight build replaces it " +
+      "block is the transitional donor — the in-flight build replaces it " +
       "with the primary surveys listed inside it, after which the enhanced " +
       "CPS appears only as the benchmark being measured against. Calibration " +
       "targets adjust weights only; no target value is ever written into a record.";
