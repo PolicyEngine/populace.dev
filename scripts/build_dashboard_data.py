@@ -23,7 +23,7 @@ ART = Path("/Users/maxghenis/.claude-worktrees/microplex-spec-build/artifacts")
 SCORE_JSON = Path.home() / "populace-score-work" / "score_out" / (
     "sound_ecps_replacement_comparison.json"
 )
-RELEASE = "populace-us-2024-9f1260b-20260611"
+RELEASE = "populace-us-2024-5da5a95-20260611"
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 OUT = DATA_DIR / "calibration.json"  # alias of the latest release
 ECPS = Path(
@@ -70,7 +70,7 @@ def build_source_map() -> dict[str, str]:
     import re
 
     driver = (WORKTREE / "scripts" / "build_us_candidate.py").read_text()
-    donor = (WORKTREE / "scripts" / "primary_source_impute.py").read_text()
+    donor = (Path.home() / "PolicyEngine/populace/packages/populace-build/src/populace/build/us/sources.py").read_text()
     src_map: dict[str, str] = {}
     # CPS-derived: p["..."] assignments in _derive_person_columns + tenure map.
     body = driver.split("def _derive_person_columns", 1)[-1].split("\ndef ", 1)[0]
