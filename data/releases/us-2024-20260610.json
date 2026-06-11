@@ -1628,7 +1628,7 @@
    "note": "Hugging Face artifact + populace.data registry entry"
   }
  ],
- "release": "us-2024-v1",
+ "release": "us-2024-20260610",
  "lineage": [
   {
    "variable": "net_worth",

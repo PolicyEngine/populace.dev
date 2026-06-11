@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-06-11 06:01 UTC",
+ "generated_at": "2026-06-11 06:23 UTC",
  "headline": {
   "n_targets": 3704,
   "n_households": 75112,
@@ -1620,7 +1620,7 @@
    "note": "Hugging Face artifact + populace.data registry entry"
   }
  ],
- "release": "us-2024-v2",
+ "release": "us-2024-20260611",
  "lineage": [
   {
    "variable": "net_worth",

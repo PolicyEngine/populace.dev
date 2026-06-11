@@ -23,7 +23,7 @@ ART = Path("/Users/maxghenis/.claude-worktrees/microplex-spec-build/artifacts")
 SCORE_JSON = Path.home() / "populace-score-work" / "score_out_v2" / (
     "sound_ecps_replacement_comparison.json"
 )
-RELEASE = "us-2024-v2"
+RELEASE = "us-2024-20260611"
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 OUT = DATA_DIR / "calibration.json"  # alias of the latest release
 ECPS = Path(
