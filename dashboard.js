@@ -156,6 +156,59 @@
     wrow(`calibrated, shipped (${h.max_weight_ratio}× cap)`, d.weights.bounded)
   );
 
+  // --- sources diagram -------------------------------------------------------
+  (() => {
+    const counts = {};
+    for (const r of d.lineage || [])
+      counts[r.source] = (counts[r.source] || 0) + 1;
+    const SOURCES = [
+      { name: "Census CPS ASEC 2023", note: "household structure · demographics · incomes · benefits · tenure · hours · occupation · retirement contributions · childcare", keys: ["cps-carried", "cps-derived"], cls: "primary" },
+      { name: "IRS SOI Public Use File 2015 (uprated)", note: "tax detail: capital gains · dividends · interest · deduction inputs · pass-through · estates", keys: ["puf-imputed"], cls: "primary" },
+      { name: "Census block crosswalk", note: "geography: state · county · tract · block · congressional district", keys: [], cls: "primary" },
+      { name: "enhanced CPS (transitional donor)", note: "wealth · mortgages · vehicles · premiums · tips · hourly wage · prior-year income — being re-sourced to: Fed SCF 2022 · Census ACS · CPS-ORG · SIPP · MEPS-IC parameters", keys: ["ecps-donor-imputed"], cls: "transitional" },
+      { name: "Spec + microunit structure", note: "tax units · SPM units · families · marital units · clone strata", keys: ["spec/structural"], cls: "primary" },
+    ];
+    const TARGETS = { name: "IRS SOI · Census · program administrative totals", note: (d.headline.n_targets || 3704).toLocaleString() + " calibration targets (weights only — never values)" };
+    const W = 980, ROW = 86, H = SOURCES.length * ROW + 40;
+    const sx = 10, sw = 380, mx = 520, mw = 200, tx = 790, tw = 180;
+    const midY = H / 2 - 20;
+    let p = [];
+    p.push(`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;font-family:var(--mono);">`);
+    SOURCES.forEach((srcDef, i) => {
+      const y = 16 + i * ROW;
+      const n = srcDef.keys.reduce((a, k) => a + (counts[k] || 0), 0);
+      const stroke = srcDef.cls === "transitional" ? "var(--amber)" : "var(--line)";
+      const dash = srcDef.cls === "transitional" ? ' stroke-dasharray="5,4"' : "";
+      p.push(`<rect x="${sx}" y="${y}" width="${sw}" height="${ROW - 18}" rx="6" fill="var(--ink-2)" stroke="${stroke}"${dash}/>`);
+      p.push(`<text x="${sx + 14}" y="${y + 22}" fill="var(--paper)" font-size="13">${srcDef.name}${n ? ` · ${n} vars` : ""}</text>`);
+      const words = srcDef.note.split(" ");
+      let line = "", lines = [];
+      for (const w2 of words) { if ((line + w2).length > 58) { lines.push(line); line = ""; } line += w2 + " "; }
+      lines.push(line);
+      lines.slice(0, 3).forEach((ln, k) =>
+        p.push(`<text x="${sx + 14}" y="${y + 38 + k * 13}" fill="var(--paper-faint)" font-size="10.5">${ln.trim()}</text>`));
+      p.push(`<path d="M ${sx + sw} ${y + (ROW - 18) / 2} C ${sx + sw + 60} ${y + (ROW - 18) / 2}, ${mx - 60} ${midY}, ${mx} ${midY}" fill="none" stroke="${srcDef.cls === "transitional" ? "var(--amber-soft)" : "var(--paper-faint)"}" stroke-opacity="0.55"${dash}/>`);
+    });
+    p.push(`<rect x="${mx}" y="${midY - 34}" width="${mw}" height="68" rx="6" fill="var(--ink-2)" stroke="var(--amber-soft)"/>`);
+    p.push(`<text x="${mx + mw / 2}" y="${midY - 8}" text-anchor="middle" fill="var(--paper)" font-size="13">populace-us 2024</text>`);
+    p.push(`<text x="${mx + mw / 2}" y="${midY + 10}" text-anchor="middle" fill="var(--paper-faint)" font-size="10.5">${(d.headline.n_households || 0).toLocaleString()} households</text>`);
+    p.push(`<text x="${mx + mw / 2}" y="${midY + 24}" text-anchor="middle" fill="var(--paper-faint)" font-size="10.5">${compact(d.headline.weighted_persons)} people represented</text>`);
+    p.push(`<path d="M ${mx + mw} ${midY} L ${tx} ${midY}" stroke="var(--paper-faint)" stroke-opacity="0.55"/>`);
+    p.push(`<rect x="${tx}" y="${midY - 34}" width="${tw}" height="68" rx="6" fill="var(--ink-2)" stroke="var(--line)"/>`);
+    p.push(`<text x="${tx + tw / 2}" y="${midY - 8}" text-anchor="middle" fill="var(--paper)" font-size="12">calibration</text>`);
+    const tWords = TARGETS.name.split(" · ");
+    tWords.forEach((tword, k) =>
+      p.push(`<text x="${tx + tw / 2}" y="${midY + 8 + k * 12}" text-anchor="middle" fill="var(--paper-faint)" font-size="9.5">${tword}</text>`));
+    p.push("</svg>");
+    document.getElementById("db-sources-diagram").innerHTML = p.join("");
+    document.getElementById("db-sources-note").textContent =
+      "Variable counts are live from this release's lineage table. The dashed " +
+      "block is the v2 transitional donor — the in-flight build replaces it " +
+      "with the primary surveys listed inside it, after which the enhanced " +
+      "CPS appears only as the benchmark being measured against. Calibration " +
+      "targets adjust weights only; no target value is ever written into a record.";
+  })();
+
   // --- lineage -------------------------------------------------------------
   const rel = document.getElementById("db-release");
   rel.textContent = "release " + (d.release || "—") + " · " + d.generated_at + "  ";
