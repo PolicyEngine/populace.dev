@@ -6,18 +6,23 @@
   // Reads the latest machine-appended build_events row (PolicyEngine populace
   // Supabase; RLS exposes read-only SELECT to this publishable key) while a
   // chain runs; hides itself when there is no fresh status.
-  const LIVE_URL = "https://pgrhxxhiyqgngoffwden.supabase.co/rest/v1/build_events";
+  const LIVE_URL = "https://pgrhxxhiyqgngoffwden.supabase.co/rest/v1/runs";
   const LIVE_KEY = "sb_publishable_MmKzCHmEgOQNFlvj_RqZxQ_gPWRkrGh";
   async function pollLive() {
     try {
       const res = await fetch(
-        `${LIVE_URL}?select=status&order=created_at.desc&limit=1`,
+        `${LIVE_URL}?select=label,state,git_sha,started_at,` +
+          `build_events(status,created_at)` +
+          `&order=started_at.desc&limit=1` +
+          `&build_events.order=created_at.desc&build_events.limit=1`,
         { headers: { apikey: LIVE_KEY, Authorization: `Bearer ${LIVE_KEY}` } }
       );
       if (!res.ok) return;
       const rows = await res.json();
-      const st = rows?.[0]?.status;
+      const run = rows?.[0];
+      const st = run?.build_events?.[0]?.status;
       if (!st) return;
+      if (run.git_sha) st.run = `${st.run} @ ${run.git_sha}`;
       const box = document.getElementById("db-live");
       if (!box) return;
       const ageMin = (Date.now() - Date.parse(st.updated_at)) / 60000;
