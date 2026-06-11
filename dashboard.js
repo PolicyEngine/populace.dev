@@ -234,7 +234,11 @@
       { name: "Census CPS ASEC 2023", note: "household structure · demographics · incomes · benefits · tenure · hours · occupation · retirement contributions · childcare", keys: ["cps-carried", "cps-derived"], cls: "primary" },
       { name: "IRS SOI Public Use File 2015 (uprated)", note: "tax detail: capital gains · dividends · interest · deduction inputs · pass-through · estates", keys: ["puf-imputed"], cls: "primary" },
       { name: "Census block crosswalk", note: "geography: state · county · tract · block · congressional district", keys: [], cls: "primary" },
-      { name: "enhanced CPS (transitional donor)", note: "wealth · mortgages · vehicles · premiums · tips · hourly wage · prior-year income — being re-sourced to: Fed SCF 2022 · Census ACS · CPS-ORG · SIPP · MEPS-IC parameters", keys: ["ecps-donor-imputed"], cls: "transitional" },
+      { name: "Fed SCF 2022", note: "wealth: accounts · stocks · bonds · debts · net worth · mortgage balance hints", keys: ["scf-imputed"], cls: "primary" },
+      { name: "Census SIPP", note: "tip income for tipped occupations · household vehicles (count + value)", keys: ["sipp-imputed"], cls: "primary" },
+      { name: "CPS-ORG", note: "hourly wage · paid-hourly status · union coverage", keys: ["org-imputed"], cls: "primary" },
+      { name: "MEPS-IC parameters", note: "employer-sponsored insurance premiums", keys: ["meps-imputed"], cls: "primary" },
+      { name: "Census ACS 2022", note: "rent for renter households", keys: ["acs-imputed"], cls: "primary" },
       { name: "Spec + microunit structure", note: "tax units · SPM units · families · marital units · clone strata", keys: ["spec/structural"], cls: "primary" },
     ];
     const TARGETS = { name: "IRS SOI · Census · program administrative totals", note: (d.headline.n_targets || 3704).toLocaleString() + " calibration targets (weights only — never values)" };
@@ -272,10 +276,10 @@
     document.getElementById("db-sources-diagram").innerHTML = p.join("");
     document.getElementById("db-sources-note").textContent =
       "Variable counts are live from this release's lineage table. The dashed " +
-      "block is the transitional donor — the in-flight build replaces it " +
-      "with the primary surveys listed inside it, after which the enhanced " +
-      "CPS appears only as the benchmark being measured against. Calibration " +
-      "targets adjust weights only; no target value is ever written into a record.";
+      "Every donor is a primary survey; the enhanced CPS appears only as " +
+      "the benchmark the finished dataset is scored against, never as a " +
+      "build input. Calibration targets adjust weights only; no target " +
+      "value is ever written into a record.";
   })();
 
   // --- lineage -------------------------------------------------------------
