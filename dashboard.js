@@ -150,7 +150,8 @@
     return tr;
   };
   wt.append(wrow("design (input)", d.weights.design));
-  wt.append(wrow("calibrated, unbounded", d.weights.unbounded, true));
+  if (d.weights.unbounded)
+    wt.append(wrow("calibrated, unbounded", d.weights.unbounded, true));
   wt.append(
     wrow(`calibrated, shipped (${h.max_weight_ratio}× cap)`, d.weights.bounded)
   );

@@ -20,17 +20,17 @@ from pathlib import Path
 import numpy as np
 
 ART = Path("/Users/maxghenis/.claude-worktrees/microplex-spec-build/artifacts")
-SCORE_JSON = Path.home() / "populace-score-work" / "score_out" / (
+SCORE_JSON = Path.home() / "populace-score-work" / "score_out_v2" / (
     "sound_ecps_replacement_comparison.json"
 )
-RELEASE = "us-2024-v1"
+RELEASE = "us-2024-v2"
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 OUT = DATA_DIR / "calibration.json"  # alias of the latest release
 ECPS = Path(
     "/Users/maxghenis/CosilicoAI/microplex-us/artifacts/baselines/"
     "enhanced_cps_2024_hf_main.h5"
 )
-POP_TP = ART / "populace_us_2024_timeperiod.h5"
+POP_TP = ART / "populace_us_2024_v2_timeperiod.h5"
 
 
 def loss_and_hits(A: np.ndarray, b: np.ndarray, w: np.ndarray):
@@ -156,13 +156,15 @@ def build_lineage():
 
 
 def main() -> None:
-    surf = np.load(ART / "v5_target_surface_raw.npz", allow_pickle=True)
+    surf = np.load(ART / "v2_target_surface_raw.npz", allow_pickle=True)
     A = surf["A"].astype(np.float64)
     b = surf["b"].astype(np.float64)
     w0 = surf["w0"].astype(np.float64)
     names = [str(x) for x in surf["names"]]
 
-    bounded = np.load(ART / "bounded_recal_w_ratio50.npy").astype(np.float64)
+    bounded = np.load(ART / "populace_us_2024_v2_calibration.npz")["calibrated_weights"].astype(np.float64)
+    # v2 was calibrated bounded from the start; the unbounded cautionary row
+    # is the preserved v1 experiment (same pool family, same surface design).
     unbounded = np.load(ART / "populace_us_2024_calibration_unbounded.npz")[
         "calibrated_weights"
     ].astype(np.float64)
@@ -171,7 +173,7 @@ def main() -> None:
     # the engine's own loader rather than poking at the pytables layout.
     from policyengine_us.data import USSingleYearDataset
 
-    ds = USSingleYearDataset(file_path=str(ART / "populace_us_2024.h5"))
+    ds = USSingleYearDataset(file_path=str(ART / "populace_us_2024_v2.h5"))
     n_persons = len(ds.person)
     n_households = len(ds.household)
     assert n_households == len(bounded)
@@ -186,7 +188,12 @@ def main() -> None:
 
     _, loss0, within0, _ = loss_and_hits(A, b, w0)
     est, loss, within, abs_rel = loss_and_hits(A, b, bounded)
-    _, loss_unb, within_unb, _ = loss_and_hits(A, b, unbounded)
+    # The preserved unbounded run belongs to the v1 pool; it only evaluates
+    # on a surface of matching size.
+    if len(unbounded) == len(w0):
+        _, loss_unb, within_unb, _ = loss_and_hits(A, b, unbounded)
+    else:
+        loss_unb, within_unb = None, None
 
     # Per-family fit, sorted by target count.
     families: dict[str, dict] = {}
@@ -276,13 +283,19 @@ def main() -> None:
             "loss_final": round(loss, 4),
             "within10_initial": round(float(within0.mean()), 4),
             "within10_final": round(float(within.mean()), 4),
-            "within10_unbounded": round(float(within_unb.mean()), 4),
-            "loss_unbounded": round(loss_unb, 4),
+            "within10_unbounded": (
+                round(float(within_unb.mean()), 4) if within_unb is not None else None
+            ),
+            "loss_unbounded": round(loss_unb, 4) if loss_unb is not None else None,
             "max_weight_ratio": 50,
         },
         "weights": {
             "design": wstats(w0),
-            "unbounded": wstats(unbounded),
+            **(
+                {"unbounded": wstats(unbounded)}
+                if len(unbounded) == len(w0)
+                else {}
+            ),
             "bounded": wstats(bounded),
         },
         "histogram": {"labels": labels, "counts": hist},

@@ -127,38 +127,38 @@
     <div class="prose">
       <p>
         PolicyEngine's enhanced Current Population Survey is the microdata behind
-        millions of US policy calculations. In first end-to-end benchmarks, a
-        populace-built US population — generated purely from a declarative spec —
-        <strong>matched or improved on it</strong> across the broad calibration
-        target surface, scored by a matched-sample, symmetric-refit comparison on
-        held-out targets.
+        millions of US policy calculations. The published populace-US release —
+        generated from a declarative spec, with full variable parity against the
+        incumbent — <strong>beats it on training, held-out, and full-surface
+        loss</strong> in the matched-sample, symmetric-refit comparison.
       </p>
     </div>
     <div class="metrics">
       <div class="metric">
-        <span class="metric-label mono">broad loss</span>
-        <span class="metric-val">1.26<span class="metric-vs">vs 1.41</span></span>
+        <span class="metric-label mono">training loss</span>
+        <span class="metric-val">0.13<span class="metric-vs">vs 1.09</span></span>
         <span class="metric-note">lower is better</span>
       </div>
       <div class="metric">
         <span class="metric-label mono">held-out loss</span>
-        <span class="metric-val">0.22<span class="metric-vs">vs 0.32</span></span>
-        <span class="metric-note">unseen targets</span>
+        <span class="metric-val">0.03<span class="metric-vs">vs 0.32</span></span>
+        <span class="metric-note">739 unseen targets</span>
       </div>
       <div class="metric">
-        <span class="metric-label mono">mean sq. rel. error</span>
-        <span class="metric-val">1.04<span class="metric-vs">vs 1.32</span></span>
-        <span class="metric-note">across ~3,700 targets</span>
+        <span class="metric-label mono">full-surface loss</span>
+        <span class="metric-val">0.16<span class="metric-vs">vs 1.41</span></span>
+        <span class="metric-note">all 3,704 targets</span>
       </div>
     </div>
     <p class="caveat">
-      <span class="mono">preliminary · 2026-06 · matched 41,314 households, symmetric refit.</span>
-      Two tail-concentrated families (capital gains, dividends) remain weaker than
-      the incumbent — a known limit of pool resolution that the calibration roadmap
-      targets directly. The two populations also share an open-source
-      unit-construction engine, so this measures synthesis quality on a partly
-      shared scaffold — near-parity, not an independent system beating the
-      incumbent outright. We report the gaps, not just the wins.
+      <span class="mono">release us-2024-v2 · 2026-06 · matched 41,314 households, symmetric refit.</span>
+      Per individual target the incumbent still wins more often (2,484 of 3,704
+      to our 1,168) — we win big where we win and lose narrowly where we lose.
+      Short-term capital gains over-weight large losses, and several layers are
+      imputed from models trained on the incumbent itself; every gap is itemized
+      on the <a href="/dashboard">observatory</a>. The two populations share an
+      open-source unit-construction engine, so this measures synthesis quality on
+      a partly shared scaffold. We report the gaps, not just the wins.
     </p>
   </section>
 
