@@ -1,17 +1,24 @@
 :root {
-  --ink: #0b0e13;
-  --ink-2: #11151c;
-  --paper: #ece3d4;
-  --paper-dim: #a8a193;
-  --paper-faint: #6f6b61;
-  --amber: #f0a23a;
-  --amber-soft: #f6c887;
-  --line: rgba(236, 227, 212, 0.12);
-  --line-soft: rgba(236, 227, 212, 0.07);
+  /* populace.dev adopts the Thesis Design system (Clear Horizon, dark mode).
+     The shared tokens load from thesis-design/tokens.css via <link> in the
+     page head, with <html data-theme="dark">. The site's original local
+     names are aliased onto the shared tokens here, so the existing
+     component CSS keeps working unchanged. */
+  --ink: var(--canvas); /* page background */
+  --ink-2: var(--section); /* raised surface (cards) — --section, not --paper:
+     the line below shadows thesis's own --paper with the local text color,
+     so cards must reference the non-colliding raised-surface token. */
+  --paper: var(--text-primary); /* primary text */
+  --paper-dim: var(--text-secondary);
+  --paper-faint: var(--text-tertiary);
+  --amber: var(--accent); /* accent → Clear Horizon rose */
+  --amber-soft: var(--accent-hover);
+  --line: var(--border-strong);
+  --line-soft: var(--border-soft);
+  --display: var(--font-display); /* Newsreader */
+  --body: var(--font-body); /* IBM Plex Sans */
+  --mono: var(--font-mono); /* IBM Plex Mono */
   --max: 1140px;
-  --display: "Fraunces", Georgia, serif;
-  --body: "Newsreader", Georgia, serif;
-  --mono: "IBM Plex Mono", ui-monospace, monospace;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
