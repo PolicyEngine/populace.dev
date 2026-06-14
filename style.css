@@ -113,7 +113,8 @@ body::before {
   transition: color 0.25s;
 }
 .nav-links a:hover { color: var(--amber-soft); }
-.nav-gh { color: var(--paper) !important; }
+.nav-gh { color: var(--paper) !important; display: inline-flex; align-items: center; }
+.nav-gh svg { width: 18px; height: 18px; display: block; }
 .nav-links a:not(.nav-gh) { display: none; }
 
 @media (min-width: 760px) {
