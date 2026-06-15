@@ -52,6 +52,15 @@ def family_of(name: str) -> str:
     return name
 
 
+def compact_float(value: float) -> float:
+    """Round large target values enough for web display without stringifying."""
+    if not np.isfinite(value):
+        return float(value)
+    if value == 0:
+        return 0.0
+    return float(f"{value:.6g}")
+
+
 WORKTREE = Path("/Users/maxghenis/.claude-worktrees/microplex-spec-build")
 
 
@@ -239,6 +248,21 @@ def main() -> None:
         }
         for i in worst_idx
     ]
+    targets = sorted(
+        (
+            {
+                "name": names[i],
+                "family": fams[i],
+                "target": compact_float(float(b[i])),
+                "estimate": compact_float(float(est[i])),
+                "signed_rel_err": round(float((est[i] - b[i]) / (b[i] + 1.0)), 6),
+                "abs_rel_err": round(float(abs_rel[i]), 6),
+                "within10": bool(within[i]),
+            }
+            for i in range(len(names))
+        ),
+        key=lambda row: -row["abs_rel_err"],
+    )
 
     def wstats(w: np.ndarray) -> dict:
         return {
@@ -306,6 +330,7 @@ def main() -> None:
         "histogram": {"labels": labels, "counts": hist},
         "families": family_rows,
         "worst": worst,
+        "targets": targets,
         "score": score,
         "stages": [
             {
