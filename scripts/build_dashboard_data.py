@@ -13,6 +13,7 @@ Run with any python that has numpy + h5py:
 from __future__ import annotations
 
 import json
+import re
 import time
 from pathlib import Path
 
@@ -43,13 +44,93 @@ def loss_and_hits(A: np.ndarray, b: np.ndarray, w: np.ndarray):
     return est, loss, within, abs_rel
 
 
-def family_of(name: str) -> str:
+#: 2-letter postal codes that appear as the trailing geography of a state row.
+_STATE_ABBRS = {
+    "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID",
+    "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO",
+    "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA",
+    "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY", "US",
+}
+_FIPS_TO_ABBR = {
+    "01": "AL", "02": "AK", "04": "AZ", "05": "AR", "06": "CA", "08": "CO",
+    "09": "CT", "10": "DE", "11": "DC", "12": "FL", "13": "GA", "15": "HI",
+    "16": "ID", "17": "IL", "18": "IN", "19": "IA", "20": "KS", "21": "KY",
+    "22": "LA", "23": "ME", "24": "MD", "25": "MA", "26": "MI", "27": "MN",
+    "28": "MS", "29": "MO", "30": "MT", "31": "NE", "32": "NV", "33": "NH",
+    "34": "NJ", "35": "NM", "36": "NY", "37": "NC", "38": "ND", "39": "OH",
+    "40": "OK", "41": "OR", "42": "PA", "44": "RI", "45": "SC", "46": "SD",
+    "47": "TN", "48": "TX", "49": "UT", "50": "VT", "51": "VA", "53": "WA",
+    "54": "WV", "55": "WI", "56": "WY",
+}
+
+
+def parse_target(name: str) -> dict[str, str]:
+    """Decompose a target row into structured criteria.
+
+    The surface persists targets as slash-joined strings under three
+    conventions (``state/<source>/<variable>/<ABBR>``,
+    ``nation/<source>/<variable>[/<dims>]``, ``US<fips>/<metric>``). This
+    reconstructs the geography / source / variable / breakdown fields so the
+    page never displays the raw slash string. The durable fix is for the
+    surface to carry these as real columns (the registry already knows them).
+    """
     parts = name.split("/")
-    if len(parts) >= 3 and parts[0] == "nation":
-        return f"{parts[1]} · {parts[2]}"
-    if len(parts) >= 2:
-        return f"{parts[0]} · {parts[1]}"
-    return name
+    p0 = parts[0]
+    fips = re.match(r"^US(\d{2})$", p0)
+    if fips:
+        return {
+            "geography": _FIPS_TO_ABBR.get(fips.group(1), p0),
+            "level": "state",
+            "source": "admin",
+            "variable": parts[1] if len(parts) > 1 else "",
+            "breakdown": " · ".join(parts[2:]),
+        }
+    if p0 == "state":
+        if len(parts) >= 4 and parts[-1] in _STATE_ABBRS:
+            return {
+                "geography": parts[-1],
+                "level": "state",
+                "source": parts[1],
+                "variable": parts[2],
+                "breakdown": " · ".join(parts[3:-1]),
+            }
+        return {
+            "geography": "state",
+            "level": "state",
+            "source": parts[1] if len(parts) > 1 else "",
+            "variable": parts[2] if len(parts) > 2 else "",
+            "breakdown": " · ".join(parts[3:]),
+        }
+    if p0 in ("nation", "national", "us"):
+        return {
+            "geography": "United States",
+            "level": "national",
+            "source": parts[1] if len(parts) > 1 else "",
+            "variable": parts[2] if len(parts) > 2 else "",
+            "breakdown": " · ".join(parts[3:]),
+        }
+    return {
+        "geography": "",
+        "level": "",
+        "source": parts[0],
+        "variable": parts[1] if len(parts) > 1 else "",
+        "breakdown": " · ".join(parts[2:]),
+    }
+
+
+def family_of(name: str) -> str:
+    """Group key for the by-family view: source and variable."""
+    p = parse_target(name)
+    return " · ".join(x for x in (p["source"], p["variable"]) if x) or name
+
+
+def compact_float(value: float) -> float:
+    """Round large target values enough for web display without stringifying."""
+    if not np.isfinite(value):
+        return float(value)
+    if value == 0:
+        return 0.0
+    return float(f"{value:.6g}")
 
 
 WORKTREE = Path("/Users/maxghenis/.claude-worktrees/microplex-spec-build")
@@ -239,6 +320,21 @@ def main() -> None:
         }
         for i in worst_idx
     ]
+    targets = sorted(
+        (
+            {
+                **parse_target(names[i]),
+                "family": fams[i],
+                "target": compact_float(float(b[i])),
+                "estimate": compact_float(float(est[i])),
+                "signed_rel_err": round(float((est[i] - b[i]) / (b[i] + 1.0)), 6),
+                "abs_rel_err": round(float(abs_rel[i]), 6),
+                "within10": bool(within[i]),
+            }
+            for i in range(len(names))
+        ),
+        key=lambda row: -row["abs_rel_err"],
+    )
 
     def wstats(w: np.ndarray) -> dict:
         return {
@@ -306,6 +402,7 @@ def main() -> None:
         "histogram": {"labels": labels, "counts": hist},
         "families": family_rows,
         "worst": worst,
+        "targets": targets,
         "score": score,
         "stages": [
             {
