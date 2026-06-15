@@ -36,11 +36,12 @@
   <section class="cal-hero">
     <div>
       <span class="kicker mono">calibration</span>
-      <h1>Target fit, without the theater.</h1>
+      <h1>Calibration target fit</h1>
       <p class="lede">
         The published population is calibrated to administrative and survey
-        target rows by changing weights only. This page shows the fit surface
-        directly: totals, families, residuals, and the targets that still miss.
+        targets by adjusting household weights only. Every target's value, the
+        calibrated estimate, and the error between them is below — keyed by
+        geography, source, and variable.
       </p>
       <p class="cal-stamp mono" id="cal-stamp">loading…</p>
     </div>
@@ -54,15 +55,15 @@
   <section class="cal-band cal-split">
     <div>
       <div class="band-head compact">
-        <span class="kicker mono">miss distribution</span>
-        <h2>Most rows are inside ten percent.</h2>
+        <span class="kicker mono">relative error</span>
+        <h2>Error distribution across targets</h2>
       </div>
       <div class="cal-bars" id="cal-hist"></div>
     </div>
     <div>
       <div class="band-head compact">
-        <span class="kicker mono">families</span>
-        <h2>Where fit is broad, and where it is thin.</h2>
+        <span class="kicker mono">by source</span>
+        <h2>Fit by source and variable</h2>
       </div>
       <div class="cal-bars" id="cal-families"></div>
     </div>
@@ -71,12 +72,12 @@
   <section class="cal-band">
     <div class="band-head compact">
       <span class="kicker mono">targets</span>
-      <h2>Every calibration row that the release publishes.</h2>
+      <h2>All target rows</h2>
     </div>
     <div class="cal-toolbar">
-      <input id="cal-search" class="mono cal-input" type="search" placeholder="search target or family…" />
-      <select id="cal-family" class="mono cal-input" aria-label="Filter by family">
-        <option value="">all families</option>
+      <input id="cal-search" class="mono cal-input" type="search" placeholder="search geography, source, or variable…" />
+      <select id="cal-family" class="mono cal-input" aria-label="Filter by source and variable">
+        <option value="">all groups</option>
       </select>
       <select id="cal-status" class="mono cal-input" aria-label="Filter by fit status">
         <option value="">all rows</option>
@@ -84,9 +85,9 @@
         <option value="miss">outside 10%</option>
       </select>
       <select id="cal-sort" class="mono cal-input" aria-label="Sort targets">
-        <option value="miss">largest miss</option>
-        <option value="name">target name</option>
-        <option value="family">family</option>
+        <option value="miss">largest error</option>
+        <option value="variable">variable</option>
+        <option value="family">source and variable</option>
       </select>
     </div>
     <p class="cal-note mono" id="cal-table-note"></p>

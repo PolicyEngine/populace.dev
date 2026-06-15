@@ -111,17 +111,14 @@
   renderBars($("cal-families"), familyRows, { title: true });
 
   const sourceTargets =
-    Array.isArray(data.targets) && data.targets.length
-      ? data.targets
-      : (data.worst || []).map((row) => ({
-          ...row,
-          family: row.name ? row.name.split("/").slice(0, 3).join(" · ") : "unknown",
-          signed_rel_err: null,
-          within10: false,
-        }));
+    Array.isArray(data.targets) && data.targets.length ? data.targets : data.worst || [];
   const targetRows = sourceTargets.map((row) => ({
-    name: row.name || "",
-    family: row.family || "unknown",
+    geography: row.geography || "",
+    source: row.source || "",
+    variable: row.variable || "",
+    breakdown: row.breakdown || "",
+    family:
+      row.family || [row.source, row.variable].filter(Boolean).join(" · ") || "—",
     target: Number(row.target),
     estimate: Number(row.estimate),
     absRelErr: Number(row.abs_rel_err || 0),
@@ -142,7 +139,8 @@
   function sortRows(rows) {
     const sort = $("cal-sort").value;
     return rows.sort((a, b) => {
-      if (sort === "name") return a.name.localeCompare(b.name);
+      if (sort === "variable")
+        return a.variable.localeCompare(b.variable) || a.geography.localeCompare(b.geography);
       if (sort === "family") return a.family.localeCompare(b.family) || b.absRelErr - a.absRelErr;
       return b.absRelErr - a.absRelErr;
     });
@@ -156,7 +154,9 @@
       if (family && row.family !== family) return false;
       if (status === "hit" && !row.within10) return false;
       if (status === "miss" && row.within10) return false;
-      if (query && !`${row.name} ${row.family}`.toLowerCase().includes(query)) return false;
+      const hay =
+        `${row.geography} ${row.source} ${row.variable} ${row.breakdown}`.toLowerCase();
+      if (query && !hay.includes(query)) return false;
       return true;
     });
     rows = sortRows(rows);
@@ -164,17 +164,26 @@
     const table = $("cal-targets");
     table.replaceChildren();
     const head = el("tr");
-    for (const col of ["target", "family", "aimed", "fit", "miss", "status"]) {
+    for (const col of [
+      "geography",
+      "source",
+      "variable",
+      "breakdown",
+      "target",
+      "estimate",
+      "error",
+      "status",
+    ]) {
       head.append(el("th", null, col));
     }
     table.append(head);
 
     for (const row of rows.slice(0, 200)) {
       const tr = el("tr");
-      const targetCell = el("td", "cal-target-name", row.name);
-      targetCell.title = row.name;
-      tr.append(targetCell);
-      tr.append(el("td", null, row.family));
+      tr.append(el("td", "mono", row.geography || "—"));
+      tr.append(el("td", null, row.source || "—"));
+      tr.append(el("td", "cal-target-name", row.variable || "—"));
+      tr.append(el("td", "cal-breakdown", row.breakdown || "—"));
       tr.append(el("td", "num", compact(row.target)));
       tr.append(el("td", "num", compact(row.estimate)));
       tr.append(el("td", "num", pct(row.absRelErr, row.absRelErr >= 1 ? 0 : 1)));

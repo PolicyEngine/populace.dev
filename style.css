@@ -537,11 +537,16 @@ h2 {
 .cal-table tr:last-child td { border-bottom: none; }
 .cal-table .num { text-align: right; white-space: nowrap; }
 .cal-target-name {
-  max-width: 360px;
+  max-width: 240px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   color: var(--paper);
+}
+.cal-breakdown {
+  max-width: 300px;
+  font-size: 0.86em;
+  line-height: 1.35;
 }
 .cal-table .ok { color: #8fbe93; }
 .cal-table .hot { color: var(--amber-soft); }
