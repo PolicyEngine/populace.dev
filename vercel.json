@@ -6,6 +6,11 @@
       "source": "/calibration",
       "destination": "https://calibration-diagnostics.vercel.app/populace",
       "permanent": false
+    },
+    {
+      "source": "/dashboard",
+      "destination": "https://calibration-diagnostics.vercel.app/populace",
+      "permanent": false
     }
   ]
 }
