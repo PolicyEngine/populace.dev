@@ -38,8 +38,8 @@
       const stateEl = document.getElementById("db-live-state");
       stateEl.textContent = st.state.toUpperCase();
       stateEl.style.color =
-        st.state === "complete" ? "var(--accent, #7db58a)" :
-        st.state === "failed" ? "#c2604f" : "inherit";
+        st.state === "complete" ? "var(--primary)" :
+        st.state === "failed" ? "var(--destructive)" : "inherit";
       document.getElementById("db-live-step").textContent =
         `${st.run} — step ${st.chain_step}/5: ${st.step_name}`;
       const detail = [st.build_stage, st.last_line].filter(Boolean);
