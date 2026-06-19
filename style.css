@@ -341,6 +341,9 @@ h2 {
 .foot-row { display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: center; margin-bottom: 14px; }
 .foot-meta { font-size: 13px; color: var(--paper-faint); }
 .foot-fine { font-size: 13px; color: var(--paper-faint); }
+.foot-pe { display: inline-flex; align-items: center; }
+.foot-pe img { height: 20px; width: auto; display: block; opacity: 0.82; transition: opacity 0.2s; }
+.foot-pe:hover img { opacity: 1; }
 
 /* ---------- reveal ---------- */
 .reveal {
