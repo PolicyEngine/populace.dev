@@ -1,6 +1,6 @@
 // A field of synthetic households: each point a record, brightness and size
 // scaled by its survey weight. The whole thing drifts slowly, like a nation
-// seen from above at night.
+// seen from above.
 (function () {
   "use strict";
   const canvas = document.getElementById("field");
@@ -9,7 +9,7 @@
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   let w, h, dpr, points, raf;
-  const AMBER = [240, 162, 58];
+  const TEAL = [49, 151, 149]; // PolicyEngine teal (--chart-1)
 
   // Deterministic-ish PRNG so the layout is stable across resizes within a load.
   let seed = 20260610;
@@ -83,14 +83,14 @@
       // glow for the heaviest records
       if (p.r > 2.4 * dpr) {
         const g = ctx.createRadialGradient(x, y, 0, x, y, p.r * 4);
-        g.addColorStop(0, `rgba(${AMBER[0]},${AMBER[1]},${AMBER[2]},${a * 0.5})`);
-        g.addColorStop(1, "rgba(240,162,58,0)");
+        g.addColorStop(0, `rgba(${TEAL[0]},${TEAL[1]},${TEAL[2]},${a * 0.5})`);
+        g.addColorStop(1, "rgba(49,151,149,0)");
         ctx.fillStyle = g;
         ctx.beginPath();
         ctx.arc(x, y, p.r * 4, 0, Math.PI * 2);
         ctx.fill();
       }
-      ctx.fillStyle = `rgba(${AMBER[0]},${AMBER[1]},${AMBER[2]},${a})`;
+      ctx.fillStyle = `rgba(${TEAL[0]},${TEAL[1]},${TEAL[2]},${a})`;
       ctx.beginPath();
       ctx.arc(x, y, p.r, 0, Math.PI * 2);
       ctx.fill();
@@ -102,7 +102,7 @@
     ctx.clearRect(0, 0, w, h);
     for (let i = 0; i < points.length; i++) {
       const p = points[i];
-      ctx.fillStyle = `rgba(${AMBER[0]},${AMBER[1]},${AMBER[2]},${p.base})`;
+      ctx.fillStyle = `rgba(${TEAL[0]},${TEAL[1]},${TEAL[2]},${p.base})`;
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
       ctx.fill();

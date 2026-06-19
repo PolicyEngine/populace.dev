@@ -1,23 +1,23 @@
 :root {
-  /* populace.dev adopts the Thesis Design system (Clear Horizon, dark mode).
-     The shared tokens load from thesis-design/tokens.css via <link> in the
-     page head, with <html data-theme="dark">. The site's original local
-     names are aliased onto the shared tokens here, so the existing
-     component CSS keeps working unchanged. */
-  --ink: var(--canvas); /* page background */
-  --ink-2: var(--section); /* raised surface (cards) — --section, not --paper:
-     the line below shadows thesis's own --paper with the local text color,
-     so cards must reference the non-colliding raised-surface token. */
-  --paper: var(--text-primary); /* primary text */
-  --paper-dim: var(--text-secondary);
+  /* populace.dev consumes the PolicyEngine design system: @policyengine/ui-kit
+     tokens.css is loaded via CDN in the page <head> (light theme — PE default,
+     no .dark class). The site's original local var names are aliased onto the
+     PE semantic tokens here, so the existing component CSS keeps working. */
+  --ink: var(--background); /* page background */
+  --ink-2: var(--muted); /* raised surface (cards) */
+  --paper: var(--foreground); /* primary text */
+  --paper-dim: var(--muted-foreground);
   --paper-faint: var(--text-tertiary);
-  --amber: var(--accent); /* accent → Clear Horizon rose */
-  --amber-soft: var(--accent-hover);
-  --line: var(--border-strong);
-  --line-soft: var(--border-soft);
-  --display: var(--font-display); /* Newsreader */
-  --body: var(--font-body); /* IBM Plex Sans */
-  --mono: var(--font-mono); /* IBM Plex Mono */
+  --amber: var(--primary); /* accent → PolicyEngine teal */
+  --amber-soft: var(--chart-1); /* brighter teal for emphasis/hover */
+  --line: var(--border);
+  --line-soft: var(--border-light);
+  /* PE ships its font families in the Tailwind @theme layer (not :root), which a
+     no-build static page can't read; the families below mirror ui-kit tokens.css
+     and resolve to --font-sans/--font-mono if a build ever exposes them. */
+  --display: var(--font-sans, "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  --body: var(--font-sans, "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  --mono: var(--font-mono, "JetBrains Mono", "Fira Code", Consolas, monospace);
   --max: 1140px;
 }
 
@@ -43,8 +43,8 @@ body::before {
   inset: 0;
   z-index: -3;
   background:
-    radial-gradient(120% 80% at 50% -10%, rgba(240, 162, 58, 0.10), transparent 55%),
-    radial-gradient(90% 60% at 80% 110%, rgba(240, 162, 58, 0.05), transparent 60%),
+    radial-gradient(120% 80% at 50% -10%, color-mix(in srgb, var(--primary) 7%, transparent), transparent 55%),
+    radial-gradient(90% 60% at 80% 110%, color-mix(in srgb, var(--primary) 4%, transparent), transparent 60%),
     var(--ink);
 }
 
@@ -54,7 +54,7 @@ body::before {
   z-index: -2;
   width: 100%;
   height: 100%;
-  opacity: 0.9;
+  opacity: 0.5;
 }
 
 .grain {
@@ -76,8 +76,8 @@ body::before {
   justify-content: space-between;
   padding: 22px clamp(20px, 5vw, 56px);
   backdrop-filter: blur(7px);
-  background: linear-gradient(var(--ink), rgba(11, 14, 19, 0));
-  border-bottom: 1px solid transparent;
+  background: linear-gradient(var(--ink), transparent);
+  border-bottom: 1px solid var(--line-soft);
 }
 
 .brand {
@@ -94,7 +94,7 @@ body::before {
   width: 9px; height: 9px;
   border-radius: 50%;
   background: var(--amber);
-  box-shadow: 0 0 10px 1px rgba(240, 162, 58, 0.8);
+  box-shadow: 0 0 8px 1px color-mix(in srgb, var(--primary) 55%, transparent);
   animation: pulse 3.4s ease-in-out infinite;
 }
 @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.45; } }
@@ -221,7 +221,7 @@ h2 {
 .prose p { margin-bottom: 22px; color: var(--paper); }
 .prose p:last-child { margin-bottom: 0; }
 .prose em { font-style: italic; color: var(--amber-soft); }
-.prose strong { font-weight: 600; color: var(--paper); border-bottom: 1px solid rgba(240,162,58,0.4); }
+.prose strong { font-weight: 600; color: var(--paper); border-bottom: 1px solid color-mix(in srgb, var(--primary) 40%, transparent); }
 
 /* ---------- cards ---------- */
 .cards {
@@ -234,12 +234,12 @@ h2 {
 
 .card {
   border: 1px solid var(--line);
-  background: linear-gradient(180deg, rgba(236,227,212,0.025), rgba(236,227,212,0));
+  background: var(--card);
   padding: 26px 24px 30px;
   border-radius: 3px;
   transition: border-color 0.3s, transform 0.3s;
 }
-.card:hover { border-color: rgba(240,162,58,0.45); transform: translateY(-3px); }
+.card:hover { border-color: var(--primary); transform: translateY(-3px); }
 .card header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
 .card-id { font-size: 13px; color: var(--amber); letter-spacing: 0.04em; }
 .tag {
@@ -250,8 +250,8 @@ h2 {
   padding: 3px 9px;
   border-radius: 100px;
 }
-.tag-live { background: rgba(240,162,58,0.16); color: var(--amber-soft); }
-.tag-wip { background: rgba(236,227,212,0.08); color: var(--paper-dim); }
+.tag-live { background: color-mix(in srgb, var(--primary) 12%, transparent); color: var(--text-success); }
+.tag-wip { background: var(--ink-2); color: var(--paper-dim); }
 .card h3 {
   font-family: var(--display);
   font-weight: 500;
@@ -302,7 +302,7 @@ h2 {
   line-height: 1.55;
   color: var(--paper-dim);
   max-width: 64ch;
-  border-left: 2px solid rgba(240,162,58,0.4);
+  border-left: 2px solid var(--primary);
   padding-left: 18px;
 }
 .caveat .mono { display: block; color: var(--paper-faint); font-size: 12.5px; margin-bottom: 6px; }
@@ -322,7 +322,7 @@ h2 {
   padding: 16px 20px;
   border: 1px solid var(--line-soft);
   border-radius: 3px;
-  background: rgba(236,227,212,0.015);
+  background: var(--background-secondary);
 }
 .rail-n { color: var(--amber); margin-right: 12px; }
 
@@ -379,175 +379,4 @@ h2 {
 }
 .footer a { color: var(--paper-dim); text-decoration: none; }
 .footer a:hover { color: var(--amber-soft); }
-
-/* ---------- calibration page ---------- */
-.cal-page {
-  max-width: var(--max);
-  margin: 0 auto;
-  padding: 118px clamp(20px, 5vw, 56px) 0;
-}
-.cal-hero {
-  min-height: 54svh;
-  display: grid;
-  align-items: end;
-  gap: 28px;
-  padding: 0 0 clamp(48px, 8vw, 84px);
-  border-bottom: 1px solid var(--line-soft);
-}
-@media (min-width: 880px) {
-  .cal-hero {
-    grid-template-columns: minmax(0, 1fr) 280px;
-  }
-}
-.cal-hero h1 { max-width: 11ch; margin-bottom: 24px; }
-.cal-stamp,
-.cal-note {
-  color: var(--paper-faint);
-  font-size: 12.5px;
-}
-.cal-release-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-self: end;
-  font-size: 12px;
-}
-.cal-release-list a {
-  color: var(--paper-faint);
-  text-decoration: none;
-  border: 1px solid var(--line-soft);
-  border-radius: 3px;
-  padding: 8px 10px;
-  overflow-wrap: anywhere;
-}
-.cal-release-list a:hover,
-.cal-release-list a[aria-current="page"] {
-  color: var(--amber-soft);
-  border-color: rgba(240, 162, 58, 0.45);
-}
-.cal-band {
-  padding: clamp(48px, 8vw, 84px) 0;
-  border-bottom: 1px solid var(--line-soft);
-}
-.cal-split {
-  display: grid;
-  gap: 44px;
-}
-@media (min-width: 900px) {
-  .cal-split { grid-template-columns: 1fr 1fr; }
-}
-.band-head.compact { margin-bottom: 28px; }
-.band-head.compact h2 {
-  font-size: clamp(1.5rem, 3.4vw, 2.25rem);
-  max-width: 15ch;
-}
-.cal-bars {
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-}
-.cal-bar-row {
-  display: grid;
-  grid-template-columns: minmax(110px, 220px) minmax(90px, 1fr) minmax(72px, auto);
-  gap: 12px;
-  align-items: center;
-  min-height: 24px;
-}
-.cal-bar-label {
-  font-family: var(--mono);
-  font-size: 12px;
-  color: var(--paper-dim);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.cal-bar-track {
-  height: 10px;
-  background: var(--line-soft);
-  border-radius: 2px;
-  overflow: hidden;
-}
-.cal-bar-track i {
-  display: block;
-  height: 100%;
-  background: var(--amber-soft);
-  border-radius: 2px;
-}
-.cal-bar-track i.dim { background: var(--paper-faint); }
-.cal-bar-value {
-  color: var(--paper-faint);
-  font-size: 12px;
-  text-align: right;
-  white-space: nowrap;
-}
-.cal-toolbar {
-  display: grid;
-  gap: 10px;
-  margin: 0 0 14px;
-}
-@media (min-width: 860px) {
-  .cal-toolbar {
-    grid-template-columns: minmax(260px, 1fr) minmax(180px, 260px) 150px 150px;
-  }
-}
-.cal-input {
-  width: 100%;
-  background: var(--ink-2);
-  border: 1px solid var(--line);
-  border-radius: 3px;
-  color: var(--paper);
-  padding: 10px 12px;
-  font-size: 12.5px;
-}
-.cal-input:focus {
-  outline: none;
-  border-color: rgba(240, 162, 58, 0.6);
-}
-.cal-table-wrap {
-  margin-top: 16px;
-  overflow-x: auto;
-  border: 1px solid var(--line-soft);
-  border-radius: 3px;
-}
-.cal-table {
-  width: 100%;
-  min-width: 860px;
-  border-collapse: collapse;
-  font-family: var(--mono);
-  font-size: 12px;
-}
-.cal-table th {
-  position: sticky;
-  top: 0;
-  background: var(--ink-2);
-  color: var(--paper-faint);
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  text-align: left;
-  padding: 10px 12px;
-  border-bottom: 1px solid var(--line);
-}
-.cal-table td {
-  color: var(--paper-dim);
-  padding: 9px 12px;
-  border-bottom: 1px solid var(--line-soft);
-  vertical-align: top;
-}
-.cal-table tr:last-child td { border-bottom: none; }
-.cal-table .num { text-align: right; white-space: nowrap; }
-.cal-target-name {
-  max-width: 240px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: var(--paper);
-}
-.cal-breakdown {
-  max-width: 300px;
-  font-size: 0.86em;
-  line-height: 1.35;
-}
-.cal-table .ok { color: #8fbe93; }
-.cal-table .hot { color: var(--amber-soft); }
 

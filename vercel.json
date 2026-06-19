@@ -1,4 +1,11 @@
 {
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/calibration",
+      "destination": "https://calibration-diagnostics.vercel.app/populace",
+      "permanent": false
+    }
+  ]
 }
