@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Spec-driven populace design</title>
+<meta name="description" content="A visual technical specification for making populace fully spec-driven with Ledger as the source of truth." />
+<meta property="og:title" content="Spec-driven populace design" />
+<meta property="og:description" content="A visual technical specification for making populace fully spec-driven with Ledger as the source of truth." />
+<meta property="og:type" content="website" />
+<link rel="icon" type="image/svg+xml" href="/assets/policyengine-mark.svg" />
+<meta name="theme-color" content="#FFFFFF" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@policyengine/ui-kit@0.12.1/src/theme/tokens.css" />
+<link rel="stylesheet" href="./style.css" />
+</head>
+<body class="spec-body">
+<div class="grain" aria-hidden="true"></div>
+<canvas id="field" aria-hidden="true"></canvas>
+
+<header class="nav">
+  <a class="brand" href="/">
+    <span class="brand-dot" aria-hidden="true"></span>populace
+  </a>
+  <nav class="nav-links">
+    <a href="#overview">overview</a>
+    <a href="#concept-network">network</a>
+    <a href="#contracts">contracts</a>
+    <a href="#pipeline">pipeline</a>
+    <a href="#gates">gates</a>
+    <a href="#tax-expenditure">tax exp</a>
+    <a href="#migration">migration</a>
+    <a class="nav-gh" href="https://github.com/PolicyEngine/populace" aria-label="GitHub"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"/></svg></a>
+  </nav>
+</header>
+
+<main id="top" class="spec-page">
+  <section class="spec-hero">
+    <div class="spec-hero-copy">
+      <p class="eyebrow reveal" style="--d:0">production-backed contract map</p>
+      <h1 class="reveal" style="--d:1">Ledger declares the truth. Populace executes the build.</h1>
+      <p class="lede reveal" style="--d:2">
+        The network below is generated from current Populace and Ledger source
+        contracts. The migration plan shows the remaining step: move
+        country-specific build choices into data specs that compile through
+        those contracts.
+      </p>
+      <div class="hero-cta reveal" style="--d:3">
+        <a class="btn btn-primary" href="#overview">Review the flow</a>
+        <a class="btn btn-ghost" href="#contracts">Inspect contracts</a>
+      </div>
+    </div>
+    <aside class="spec-status reveal" style="--d:4" aria-label="Spec status">
+      <span class="mono spec-status-label">current boundary</span>
+      <strong>production interfaces today; country-pack specs next</strong>
+      <p>The graph is real: it derives from Populace and Ledger source. The examples below are proposed country-pack shapes for source selection, support, targets, and release gates.</p>
+    </aside>
+  </section>
+
+  <section id="overview" class="spec-band">
+    <div class="band-head">
+      <span class="kicker mono">01 - system map</span>
+      <h2>The ownership boundary.</h2>
+    </div>
+    <div class="spec-map" role="img" aria-label="Ledger feeds Populace build specs, Populace produces release bundles and diagnostics.">
+      <div class="map-column ledger">
+        <span class="map-label mono">Ledger</span>
+        <h3>source of truth</h3>
+        <ul>
+          <li>source artifacts</li>
+          <li>normalized facts</li>
+          <li>target profiles</li>
+          <li>measurement contracts</li>
+          <li>source package manifests</li>
+        </ul>
+      </div>
+      <div class="map-arrows" aria-hidden="true">
+        <span>facts</span>
+        <span>profiles</span>
+        <span>contracts</span>
+      </div>
+      <div class="map-column populace">
+        <span class="map-label mono">Populace</span>
+        <h3>build interpreter</h3>
+        <ul>
+          <li>support spine compilation</li>
+          <li>source imputation</li>
+          <li>runtime evaluation</li>
+          <li>calibration</li>
+          <li>release gates</li>
+        </ul>
+      </div>
+      <div class="map-arrows" aria-hidden="true">
+        <span>H5</span>
+        <span>bundle</span>
+        <span>diagnostics</span>
+      </div>
+      <div class="map-column downstream">
+        <span class="map-label mono">Consumers</span>
+        <h3>model use</h3>
+        <ul>
+          <li>policyengine.py</li>
+          <li>populace.dev</li>
+          <li>Thesis observations</li>
+          <li>calibration dashboard</li>
+          <li>future Axiom runtime</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="principles">
+      <article>
+        <span class="mono">rule 1</span>
+        <h3>No target values in Populace</h3>
+        <p>Every calibration target value resolves from a Ledger fact. Populace can select, align, and weight targets; it cannot store observed values in country content.</p>
+      </article>
+      <article>
+        <span class="mono">rule 2</span>
+        <h3>Country packs are data</h3>
+        <p>Country-specific content is JSON or YAML: sources, support channels, imputation stages, target profiles, and release gates. No country loader Python.</p>
+      </article>
+      <article>
+        <span class="mono">rule 3</span>
+        <h3>No aggregation knob</h3>
+        <p>All target estimates compile to summed model expressions. Counts are represented as entity-count expressions, not a separate target mode.</p>
+      </article>
+      <article>
+        <span class="mono">rule 4</span>
+        <h3>Bindings are structured</h3>
+        <p>Targets identify Ledger records and model measurements through structured fields, not slash-separated target names.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="concept-network" class="spec-band">
+    <div class="band-head">
+      <span class="kicker mono">02 - concept network</span>
+      <h2>The build concepts and how they depend on each other.</h2>
+    </div>
+
+    <div class="axiom-graph-shell" aria-label="Axiom-style spec graph explorer">
+      <aside class="graph-side-panel">
+        <div class="graph-brand">
+          <span class="mono">spec graph viewer</span>
+          <strong id="graph-title">Populace spec graph</strong>
+          <p id="graph-description">Concepts, attributes, and dependency edges are rendered from the spec graph JSON.</p>
+          <div class="graph-source mono" id="graph-source">Loading source provenance...</div>
+        </div>
+
+        <div class="graph-stats" aria-label="Graph statistics" id="graph-stats"></div>
+
+        <div class="graph-control-block">
+          <h3>Focus</h3>
+          <div class="graph-filter-list" role="group" aria-label="Filter graph by concept group" id="graph-filters"></div>
+        </div>
+
+        <div class="graph-control-block">
+          <h3>Node shapes</h3>
+          <div class="graph-shape-key" id="graph-shape-key"></div>
+        </div>
+      </aside>
+
+      <div class="graph-viewer-panel">
+        <header class="graph-viewer-header">
+          <div>
+            <p class="mono">generated from production source</p>
+            <h3>Spec concepts and attributes as executable dependencies.</h3>
+          </div>
+          <div class="graph-toolbar" role="toolbar" aria-label="Graph detail controls">
+            <div class="graph-toolbar-segment" aria-label="Detail level">
+              <button type="button" class="graph-toolbar-btn" data-view="concepts">Concepts</button>
+              <button type="button" class="graph-toolbar-btn is-active" data-view="full">Full schema</button>
+            </div>
+            <button type="button" class="graph-toolbar-btn" data-action="fit">Fit</button>
+          </div>
+        </header>
+
+        <div class="concept-network" aria-label="Network canvas of spec concepts and dependencies">
+          <div class="graph-canvas-inner" id="spec-graph-canvas">
+            <svg class="concept-lines" id="spec-graph-lines" aria-hidden="true"></svg>
+          </div>
+          <div class="graph-minimap" id="graph-minimap" aria-hidden="true"></div>
+        </div>
+
+        <div class="graph-dependency-table" role="table" aria-label="Selected dependency edges">
+          <div class="dep-row head" role="row"><span>from</span><span>to</span><span>contract</span></div>
+          <div id="graph-dependencies"></div>
+        </div>
+      </div>
+
+      <aside class="graph-inspector" aria-live="polite">
+        <span class="mono" id="graph-inspector-kind">source truth</span>
+        <h3 id="graph-inspector-title">Ledger snapshot</h3>
+        <p id="graph-inspector-description">Pinned source facts, target profiles, artifact hashes, and source-period policies.</p>
+        <dl>
+          <div>
+            <dt>Consumes</dt>
+            <dd id="graph-inspector-inputs">none</dd>
+          </div>
+          <div>
+            <dt>Feeds</dt>
+            <dd id="graph-inspector-outputs">source registry, target profile</dd>
+          </div>
+          <div>
+            <dt>Attributes</dt>
+            <dd id="graph-inspector-attributes">snapshot_id, base_year, source_hashes</dd>
+          </div>
+        </dl>
+      </aside>
+    </div>
+  </section>
+
+  <section id="contracts" class="spec-band">
+    <div class="band-head">
+      <span class="kicker mono">03 - contracts</span>
+      <h2>Current contracts plus the missing country-pack specs.</h2>
+    </div>
+
+    <div class="contract-grid">
+      <article class="contract-card">
+        <span class="mono">source registry</span>
+        <h3>What data may enter the build</h3>
+        <p>Declares Ledger source packages, periods, artifacts, entity grain, and primary keys. Sources define what exists; support specs decide how to use them.</p>
+      </article>
+      <article class="contract-card">
+        <span class="mono">support spine</span>
+        <h3>Which records form the candidate universe</h3>
+        <p>Combines ASEC, FRS, PUF clones, ACS multispines, or prior-year samples into support channels with explicit initial mass allocation.</p>
+      </article>
+      <article class="contract-card">
+        <span class="mono">imputation graph</span>
+        <h3>How missing columns are filled</h3>
+        <p>Lists donor facts, recipient frames, predictors, constraints, sign/zero classifiers, weighted QRF settings, and lineage outputs.</p>
+      </article>
+      <article class="contract-card">
+        <span class="mono">target profile</span>
+        <h3>What evidence defines calibration</h3>
+        <p>Lives in Ledger. Each row points to source facts and gives measurement bindings for PolicyEngine today and Axiom when available.</p>
+      </article>
+      <article class="contract-card">
+        <span class="mono">calibration profile</span>
+        <h3>How targets become weights</h3>
+        <p>Declares target selection, weighting, loss, holdout rotation, solver settings, and protected gates. It never declares target values.</p>
+      </article>
+      <article class="contract-card">
+        <span class="mono">release contract</span>
+        <h3>What can publish</h3>
+        <p>Defines required source coverage, export variables, target coverage, critical target bands, smoke simulations, and policyengine.py compatibility.</p>
+      </article>
+    </div>
+
+    <div class="schema-row">
+      <div class="schema-note">
+        <h3>Example: a target profile row</h3>
+        <p>
+          This proposed country-pack row shows the next target contract. The
+          display name can remain human-readable, but the row is identified
+          by Ledger selectors, structured dimensions, and model bindings. The
+          `value` comes only from the resolved Ledger fact.
+        </p>
+      </div>
+      <pre class="code-card"><code>{
+  "target_id": "irs_soi.child_tax_credit.amount.total",
+  "ledger_selector": {
+    "source_name": "irs_soi",
+    "source_measure_id": "child_tax_credit_amount",
+    "geography": { "level": "country", "id": "US" },
+    "period": { "policy": "latest_not_after_base_year" },
+    "dimensions": { "agi_range": "all", "child_count": "all" }
+  },
+  "measurement": {
+    "entity": "tax_unit",
+    "concept": "tax.credit.child_tax_credit.amount"
+  },
+  "bindings": {
+    "policyengine": {
+      "value_variable": "ctc",
+      "entity": "tax_unit",
+      "filter": { "variable": "tax_unit_count", "operator": ">", "value": 0 }
+    },
+    "axiom": {
+      "rule": "us.tax.credits.child_tax_credit.amount",
+      "status": "pending"
+    }
+  }
+}</code></pre>
+    </div>
+
+    <div class="schema-row reverse">
+      <div class="schema-note">
+        <h3>Example: a support spine</h3>
+        <p>
+          This proposed country-pack contract declares the build universe.
+          Defaults handle common cases: include all records, split initial mass
+          equally across source channels, and preserve donor lineage. PUF clones
+          are support channels, not a separate population.
+        </p>
+      </div>
+      <pre class="code-card"><code>{
+  "support_spine": {
+    "base_year": 2024,
+    "channels": [
+      {
+        "id": "asec_2024",
+        "source": "ledger.us.census.cps_asec",
+        "period": 2024,
+        "initial_weight_share": "equal_source_mass"
+      },
+      {
+        "id": "asec_2023",
+        "source": "ledger.us.census.cps_asec",
+        "period": 2023,
+        "initial_weight_share": "equal_source_mass"
+      },
+      {
+        "id": "puf_clone",
+        "clone_from": ["asec_2024", "asec_2023"],
+        "donor_source": "ledger.us.irs.puf",
+        "initial_weight_share": "equal_source_mass"
+      }
+    ]
+  }
+}</code></pre>
+    </div>
+  </section>
+
+  <section id="pipeline" class="spec-band">
+    <div class="band-head">
+      <span class="kicker mono">04 - compiler pipeline</span>
+      <h2>From specs to a release bundle.</h2>
+    </div>
+
+    <div class="pipeline">
+      <div class="pipe-step">
+        <span class="pipe-n mono">1</span>
+        <h3>Resolve Ledger snapshot</h3>
+        <p>Pin source packages, facts, target profiles, and source artifact hashes.</p>
+      </div>
+      <div class="pipe-step">
+        <span class="pipe-n mono">2</span>
+        <h3>Compile support universe</h3>
+        <p>Build linked people, households, tax units, benefit units, SPM units, and support-channel lineage.</p>
+      </div>
+      <div class="pipe-step">
+        <span class="pipe-n mono">3</span>
+        <h3>Assign geography</h3>
+        <p>Resolve atomic geography constrained by the lowest reliable source geography for each record.</p>
+      </div>
+      <div class="pipe-step">
+        <span class="pipe-n mono">4</span>
+        <h3>Run imputation graph</h3>
+        <p>Apply weighted QRF imputation with sign/zero classifiers, support guards, and donor lineage.</p>
+      </div>
+      <div class="pipe-step">
+        <span class="pipe-n mono">5</span>
+        <h3>Evaluate measurement bindings</h3>
+        <p>Use PolicyEngine today. Prefer Axiom bindings once they match the required variable surface.</p>
+      </div>
+      <div class="pipe-step">
+        <span class="pipe-n mono">6</span>
+        <h3>Calibrate weights</h3>
+        <p>Optimize a weighted capped percent-error loss, rotate holdouts, and preserve source support diagnostics.</p>
+      </div>
+      <div class="pipe-step">
+        <span class="pipe-n mono">7</span>
+        <h3>Gate and publish</h3>
+        <p>Export the H5, diagnostics, target registry, manifest, and compatibility metadata for policyengine.py.</p>
+      </div>
+    </div>
+
+    <div class="loss-panel">
+      <div>
+        <span class="mono">loss proposal</span>
+        <h3>Weighted mean capped percent error</h3>
+        <p>
+          The default calibration objective should be legible: per-target
+          capped absolute percent error, weighted by target scale and normalized
+          across broad measure classes.
+        </p>
+      </div>
+      <pre class="code-card compact"><code>target_error = min(abs(estimate - target) / denominator, cap)
+denominator = max(abs(target), floor_by_measure_class)
+target_weight = sqrt(max(abs(target), floor_by_measure_class))
+
+total_loss =
+  0.5 * weighted_mean(amount_target_error)
+  + 0.5 * weighted_mean(count_target_error)</code></pre>
+    </div>
+  </section>
+
+  <section id="gates" class="spec-band">
+    <div class="band-head">
+      <span class="kicker mono">05 - validation gates</span>
+      <h2>Publish only if the contract holds.</h2>
+    </div>
+
+    <div class="gate-table" role="table" aria-label="Validation gates">
+      <div class="gate-row head" role="row">
+        <span>gate</span><span>what it catches</span><span>blocking rule</span>
+      </div>
+      <div class="gate-row" role="row">
+        <span>source coverage</span><span>Required Ledger source packages or facts are absent.</span><span>All required source aliases resolve.</span>
+      </div>
+      <div class="gate-row" role="row">
+        <span>target coverage</span><span>Populace silently drops a target family that eCPS or eFRS covered.</span><span>Required profile rows match or have reviewed exclusions.</span>
+      </div>
+      <div class="gate-row" role="row">
+        <span>export surface</span><span>The H5 misses variables required by the runtime or incumbent dataset.</span><span>Required variables exist with finite values and expected entities.</span>
+      </div>
+      <div class="gate-row" role="row">
+        <span>critical targets</span><span>Large misses on income tax, CTC, Social Security, SSI, or other release-critical aggregates.</span><span>Generous but explicit error bands; failures block certification.</span>
+      </div>
+      <div class="gate-row" role="row">
+        <span>target loss</span><span>Solver improves easy targets while degrading holdouts or national aggregates.</span><span>Report train, holdout, full, amount, and count losses on common surfaces.</span>
+      </div>
+      <div class="gate-row" role="row">
+        <span>source support</span><span>Calibration leans on too little support for a target family or geography.</span><span>Effective-sample and lineage diagnostics ship with every release.</span>
+      </div>
+      <div class="gate-row" role="row">
+        <span>runtime compatibility</span><span>policyengine.py cannot load, simulate, or summarize the release.</span><span>Smoke simulations pass for the published bundle.</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="tax-expenditure" class="spec-band">
+    <div class="band-head">
+      <span class="kicker mono">06 - tax expenditure targets</span>
+      <h2>Measure policy changes as reforms.</h2>
+    </div>
+    <div class="tax-exp-grid">
+      <div class="tax-exp-card">
+        <span class="mono">target fact</span>
+        <p>Ledger stores the observed tax expenditure or credit amount from the official source, with source period and dimensions.</p>
+      </div>
+      <div class="tax-exp-arrow" aria-hidden="true">+</div>
+      <div class="tax-exp-card">
+        <span class="mono">measurement binding</span>
+        <p>The profile declares a simple reform, such as repealing a credit or deduction, and measures the fiscal delta.</p>
+      </div>
+      <div class="tax-exp-arrow" aria-hidden="true">=</div>
+      <div class="tax-exp-card">
+        <span class="mono">calibration target</span>
+        <p>Populace calibrates to the simulated reform score, not a hand-coded proxy variable or a copied target value.</p>
+      </div>
+    </div>
+    <pre class="code-card"><code>{
+  "measurement": {
+    "entity": "tax_unit",
+    "policy_reform": {
+      "type": "parameter_override",
+      "parameter": "gov.irs.credits.cdcc.amount",
+      "value": 0
+    },
+    "measure": "baseline_tax - reform_tax"
+  }
+}</code></pre>
+  </section>
+
+  <section id="migration" class="spec-band">
+    <div class="band-head">
+      <span class="kicker mono">07 - migration plan</span>
+      <h2>Replace Python country content in stages.</h2>
+    </div>
+
+    <ol class="timeline">
+      <li>
+        <span class="mono">phase 0</span>
+        <h3>Document current surfaces</h3>
+        <p>Freeze current Populace, eCPS, and eFRS export and target surfaces as comparison manifests.</p>
+      </li>
+      <li>
+        <span class="mono">phase 1</span>
+        <h3>Move target contracts to Ledger</h3>
+        <p>Ledger owns profiles, selectors, measurement contracts, and source-period policies. Populace consumes profile-shaped objects.</p>
+      </li>
+      <li>
+        <span class="mono">phase 2</span>
+        <h3>Define country build specs</h3>
+        <p>US and UK packs declare sources, support channels, geography assignment, imputation graph, target profile, and release gates in YAML or JSON.</p>
+      </li>
+      <li>
+        <span class="mono">phase 3</span>
+        <h3>Compile specs to existing runtimes</h3>
+        <p>The interpreter emits the same support frames, imputations, target registries, and calibration inputs now produced by Python loaders.</p>
+      </li>
+      <li>
+        <span class="mono">phase 4</span>
+        <h3>Remove country Python content</h3>
+        <p>Delete country loader Python once parity tests prove the specs compile to the same build artifacts or reviewed improvements.</p>
+      </li>
+      <li>
+        <span class="mono">phase 5</span>
+        <h3>Switch measurement backend to Axiom</h3>
+        <p>Use PolicyEngine bindings until Axiom matches required variables. Then make Axiom the primary binding and keep PolicyEngine only for compatibility checks.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section id="ui" class="spec-band">
+    <div class="band-head">
+      <span class="kicker mono">08 - review surfaces</span>
+      <h2>What should appear on populace.dev.</h2>
+    </div>
+    <div class="review-surface">
+      <article>
+        <h3>Build plan</h3>
+        <p>A visual expansion of the country spec: sources, support channels, imputation stages, target profile, and gates.</p>
+      </article>
+      <article>
+        <h3>Target registry</h3>
+        <p>Filterable target rows by source, geography, measure class, period, and binding. No slash-separated IDs as the primary UI.</p>
+      </article>
+      <article>
+        <h3>Target weights</h3>
+        <p>Show amount/count classes, target scale, solver weight, cap, denominator, and whether a zero-valued target has nonzero weight.</p>
+      </article>
+      <article>
+        <h3>Lineage graph</h3>
+        <p>Trace each export column and target estimate back to sources, imputation donors, runtime bindings, and calibration weights.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="questions" class="spec-band band-cta">
+    <span class="kicker mono">09 - open review questions</span>
+    <h2>Decisions to settle before implementation.</h2>
+    <div class="questions">
+      <p>Should Ledger target profiles include default target weighting metadata, or should Populace own all solver weights?</p>
+      <p>Should support channels default to equal source mass, equal record mass, or country-specific explicit weights?</p>
+      <p>How strict should target-profile parity gates be while incumbent source packages move into Ledger?</p>
+      <p>Which Axiom bindings are required before PolicyEngine bindings become compatibility-only?</p>
+    </div>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="https://github.com/PolicyEngine/populace.dev/pull/9">Review the PR</a>
+      <a class="btn btn-ghost" href="/">Back to populace.dev</a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-row">
+    <span class="brand"><span class="brand-dot" aria-hidden="true"></span>populace</span>
+    <a class="foot-pe" href="https://policyengine.org" aria-label="PolicyEngine"><img src="/assets/policyengine.svg" alt="PolicyEngine" /></a>
+  </div>
+  <p class="mono foot-fine">
+    Production contract map plus migration spec for review. Values and targets remain source-backed through Ledger.
+  </p>
+</footer>
+
+<script src="./field.js" defer></script>
+<script src="./spec.js" defer></script>
+</body>
+</html>

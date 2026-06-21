@@ -1,0 +1,29 @@
+name: Spec graph
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  generated-spec-graph:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Regenerate production-backed spec graph
+        run: python3 scripts/generate_spec_graph.py
+
+      - name: Check generated graph is committed
+        run: git diff --exit-code -- data/spec-graph.json
+
+      - name: Validate graph, HTML, and renderer
+        run: python3 scripts/check_spec_graph.py

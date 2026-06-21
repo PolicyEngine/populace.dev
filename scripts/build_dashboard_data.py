@@ -13,6 +13,7 @@ Run with any python that has numpy + h5py:
 from __future__ import annotations
 
 import json
+import os
 import re
 import time
 from pathlib import Path
@@ -20,18 +21,30 @@ from pathlib import Path
 
 import numpy as np
 
-ART = Path("/Users/maxghenis/.claude-worktrees/microplex-spec-build/artifacts")
-SCORE_JSON = Path.home() / "populace-score-work" / "score_out" / (
-    "sound_ecps_replacement_comparison.json"
+ROOT = Path(__file__).resolve().parent.parent
+ARTIFACT_DIR_ENV = "POPULACE_ARTIFACT_DIR"
+SCORE_JSON_ENV = "POPULACE_SCORE_JSON"
+REFERENCE_H5_ENV = "POPULACE_REFERENCE_H5"
+TIMEPERIOD_H5_ENV = "POPULACE_TIMEPERIOD_H5"
+REPO_DIR_ENV = "POPULACE_REPO_DIR"
+
+ART = Path(os.environ.get(ARTIFACT_DIR_ENV, ROOT / "output"))
+SCORE_JSON = Path(
+    os.environ.get(
+        SCORE_JSON_ENV,
+        Path.home()
+        / "populace-score-work"
+        / "score_out"
+        / "sound_ecps_replacement_comparison.json",
+    )
 )
 RELEASE = "populace-us-2024-5da5a95-20260611"
-DATA_DIR = Path(__file__).resolve().parent.parent / "data"
+DATA_DIR = ROOT / "data"
 OUT = DATA_DIR / "calibration.json"  # alias of the latest release
-ECPS = Path(
-    "/Users/maxghenis/CosilicoAI/microplex-us/artifacts/baselines/"
-    "enhanced_cps_2024_hf_main.h5"
+REFERENCE_H5 = (
+    Path(os.environ[REFERENCE_H5_ENV]) if os.environ.get(REFERENCE_H5_ENV) else None
 )
-POP_TP = ART / "populace_us_2024_timeperiod.h5"
+POP_TP = Path(os.environ.get(TIMEPERIOD_H5_ENV, ART / "populace_us_2024_timeperiod.h5"))
 
 
 def loss_and_hits(A: np.ndarray, b: np.ndarray, w: np.ndarray):
@@ -133,7 +146,7 @@ def compact_float(value: float) -> float:
     return float(f"{value:.6g}")
 
 
-WORKTREE = Path("/Users/maxghenis/.claude-worktrees/microplex-spec-build")
+WORKTREE = Path(os.environ.get(REPO_DIR_ENV, Path.home() / "PolicyEngine/populace"))
 
 
 def _parse_list(src: str, name: str) -> set[str]:
@@ -150,8 +163,12 @@ def build_source_map() -> dict[str, str]:
     """Variable -> source family, parsed from the build scripts (never typed)."""
     import re
 
-    driver = (WORKTREE / "scripts" / "build_us_candidate.py").read_text()
-    donor = (Path.home() / "PolicyEngine/populace/packages/populace-build/src/populace/build/us/sources.py").read_text()
+    driver_path = WORKTREE / "scripts" / "build_us_candidate.py"
+    donor_path = WORKTREE / "packages/populace-build/src/populace/build/us/sources.py"
+    if not driver_path.exists() or not donor_path.exists():
+        return {}
+    driver = driver_path.read_text()
+    donor = donor_path.read_text()
     src_map: dict[str, str] = {}
     # CPS-derived: p["..."] assignments in _derive_person_columns + tenure map.
     body = driver.split("def _derive_person_columns", 1)[-1].split("\ndef ", 1)[0]
@@ -205,8 +222,10 @@ def _profile_flat(path):
 
 def build_lineage():
     """Variable-level lineage: populace vs eCPS fill and weighted totals."""
+    if REFERENCE_H5 is None or not REFERENCE_H5.exists() or not POP_TP.exists():
+        return []
     pop = _profile_flat(POP_TP)
-    ecps = _profile_flat(ECPS)
+    ecps = _profile_flat(REFERENCE_H5)
     sources = build_source_map()
     rows = []
     for var in sorted(set(pop) | set(ecps)):
