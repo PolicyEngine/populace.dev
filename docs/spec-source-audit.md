@@ -10,7 +10,8 @@ diagram.
 
 - `PolicyEngine/populace`: build stages, donor specs, stage records, entity
   schemas, links, variable metadata, weights, target specs, target registries,
-  calibration, release gates, and published dataset registry contracts.
+  calibration, release gates, published dataset registry contracts, and
+  spec-only country package manifests/resources.
 - `PolicyEngine/arch-data`: Ledger fact schemas, dimensions, source provenance,
   source record specs, source package manifests, consumer contracts, and
   contract reports.
@@ -25,9 +26,10 @@ plain data.
 - Target profiles: Populace can still receive target values through generated
   target-registry artifacts. Country content should instead select Ledger
   profile rows whose values resolve from Ledger facts.
-- Build stages: Populace stage plans can carry Python callables. Country packs
-  should declare source channels, support frames, imputation stages, and runtime
-  bindings as JSON or YAML that compiles to the existing stage plan.
+- Build stages: Populace stage plans can still carry Python callables in shared
+  runtime code. Country packs now expose JSON resources for source stages and
+  related US configuration, but the remaining work is compiling those resources
+  through a stable runtime binding contract.
 - Release gates: release checks exist as functions. Country packs should select
   and parameterize those checks through release contracts.
 - Published datasets: the dataset registry is a Python mapping. Published

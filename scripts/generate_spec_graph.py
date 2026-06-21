@@ -46,6 +46,14 @@ class SourceFile:
     module_label: str
 
 
+@dataclass(frozen=True)
+class CountryPackage:
+    country: str
+    manifest_path: str
+    manifest: dict[str, Any]
+    resources: dict[str, Any]
+
+
 REPOS = {
     "populace": SourceRepo(
         key="populace",
@@ -142,12 +150,17 @@ SOURCE_FILES = (
 )
 
 
+COUNTRY_PACKAGE_ROOT = "packages/populace-build/src/populace/build"
+SPEC_RESOURCE_SUFFIXES = (".json", ".jsonld")
+
+
 GROUPS = (
     {"id": "ledger_sources", "label": "Ledger sources"},
     {"id": "ledger_facts", "label": "Ledger facts"},
     {"id": "ledger_contracts", "label": "Ledger contracts"},
     {"id": "populace_frame", "label": "Populace frame"},
     {"id": "populace_build", "label": "Populace build"},
+    {"id": "populace_country_packages", "label": "Populace country packages"},
     {"id": "populace_calibration", "label": "Populace calibration"},
     {"id": "populace_release", "label": "Populace release"},
 )
@@ -263,6 +276,10 @@ def main() -> None:
     nodes, edges = add_attribute_nodes(nodes, edges)
     edges.extend(type_reference_edges(nodes, symbol_to_id))
     edges.extend(relationship_edges(symbol_to_id))
+    country_packages = discover_country_packages()
+    country_nodes, country_edges = country_package_graph(country_packages, symbol_to_id)
+    nodes.extend(country_nodes)
+    edges.extend(country_edges)
     edges = dedupe_edges(edges)
     nodes = layout_nodes(nodes, edges)
 
@@ -276,6 +293,14 @@ def main() -> None:
         "source": {
             "repositories": repo_meta,
             "files": [source.__dict__ for source in SOURCE_FILES],
+            "country_packages": [
+                {
+                    "country": package.country,
+                    "manifest_path": package.manifest_path,
+                    "resources": list(package.resources),
+                }
+                for package in country_packages
+            ],
         },
         "canvas": canvas_size(nodes),
         "stats": graph_stats(nodes, edges, repo_meta),
@@ -321,15 +346,76 @@ def repo_metadata(repo: SourceRepo) -> dict[str, str]:
 
 
 def read_source(source: SourceFile) -> str:
-    repo = REPOS[source.repo]
+    return read_repo_file(source.repo, source.path)
+
+
+def read_repo_file(repo_key: str, path: str) -> str:
+    repo = REPOS[repo_key]
     local_env = os.environ.get(repo.local_env)
     if local_env:
-        path = Path(local_env).expanduser() / source.path
-        if path.exists():
-            return path.read_text(encoding="utf-8")
-    url = f"https://raw.githubusercontent.com/{repo.github_repo}/{repo.ref}/{source.path}"
+        local_path = Path(local_env).expanduser() / path
+        if local_path.exists():
+            return local_path.read_text(encoding="utf-8")
+        raise FileNotFoundError(
+            f"{repo.local_env} is set, but {path} does not exist under {local_env}."
+        )
+    commit = COMMIT_BY_REPO_KEY.get(repo_key) or ls_remote(repo.github_repo, repo.ref)
+    url = f"https://raw.githubusercontent.com/{repo.github_repo}/{commit}/{path}"
     with urlopen(url, timeout=20) as response:
         return response.read().decode("utf-8")
+
+
+def discover_country_packages() -> list[CountryPackage]:
+    manifest_paths = [
+        path
+        for path in repo_paths("populace")
+        if path.startswith(f"{COUNTRY_PACKAGE_ROOT}/")
+        and path.endswith("/country_package.json")
+    ]
+    packages: list[CountryPackage] = []
+    for manifest_path in sorted(manifest_paths):
+        manifest = json.loads(read_repo_file("populace", manifest_path))
+        country = str(manifest.get("country") or Path(manifest_path).parent.name)
+        resources: dict[str, Any] = {}
+        for resource in manifest.get("resources", []):
+            resource_path = str(Path(manifest_path).parent / str(resource))
+            if not resource_path.endswith(SPEC_RESOURCE_SUFFIXES):
+                continue
+            resources[resource_path] = json.loads(read_repo_file("populace", resource_path))
+        packages.append(
+            CountryPackage(
+                country=country,
+                manifest_path=manifest_path,
+                manifest=manifest,
+                resources=resources,
+            )
+        )
+    return packages
+
+
+def repo_paths(repo_key: str) -> list[str]:
+    repo = REPOS[repo_key]
+    local_env = os.environ.get(repo.local_env)
+    if local_env:
+        local = Path(local_env).expanduser()
+        return sorted(
+            path.relative_to(local).as_posix()
+            for path in local.rglob("*")
+            if path.is_file()
+        )
+
+    commit = COMMIT_BY_REPO_KEY.get(repo_key) or ls_remote(repo.github_repo, repo.ref)
+    owner, name = repo.github_repo.split("/", 1)
+    url = f"https://api.github.com/repos/{owner}/{name}/git/trees/{commit}?recursive=1"
+    with urlopen(url, timeout=30) as response:
+        payload = json.loads(response.read().decode("utf-8"))
+    if payload.get("truncated"):
+        raise RuntimeError(f"GitHub tree response for {repo.github_repo}@{commit} was truncated.")
+    return sorted(
+        item["path"]
+        for item in payload.get("tree", [])
+        if item.get("type") == "blob"
+    )
 
 
 def git(cwd: Path, *args: str) -> str:
@@ -461,15 +547,150 @@ def constant_node(source: SourceFile, node: ast.Assign | ast.AnnAssign, line_sta
     }
 
 
+def country_package_graph(
+    packages: list[CountryPackage],
+    symbol_to_id: dict[str, str],
+) -> tuple[list[dict[str, Any]], list[dict[str, str]]]:
+    nodes: list[dict[str, Any]] = []
+    edges: list[dict[str, str]] = []
+    concept_edges = {
+        "source_stages.json": ("StagePlan", "compiles stage plan"),
+        "fiscal_target_references.json": ("TargetRegistry", "selects target facts"),
+        "puf_aggregate_record_disaggregation.json": ("StagePlan", "extends support spine"),
+        "tax_expenditure_reforms.json": ("aggregate_admin_gate", "defines reform checks"),
+        "obbba_reforms.json": ("aggregate_admin_gate", "defines reform checks"),
+    }
+
+    for package in packages:
+        package_id = f"populace.country_package.{slug(package.country)}"
+        resources = list(package.resources)
+        nodes.append(
+            {
+                "id": package_id,
+                "symbol": package.country,
+                "title": f"{package.country.upper()} country package",
+                "kind": "country_package",
+                "group": "populace_country_packages",
+                "shape": "input",
+                "summary": first_sentence(str(package.manifest.get("policy", "")))
+                or f"{package.country.upper()} spec-only country package manifest.",
+                "attributes": [
+                    f"schema_version: {package.manifest.get('schema_version')}",
+                    f"country: {package.country}",
+                    f"resources: {len(resources)}",
+                    "runtime: shared Populace runtime modules",
+                ],
+                "annotationRefs": [],
+                "source": node_source_for_path(
+                    "populace",
+                    package.manifest_path,
+                    1,
+                    f"{package.country.upper()} country package manifest",
+                ),
+            }
+        )
+
+        for resource_path, payload in package.resources.items():
+            resource_name = Path(resource_path).name
+            resource_id = f"{package_id}.resource.{slug(Path(resource_name).stem)}"
+            nodes.append(
+                {
+                    "id": resource_id,
+                    "symbol": resource_name,
+                    "title": titleize(Path(resource_name).stem),
+                    "kind": "country_resource",
+                    "group": "populace_country_packages",
+                    "shape": "input",
+                    "summary": json_resource_summary(payload, resource_name),
+                    "attributes": json_resource_attributes(payload),
+                    "annotationRefs": [],
+                    "source": node_source_for_path(
+                        "populace",
+                        resource_path,
+                        1,
+                        f"{package.country.upper()} country resource",
+                    ),
+                }
+            )
+            edges.append(
+                {
+                    "from": package_id,
+                    "to": resource_id,
+                    "label": "declares",
+                    "contract": "resource listed in country_package.json",
+                }
+            )
+            symbol, contract = concept_edges.get(resource_name, ("", ""))
+            target = symbol_to_id.get(symbol)
+            if target:
+                edges.append(
+                    {
+                        "from": resource_id,
+                        "to": target,
+                        "label": "feeds",
+                        "contract": contract,
+                    }
+                )
+    return nodes, edges
+
+
+def json_resource_summary(payload: Any, resource_name: str) -> str:
+    if isinstance(payload, dict):
+        description = payload.get("description") or payload.get("policy")
+        if isinstance(description, str) and description:
+            return first_sentence(description)
+        return f"{resource_name} declares {len(payload)} top-level field(s)."
+    if isinstance(payload, list):
+        return f"{resource_name} declares {len(payload)} item(s)."
+    return f"{resource_name} is a country package resource."
+
+
+def json_resource_attributes(payload: Any) -> list[str]:
+    if isinstance(payload, dict):
+        return [
+            f"{key}: {json_value_preview(value)}"
+            for key, value in list(payload.items())[:18]
+        ]
+    if isinstance(payload, list):
+        return [f"items: {len(payload)}"]
+    return [f"value: {json_value_preview(payload)}"]
+
+
+def json_value_preview(value: Any) -> str:
+    if isinstance(value, dict):
+        return f"{len(value)} keys"
+    if isinstance(value, list):
+        return f"{len(value)} items"
+    if isinstance(value, str):
+        return value[:96]
+    if value is None:
+        return "null"
+    return str(value)
+
+
 def node_source(source: SourceFile, lineno: int) -> dict[str, str | int]:
-    repo = REPOS[source.repo]
+    return node_source_for_path(
+        source.repo,
+        source.path,
+        lineno,
+        source.module_label,
+    )
+
+
+def node_source_for_path(
+    repo_key: str,
+    path: str,
+    lineno: int,
+    module_label: str,
+) -> dict[str, str | int]:
+    repo = REPOS[repo_key]
     return {
         "repository": repo.github_repo,
         "ref": repo.ref,
-        "path": source.path,
+        "path": path,
         "line": lineno,
-        "url": source_url(source.repo, source.path, lineno),
-        "module": source.module_label,
+        "url": source_url(repo_key, path, lineno),
+        "module": module_label,
     }
 
 

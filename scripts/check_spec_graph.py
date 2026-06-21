@@ -52,6 +52,72 @@ def main() -> None:
         if not repo or not repo.get("commit"):
             raise SystemExit(f"Missing source commit provenance for {key}.")
 
+    groups = {group["id"] for group in graph.get("groups", [])}
+    if "populace_country_packages" not in groups:
+        raise SystemExit("Missing Populace country-package graph group.")
+
+    country_package_nodes = [
+        node
+        for node in graph["nodes"]
+        if node.get("kind") == "country_package"
+    ]
+    countries = {node.get("symbol") for node in country_package_nodes}
+    if not {"us", "uk"}.issubset(countries):
+        raise SystemExit(
+            "Spec graph must include production US and UK country package manifests."
+        )
+
+    country_packages = graph.get("source", {}).get("country_packages", [])
+    manifest_paths = {
+        package.get("manifest_path")
+        for package in country_packages
+    }
+    package_node_paths = {
+        node.get("source", {}).get("path")
+        for node in country_package_nodes
+    }
+    missing_manifest_nodes = sorted(manifest_paths - package_node_paths)
+    if missing_manifest_nodes:
+        raise SystemExit(
+            "Missing country package manifest node(s): "
+            + ", ".join(missing_manifest_nodes)
+        )
+
+    expected_resource_paths = {
+        resource
+        for package in country_packages
+        for resource in package.get("resources", [])
+    }
+    resource_node_paths = {
+        node.get("source", {}).get("path")
+        for node in graph["nodes"]
+        if node.get("kind") == "country_resource"
+    }
+    missing_resource_nodes = sorted(expected_resource_paths - resource_node_paths)
+    if missing_resource_nodes:
+        raise SystemExit(
+            "Missing country package resource node(s): "
+            + ", ".join(missing_resource_nodes)
+        )
+
+    extra_resource_nodes = sorted(resource_node_paths - expected_resource_paths)
+    if extra_resource_nodes:
+        raise SystemExit(
+            "Country package resource node(s) are not listed in source metadata: "
+            + ", ".join(extra_resource_nodes)
+        )
+
+    us_resource_nodes = [
+        node
+        for node in graph["nodes"]
+        if node.get("kind") == "country_resource"
+        and node.get("source", {}).get("path", "").startswith(
+            "packages/populace-build/src/populace/build/us/"
+        )
+    ]
+    if not us_resource_nodes:
+        raise SystemExit("Spec graph must include US country package resources.")
+
     HTMLParser().feed((ROOT / "spec.html").read_text(encoding="utf-8"))
     subprocess.run(["node", "--check", "spec.js"], cwd=ROOT, check=True)
     print(

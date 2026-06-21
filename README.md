@@ -17,8 +17,9 @@ python3 -m http.server 4399
 ## Spec Graph
 
 `/spec` reads `data/spec-graph.json`, which is generated from production
-Populace and Ledger source contracts. Do not edit the graph JSON by hand.
-CI regenerates it and fails if the committed artifact drifts.
+Populace and Ledger source contracts plus Populace country package manifests.
+Do not edit the graph JSON by hand. CI regenerates it and fails if the
+committed artifact drifts.
 
 ```bash
 python3 scripts/generate_spec_graph.py
