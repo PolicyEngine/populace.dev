@@ -1,0 +1,119 @@
+.paper-main {
+  padding: 116px clamp(20px, 5vw, 56px) 64px;
+}
+
+.paper-hero {
+  max-width: var(--max);
+  margin: 0 auto;
+}
+
+.paper-title {
+  max-width: 12ch;
+}
+
+.paper-title sub {
+  font-size: 0.48em;
+  vertical-align: -0.18em;
+}
+
+.paper-lede {
+  max-width: 48ch;
+  color: var(--paper);
+  font-size: clamp(1.05rem, 2vw, 1.28rem);
+  line-height: 1.55;
+  margin-bottom: 34px;
+}
+
+.paper-facts {
+  display: grid;
+  gap: 0;
+  grid-template-columns: 1fr;
+  margin-top: 36px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+@media (min-width: 860px) {
+  .paper-facts {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.paper-facts div {
+  padding: 22px 20px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+@media (min-width: 860px) {
+  .paper-facts div {
+    border-bottom: 0;
+    border-right: 1px solid var(--line-soft);
+  }
+
+  .paper-facts div:last-child {
+    border-right: 0;
+  }
+}
+
+.paper-facts dt {
+  color: var(--amber);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.paper-facts dd {
+  color: var(--paper-dim);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.paper-viewer {
+  max-width: min(1500px, calc(100vw - clamp(20px, 5vw, 56px) * 2));
+  margin: clamp(58px, 8vw, 96px) auto 0;
+  border-top: 1px solid var(--line-soft);
+  padding-top: 34px;
+}
+
+.paper-viewer-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 22px;
+}
+
+.paper-viewer-head h2 {
+  margin: 0;
+  max-width: none;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+}
+
+.paper-frame {
+  width: 100%;
+  min-height: 82vh;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: var(--background);
+}
+
+@media (max-width: 720px) {
+  .paper-main {
+    padding-top: 104px;
+  }
+
+  .paper-viewer {
+    max-width: calc(100vw - 24px);
+  }
+
+  .paper-viewer-head {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .paper-frame {
+    min-height: 76vh;
+  }
+}
