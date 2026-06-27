@@ -1,5 +1,5 @@
 .paper-main {
-  padding: 116px clamp(20px, 5vw, 56px) 64px;
+  padding: 132px clamp(20px, 5vw, 56px) 64px;
 }
 
 .paper-hero {
@@ -88,7 +88,7 @@
 .paper-viewer-head h2 {
   margin: 0;
   max-width: none;
-  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-size: clamp(1.45rem, 2.2vw, 2rem);
 }
 
 .paper-frame {
