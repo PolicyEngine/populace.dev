@@ -306,6 +306,16 @@ h2 {
   padding-left: 18px;
 }
 .caveat .mono { display: block; color: var(--paper-faint); font-size: 12.5px; margin-bottom: 6px; }
+.caveat a,
+.research-link a {
+  color: var(--amber-soft);
+  text-decoration-color: color-mix(in srgb, var(--primary) 35%, transparent);
+  text-underline-offset: 0.18em;
+}
+.research-link {
+  font-size: 13px;
+  margin-top: 18px;
+}
 
 /* ---------- commons ---------- */
 .commons-rails {
@@ -382,4 +392,3 @@ h2 {
 }
 .footer a { color: var(--paper-dim); text-decoration: none; }
 .footer a:hover { color: var(--amber-soft); }
-
