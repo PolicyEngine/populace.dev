@@ -320,8 +320,8 @@ simulate. That dataset has to be reduced to a workable size, and the
 question is which records to keep.</p>
 <p>We study this reduction as a sampling problem. Using <span
 class="math inline">\(L_0\)</span> regularization with the Hard Concrete
-relaxation of <span class="citation" data-cites="louizos2018">Louizos et
-al. (2018)</span>, the method jointly selects which records to retain
+relaxation of <span class="citation" data-cites="louizos2018"><a href="#ref-louizos2018" role="doc-biblioref">Louizos et
+al. (2018)</a></span>, the method jointly selects which records to retain
 and assigns each retained record a positive weight. Selection responds
 to the calibration targets rather than being drawn at random, so the
 retained sample is informed by the quantities the dataset must
@@ -588,7 +588,7 @@ subset and reweight it to the targets. We study an alternative in which
 the selection itself is informed by the targets.</p>
 <p>The method is <span class="math inline">\(L_0\)</span> regularization
 with the Hard Concrete relaxation <span class="citation"
-data-cites="louizos2018">(Louizos et al. 2018)</span>. Each candidate
+data-cites="louizos2018"><a href="#ref-louizos2018" role="doc-biblioref">(Louizos et al. 2018)</a></span>. Each candidate
 record receives a gate that the optimizer can drive toward zero or one,
 and the expected number of open gates enters the objective directly.
 Minimizing calibration error and the gate count together selects a
@@ -600,7 +600,7 @@ become. In practical terms, one framework can target a compact national
 dataset or a larger subnational dataset, at a chosen record budget, with
 weights kept inside a usable range.</p>
 <p>We situate this work in <span class="smallcaps">Populace</span> <span
-class="citation" data-cites="populace2026">(PolicyEngine 2026b)</span>,
+class="citation" data-cites="populace2026"><a href="#ref-populace2026" role="doc-biblioref">(PolicyEngine 2026b)</a></span>,
 PolicyEngine’s pipeline for microsimulation dataset construction. <span
 class="smallcaps">Populace</span> passes a single weighted data
 structure through a sequence of modular stages—source loading,
@@ -664,8 +664,8 @@ every local area to support direct estimation. Spatial microsimulation
 addresses that gap either by reweighting existing survey records or by
 building synthetic small-area populations from aggregate constraints
 <span class="citation"
-data-cites="tanton2014review odonoghue2014review">(Tanton 2014;
-O’Donoghue et al. 2014)</span>.</p>
+data-cites="tanton2014review odonoghue2014review"><a href="#ref-tanton2014review" role="doc-biblioref">(Tanton 2014;
+O’Donoghue et al. 2014)</a></span>.</p>
 <p>This distinction matters for the present work, because our pipeline
 is a reweighting system built on observed CPS households. It places
 households across geographies to create local variants, but the core
@@ -673,15 +673,15 @@ problem remains the calibration of survey-based microdata to
 administrative targets, which keeps calibration methods as the closest
 reference point.</p>
 <p>The spatial microsimulation literature supplies further context.
-<span class="citation" data-cites="williamson1998">Williamson et al.
-(1998)</span>, <span class="citation" data-cites="huang2001">Huang and
-Williamson (2001)</span>, and <span class="citation"
-data-cites="harland2012">Harland et al. (2012)</span> describe
+<span class="citation" data-cites="williamson1998"><a href="#ref-williamson1998" role="doc-biblioref">Williamson et al.
+(1998)</a></span>, <span class="citation" data-cites="huang2001"><a href="#ref-huang2001" role="doc-biblioref">Huang and
+Williamson (2001)</a></span>, and <span class="citation"
+data-cites="harland2012"><a href="#ref-harland2012" role="doc-biblioref">Harland et al. (2012)</a></span> describe
 combinatorial and synthetic-population approaches that search over
 record assignments area by area. <span class="citation"
-data-cites="tanton2011">Tanton et al. (2011)</span> and <span
-class="citation" data-cites="lovelace2016">Lovelace and Dumont
-(2016)</span> discuss reweighting for small-area estimation and policy
+data-cites="tanton2011"><a href="#ref-tanton2011" role="doc-biblioref">Tanton et al. (2011)</a></span> and <span
+class="citation" data-cites="lovelace2016"><a href="#ref-lovelace2016" role="doc-biblioref">Lovelace and Dumont
+(2016)</a></span> discuss reweighting for small-area estimation and policy
 analysis. These methods usually target one geographic layer at a time,
 whereas our setting asks one weighted dataset to reproduce state and
 national targets together.</p>
@@ -699,8 +699,8 @@ population totals: <span class="math display">\[\begin{equation}
     \label{eq:calibration_constraint}
 \end{equation}\]</span> where <span class="math inline">\(\mathbf{T} \in
 \mathbb{R}^p\)</span> is the vector of published totals <span
-class="citation" data-cites="deville1992 sarndal2007">(Deville and
-Särndal 1992; Särndal 2007)</span>. The auxiliary variables may be
+class="citation" data-cites="deville1992 sarndal2007"><a href="#ref-deville1992" role="doc-biblioref">(Deville and
+Särndal 1992; Särndal 2007)</a></span>. The auxiliary variables may be
 counts, indicators, or continuous quantities such as income
 components.</p>
 <p>The subnational problem extends this setup in two ways. The target
@@ -715,16 +715,16 @@ class="header-section-number">2.3</span> Calibration estimators</h2>
 <p>Two classical methods are the standard references for this kind of
 problem. Generalized regression (GREG) minimizes a distance from the
 initial weights subject to the calibration equations <span
-class="citation" data-cites="deville1992 sarndal2007">(Deville and
-Särndal 1992; Särndal 2007)</span>. It accepts quantitative targets
+class="citation" data-cites="deville1992 sarndal2007"><a href="#ref-deville1992" role="doc-biblioref">(Deville and
+Särndal 1992; Särndal 2007)</a></span>. It accepts quantitative targets
 directly and is well understood, but it can return negative weights and
 becomes harder to solve as the target system grows and its rows become
 collinear. Negative weights are acceptable in some estimation settings
 and awkward in a microdata file meant for tax-benefit simulation, where
 a household is expected to represent positive population mass.</p>
 <p>Iterative proportional fitting <span class="citation"
-data-cites="deming1940 ireland1968">(IPF, or raking; Deming and Stephan
-1940; Ireland and Kullback 1968)</span> adjusts weights multiplicatively
+data-cites="deming1940 ireland1968"><a href="#ref-deming1940" role="doc-biblioref">(IPF, or raking; Deming and Stephan
+1940; Ireland and Kullback 1968)</a></span> adjusts weights multiplicatively
 so that selected margins match published totals. It preserves
 non-negativity and avoids matrix inversion, which makes it a natural
 choice for count-style margins, but classical IPF is built for
@@ -732,27 +732,27 @@ categorical margins rather than arbitrary linear dollar targets and does
 not encode a large mixed hierarchical system in one pass.</p>
 <p>A third approach treats calibration as an optimization problem to be
 solved numerically. The two methods above are special cases of one
-problem: <span class="citation" data-cites="deville1992">Deville and
-Särndal (1992)</span> define the calibrated weights as those closest to
+problem: <span class="citation" data-cites="deville1992"><a href="#ref-deville1992" role="doc-biblioref">Deville and
+Särndal (1992)</a></span> define the calibrated weights as those closest to
 the design weights, under a chosen distance, subject to reproducing the
 targets, with GREG and raking the closed-form solutions for particular
 distances. When the target system is large, collinear, mixes count and
 dollar constraints, and restricts weights to be positive, the classical
 Newton and Lagrange solvers become hard to apply or fail to converge,
 which motivates minimizing the calibration objective directly. <span
-class="citation" data-cites="espuny2018">Espuny-Pujol et al.
-(2018)</span> do so with a global optimization that enforces the range
+class="citation" data-cites="espuny2018"><a href="#ref-espuny2018" role="doc-biblioref">Espuny-Pujol et al.
+(2018)</a></span> do so with a global optimization that enforces the range
 restrictions on the weights explicitly, and minimum-distance reweighting
 has long been used this way in tax microsimulation <span
-class="citation" data-cites="creedy2003">(Creedy 2003)</span>. At the
+class="citation" data-cites="creedy2003"><a href="#ref-creedy2003" role="doc-biblioref">(Creedy 2003)</a></span>. At the
 scale of an enhanced microdata file the practical solver is stochastic
 gradient descent: the weights are parameterized to stay positive,
 typically in log space; a loss measures the relative discrepancy between
 the weighted estimates and the targets; and an optimizer such as Adam
-<span class="citation" data-cites="kingma2015">(Kingma and Ba
-2015)</span> minimizes it, which scales to thousands of mixed,
+<span class="citation" data-cites="kingma2015"><a href="#ref-kingma2015" role="doc-biblioref">(Kingma and Ba
+2015)</a></span> minimizes it, which scales to thousands of mixed,
 hierarchical targets without inverting a matrix. <span class="citation"
-data-cites="woodruff2024">Woodruff and Ghenis (2024)</span> calibrate
+data-cites="woodruff2024"><a href="#ref-woodruff2024" role="doc-biblioref">Woodruff and Ghenis (2024)</a></span> calibrate
 PolicyEngine’s enhanced CPS in exactly this way.</p>
 <p>These estimators answer a calibration question rather than a sampling
 one: given a fixed set of records, they find weights that match the
@@ -775,8 +775,8 @@ data-reference="sec:methodology">4</a>. We also note the coreset view
 from machine learning, where a weighted subset is chosen so that a model
 fit on the subset approximates the fit on the full data <span
 class="citation"
-data-cites="feldman2020coresets bachem2017coresets">(Feldman 2020;
-Bachem et al. 2017)</span>.</p>
+data-cites="feldman2020coresets bachem2017coresets"><a href="#ref-feldman2020coresets" role="doc-biblioref">(Feldman 2020;
+Bachem et al. 2017)</a></span>.</p>
 <h3 data-number="2.4.1" id="random-sampling"><span
 class="header-section-number">2.4.1</span> Random sampling</h3>
 <p>The simplest reduction draws records at random. Under simple random
@@ -784,17 +784,17 @@ sampling without replacement each record has inclusion probability <span
 class="math inline">\(n/N\)</span> and design weight <span
 class="math inline">\(N/n\)</span>, and the Horvitz–Thompson estimator
 recovers population totals without bias <span class="citation"
-data-cites="horvitz1952 cochran1977 sarndal1992">(Horvitz and Thompson
-1952; Cochran 1977; Särndal et al. 1992)</span>. A random subsample
+data-cites="horvitz1952 cochran1977 sarndal1992"><a href="#ref-horvitz1952" role="doc-biblioref">(Horvitz and Thompson
+1952; Cochran 1977; Särndal et al. 1992)</a></span>. A random subsample
 preserves the conditional distribution of the data in expectation, but
 it does not reproduce administrative totals, so it has to be calibrated
 after the draw. Random selection is also the reference that the
 data-reduction literature treats as the genuine test:
 informativeness-based schemes are measured against it <span
-class="citation" data-cites="ma2015leveraging">(Ma et al. 2015)</span>,
+class="citation" data-cites="ma2015leveraging"><a href="#ref-ma2015leveraging" role="doc-biblioref">(Ma et al. 2015)</a></span>,
 and pruning methods in deep learning often fail to beat it at high
 reduction ratios <span class="citation"
-data-cites="guo2022deepcore">(Guo et al. 2022)</span>. In our setting it
+data-cites="guo2022deepcore"><a href="#ref-guo2022deepcore" role="doc-biblioref">(Guo et al. 2022)</a></span>. In our setting it
 is the reduce-first, calibrate-after baseline, a random draw followed by
 gradient-descent reweighting to the targets.</p>
 <h3 data-number="2.4.2" id="survey-weight-sampling"><span
@@ -806,14 +806,14 @@ turns a reweighted file into a finite, integer-weighted population that
 approximately preserves both the calibrated totals and the distribution.
 This is unequal-probability, probability-proportional-to-size sampling
 in the survey tradition <span class="citation"
-data-cites="hansen1943 horvitz1952">(Hansen and Hurwitz 1943; Horvitz
-and Thompson 1952)</span>, applied to microsimulation as integerisation.
-<span class="citation" data-cites="lovelace2013trs">Lovelace and Ballas
-(2013)</span> catalogue the common integerisation methods and show that
+data-cites="hansen1943 horvitz1952"><a href="#ref-hansen1943" role="doc-biblioref">(Hansen and Hurwitz 1943; Horvitz
+and Thompson 1952)</a></span>, applied to microsimulation as integerisation.
+<span class="citation" data-cites="lovelace2013trs"><a href="#ref-lovelace2013trs" role="doc-biblioref">Lovelace and Ballas
+(2013)</a></span> catalogue the common integerisation methods and show that
 truncate-replicate-sample reproduces the targets most accurately while
 fixing the reduced population to an exact size; earlier top-up schemes
-are due to <span class="citation" data-cites="ballas2005">Ballas et al.
-(2005)</span>. Because the selection probabilities are the calibration
+are due to <span class="citation" data-cites="ballas2005"><a href="#ref-ballas2005" role="doc-biblioref">Ballas et al.
+(2005)</a></span>. Because the selection probabilities are the calibration
 weights, survey-weight sampling presupposes a calibration step, so in
 our comparison it is the calibrate-then-reduce baseline, with gradient
 descent supplying the weights.</p>
@@ -827,8 +827,8 @@ third tradition makes selection itself the calibration: combinatorial
 optimisation chooses a combination of records, with integer
 multiplicities, to match the benchmark totals directly, searched with
 metaheuristics such as simulated annealing <span class="citation"
-data-cites="williamson1998 voas2000">(Williamson et al. 1998; Voas and
-Williamson 2000)</span>. It is the closest precedent for target-informed
+data-cites="williamson1998 voas2000"><a href="#ref-williamson1998" role="doc-biblioref">(Williamson et al. 1998; Voas and
+Williamson 2000)</a></span>. It is the closest precedent for target-informed
 selection, but it is discrete and gradient-free; we note it as related
 work rather than include it in the matched-budget comparison. The method
 studied here also pursues the targets at selection, but with a
@@ -847,8 +847,8 @@ class="math inline">\(L_0\)</span>-penalized problem. The difficulty is
 that the <span class="math inline">\(L_0\)</span> norm is
 non-differentiable and combinatorial, so it cannot be minimized by
 gradient descent in its raw form.</p>
-<p><span class="citation" data-cites="louizos2018">Louizos et al.
-(2018)</span> make the penalty differentiable by attaching a stochastic
+<p><span class="citation" data-cites="louizos2018"><a href="#ref-louizos2018" role="doc-biblioref">Louizos et al.
+(2018)</a></span> make the penalty differentiable by attaching a stochastic
 gate <span class="math inline">\(z_i \in [0, 1]\)</span> to each
 parameter and optimizing the expected <span
 class="math inline">\(L_0\)</span> norm. The gate is drawn from a Hard
@@ -917,7 +917,7 @@ step.</p>
 class="header-section-number">2.6</span> Microsimulation dataset
 engines</h2>
 <p>Beyond the calibration step itself, <span class="citation"
-data-cites="woodruff2024">Woodruff and Ghenis (2024)</span> embed that
+data-cites="woodruff2024"><a href="#ref-woodruff2024" role="doc-biblioref">Woodruff and Ghenis (2024)</a></span> embed that
 gradient-based reweighting in a national pipeline that first imputes tax
 variables from the IRS Public Use File onto CPS records, and that
 regularizes the weights with dropout rather than an explicit selection
@@ -988,8 +988,8 @@ class="header-section-number">3.2</span> Base microdata</h2>
 class="header-section-number">3.2.1</span> Current Population
 Survey</h3>
 <p>The primary source is the Current Population Survey Annual Social and
-Economic Supplement <span class="citation" data-cites="census2024">(CPS
-ASEC; U.S. Census Bureau 2024)</span>, a nationally representative
+Economic Supplement <span class="citation" data-cites="census2024"><a href="#ref-census2024" role="doc-biblioref">(CPS
+ASEC; U.S. Census Bureau 2024)</a></span>, a nationally representative
 household survey from the US Census Bureau and the Bureau of Labor
 Statistics. The CPS provides demographic structure, household
 relationships, labour income, transfer income, and reported
@@ -997,9 +997,9 @@ participation in programmes such as SNAP, Medicaid, SSI, and TANF.</p>
 <p>The CPS is not a complete tax-benefit dataset on its own. Some tax
 variables are missing, others are measured with error, and top incomes
 are imperfectly captured relative to tax records <span class="citation"
-data-cites="burkhauser2012">(Burkhauser et al. 2012)</span>. Benefit
+data-cites="burkhauser2012"><a href="#ref-burkhauser2012" role="doc-biblioref">(Burkhauser et al. 2012)</a></span>. Benefit
 receipt is also underreported relative to administrative sources <span
-class="citation" data-cites="meyer2015">(Meyer et al. 2015)</span>. The
+class="citation" data-cites="meyer2015"><a href="#ref-meyer2015" role="doc-biblioref">(Meyer et al. 2015)</a></span>. The
 pipeline therefore augments the CPS before calibration.</p>
 <h3 data-number="3.2.2"
 id="imputation-from-administrative-and-survey-sources"><span
@@ -1008,14 +1008,14 @@ administrative and survey sources</h3>
 <p>The pipeline enriches the CPS base by imputing variables from
 administrative and survey donors. It imputes tax-return detail from the
 IRS Public Use File <span class="citation"
-data-cites="bryant2023a">(PUF; Bryant 2023)</span> onto CPS records
-following <span class="citation" data-cites="woodruff2024">Woodruff and
-Ghenis (2024)</span>: the PUF carries detailed tax-return information
+data-cites="bryant2023a"><a href="#ref-bryant2023a" role="doc-biblioref">(PUF; Bryant 2023)</a></span> onto CPS records
+following <span class="citation" data-cites="woodruff2024"><a href="#ref-woodruff2024" role="doc-biblioref">Woodruff and
+Ghenis (2024)</a></span>: the PUF carries detailed tax-return information
 but lacks household structure and demographic coverage, so quantile
 regression forests <span class="citation"
-data-cites="meinshausen2006quantile">(Meinshausen 2006)</span> predict
+data-cites="meinshausen2006quantile"><a href="#ref-meinshausen2006quantile" role="doc-biblioref">(Meinshausen 2006)</a></span> predict
 the PUF variables on the CPS; <span class="citation"
-data-cites="meyer2021">Meyer et al. (2020)</span> assess the accuracy of
+data-cites="meyer2021"><a href="#ref-meyer2021" role="doc-biblioref">Meyer et al. (2020)</a></span> assess the accuracy of
 such survey–administrative tax imputations. The imputation is sequential
 and regime-gated, drawing from a weighted bootstrap, so later variables
 condition on earlier imputed values. The same machinery draws further
@@ -1243,9 +1243,9 @@ error is relative, so a one per cent miss on a small target and on a
 large one count the same. The weights are parameterized in log space,
 <span class="math inline">\(w_i = \exp(\theta_i)\)</span>, so the fitted
 weights stay positive; an Adam optimizer <span class="citation"
-data-cites="kingma2015">(Kingma and Ba 2015)</span> implemented in
-PyTorch <span class="citation" data-cites="pytorch2019">(<span
-class="nocase">Paszke et al.</span> 2019)</span> minimizes the loss, and
+data-cites="kingma2015"><a href="#ref-kingma2015" role="doc-biblioref">(Kingma and Ba 2015)</a></span> implemented in
+PyTorch <span class="citation" data-cites="pytorch2019"><a href="#ref-pytorch2019" role="doc-biblioref">(<span
+class="nocase">Paszke et al.</span> 2019)</a></span> minimizes the loss, and
 the total weight is held to the input population. On a fixed set of
 records this calibrator answers a calibration question: it finds weights
 that match the targets. The two baselines use it unchanged; informed
@@ -1277,8 +1277,8 @@ optimization</h2>
 terms to the shared calibrator that turn weight fitting into record
 selection. Each candidate <span class="math inline">\(i\)</span> carries
 a Hard Concrete gate <span class="math inline">\(z_i \in [0, 1]\)</span>
-<span class="citation" data-cites="louizos2018">(Louizos et al.
-2018)</span>, the gated estimate becomes <span
+<span class="citation" data-cites="louizos2018"><a href="#ref-louizos2018" role="doc-biblioref">(Louizos et al.
+2018)</a></span>, the gated estimate becomes <span
 class="math inline">\(\hat{t}_j = \sum_i M_{ji} w_i z_i\)</span>, and
 the optimizer minimizes <span class="math display">\[\begin{equation}
     \mathcal{L}(\mathbf{w}, \boldsymbol{\alpha}) =
@@ -1391,8 +1391,8 @@ class="math inline">\(n\)</span> draws receives an equal share <span
 class="math inline">\(W/n\)</span> of the total weight <span
 class="math inline">\(W\)</span>, and repeated draws accumulate on the
 same record. This is the unbiased Hansen–Hurwitz integerisation <span
-class="citation" data-cites="hansen1943">(Hansen and Hurwitz
-1943)</span> of the dense weights, which preserves their expectation at
+class="citation" data-cites="hansen1943"><a href="#ref-hansen1943" role="doc-biblioref">(Hansen and Hurwitz
+1943)</a></span> of the dense weights, which preserves their expectation at
 every budget, and is the calibrate-then-reduce baseline.</p></li>
 </ul>
 <p>Holding the candidate universe and the target set fixed isolates the
@@ -2239,7 +2239,7 @@ class="header-section-number">8</span> Calibration targets</h1>
 <p>This study calibrates to a prioritized subset of the targets the
 pipeline can construct. Every target is a source-backed fact from
 PolicyEngine Ledger <span class="citation"
-data-cites="ledger2026">(PolicyEngine 2026a)</span>, the
+data-cites="ledger2026"><a href="#ref-ledger2026" role="doc-biblioref">(PolicyEngine 2026a)</a></span>, the
 <code>arch-data</code> fact store that holds the source publications and
 preserves the provenance of each published value; Populace composes
 calibration targets from those facts. The subset here is a surface of
@@ -2453,7 +2453,7 @@ data-reference="tab:hyperparameters_full">9</a> lists the
 hyperparameters of the <span class="math inline">\(L_0\)</span>
 optimization with their roles. The gate parameters follow the Hard
 Concrete construction of <span class="citation"
-data-cites="louizos2018">Louizos et al. (2018)</span>. The sparsity
+data-cites="louizos2018"><a href="#ref-louizos2018" role="doc-biblioref">Louizos et al. (2018)</a></span>. The sparsity
 penalty <span class="math inline">\(\lambda_{L_0}\)</span> and the epoch
 count are set per build to reach a target dataset size and are reported
 with each run.</p>
@@ -2461,8 +2461,8 @@ with each run.</p>
 <table>
 <caption>Hyperparameters for the <span
 class="math inline">\(L_0\)</span> optimization. Gate parameters follow
-<span class="citation" data-cites="louizos2018">Louizos et al.
-(2018)</span>. Source: the <code>l0-python</code> Hard Concrete
+<span class="citation" data-cites="louizos2018"><a href="#ref-louizos2018" role="doc-biblioref">Louizos et al.
+(2018)</a></span>. Source: the <code>l0-python</code> Hard Concrete
 implementation used by <span
 class="smallcaps">Populace</span>.</caption>
 <thead>
