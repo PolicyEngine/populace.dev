@@ -8,12 +8,168 @@
   <meta name="author" content="Nikhil Woodruff" />
   <meta name="author" content="Ben Ogorek" />
   <meta name="author" content="Max Ghenis" />
-  <title>L0 regularization for subnational microsimulation
-calibration</title>
+  <title>L_0 regularization for subnational microsimulation calibration</title>
   <style>
     /* Default styles provided by pandoc.
     ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
     */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    div.abstract {
+      margin: 2em 2em 2em 2em;
+      text-align: left;
+      font-size: 85%;
+    }
+    div.abstract-title {
+      font-weight: bold;
+      text-align: center;
+      padding: 0;
+      margin-bottom: 0.5em;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
@@ -47,7 +203,7 @@ calibration</title>
     div.csl-indent {
       margin-left: 2em;
     }  </style>
-<style id="paper-inline-css">
+  <style id="paper-inline-css">
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
 @import url("https://cdn.jsdelivr.net/npm/@policyengine/ui-kit@0.12.1/src/theme/tokens.css");
 
@@ -292,7 +448,7 @@ td {
 }
 
 </style>
-  <script defer=""
+<script defer=""
   src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
   type="text/javascript"></script>
 </head>
@@ -312,56 +468,53 @@ data-note-num="1"></span></p>
 <div class="abstract-title">Abstract</div>
 <p>Subnational microsimulation needs survey microdata that reproduce
 administrative totals across nested geographies while staying usable
-inside a policy model. A pipeline built for fidelity can combine many
-data sources and add record-level variation, which produces a candidate
-dataset that is rich enough to represent the variation the targets
-describe and also large enough to be expensive to store, calibrate, and
-simulate. That dataset has to be reduced to a workable size, and the
-question is which records to keep.</p>
+inside a policy model. A fidelity-oriented pipeline can combine many
+sources and add record-level variation, producing a candidate dataset
+rich enough to represent the targets but too large to simulate. That
+dataset has to be reduced, and the question is which records to
+keep.</p>
 <p>We study this reduction as a sampling problem. Using <span
 class="math inline">\(L_0\)</span> regularization with the Hard Concrete
-relaxation of <span class="citation" data-cites="louizos2018"><a href="#ref-louizos2018" role="doc-biblioref">Louizos et
-al. (2018)</a></span>, the method jointly selects which records to retain
-and assigns each retained record a positive weight. Selection responds
-to the calibration targets rather than being drawn at random, so the
-retained sample is informed by the quantities the dataset must
-reproduce. The gates make the retained-record count an explicit
-optimization variable, so one framework can produce a compact national
-dataset or a larger subnational one, while soft and hard concentration
-controls bound how large individual weights can grow. Because the
-optimization that selects records also calibrates them, the reduced
-dataset continues to match its targets.</p>
+relaxation of <span class="citation" data-cites="louizos2018">Louizos et
+al. (<a href="#ref-louizos2018" role="doc-biblioref">2018</a>)</span>,
+the method jointly selects which records to retain and assigns each a
+positive weight, with selection driven by the calibration targets rather
+than drawn at random. The gates make the retained-record count an
+explicit optimization variable, and soft and hard concentration controls
+bound how large individual weights can grow. Because the optimization
+that selects records also calibrates them, the reduced dataset continues
+to match its targets.</p>
 <p>We implement the method within <span
-class="smallcaps">Populace</span>, PolicyEngine’s pipeline for
-microsimulation dataset construction, and present a proof of concept on
-its current target surface. The comparison holds the candidate universe,
-the target set, and the record budget fixed, and varies only how records
-are chosen, across three samplers: informed <span
-class="math inline">\(L_0\)</span> selection, random sampling followed
-by gradient-descent reweighting, and survey-weight sampling, which draws
-records with probability proportional to a prior calibration’s weights
-(the unbiased Hansen–Hurwitz scheme). All three fit weights with the
-same calibrator, so the experiment isolates the selection step rather
-than the calibration. Informed <span class="math inline">\(L_0\)</span>
-selection reaches lower out-of-sample error than random sampling under
-aggressive compression, where a random draw is too small to span the
-targets: at a 2<span>,</span>000-record budget its out-of-sample median
-absolute relative error is 39.8% against random sampling’s 57.0%. The
-gap is starker in the tail-sensitive mean (53.5% against
-2<span>,</span>293%), which reflects the seed-to-seed instability of a
-small random draw that informed selection avoids. The methods converge
-as the record budget grows, and above roughly 5<span>,</span>000 records
-random sampling becomes the more accurate of the two; survey-weight
-sampling is the least accurate throughout. The method’s distinctive
-value is therefore operational rather than a uniform accuracy gain: it
-sets the dataset size, geographic emphasis, and weight concentration
-through explicit parameters in one optimization, and it avoids the
-variance of a poor random draw at tight budgets. Matching a demanding
-target system can still load substantial population mass onto a few
-records, a cost we report rather than hide. We report these results as a
-proof of concept on a national and state target surface, and leave the
-larger build-and-prune and subnational settings the controls are
-designed for to future work.</p>
+class="smallcaps">Populace</span>, PolicyEngine’s microsimulation data
+pipeline, and present a proof of concept on its current full United
+States target surface. The run starts from 37<span>,</span>053 Ledger
+facts and scores 32<span>,</span>633 materialized calibration targets,
+including 24<span>,</span>340 congressional-district targets, on
+337<span>,</span>704 candidate households from a three-year pooled ASEC
+support file. Holding the candidate universe, target surface, and
+optimizer budget fixed, we vary how records are chosen across
+target-informed <span class="math inline">\(L_0\)</span> selection,
+dense no-<span class="math inline">\(L_0\)</span> calibration, and
+matched sampling baselines, all scored by the same Populace capped
+weighted calibration loss. A normalized <span
+class="math inline">\(L_0\)</span> penalty retaining 57<span>,</span>240
+records produces a sparse support whose raw gated weights score poorly,
+but an ordinary post-<span class="math inline">\(L_0\)</span> refit on
+that support lowers the Populace loss to 4.74%. The
+1<span>,</span>500-epoch dense no-<span
+class="math inline">\(L_0\)</span> calibration reaches 5.07%, a random
+subset followed by the same reweighting reaches 7.55%, and a random
+sample of the dense calibrated weights scaled back to total mass reaches
+24.24%. The useful finding is therefore specific and actionable: the
+gates are valuable as a support selector, while the publication weights
+should be refit after selection. Because the dense loss is still
+declining at the endpoint, the result is a finite-optimization and
+sparse support result rather than a claim that dense calibration could
+not converge lower. The machinery now runs the full surface, preserves
+the resulting weight vectors, and sets up the next robustness work:
+normalized-penalty sweeps, longer dense convergence checks,
+concentration controls, and comparisons against classical calibration
+methods on target subsets where their assumptions hold.</p>
 </div>
 </header>
 <nav id="TOC" role="doc-toc">
@@ -387,20 +540,30 @@ records</a>
 <ul>
 <li><a href="#random-sampling" id="toc-random-sampling"><span
 class="toc-section-number">2.4.1</span> Random sampling</a></li>
-<li><a href="#survey-weight-sampling"
-id="toc-survey-weight-sampling"><span
-class="toc-section-number">2.4.2</span> Survey-weight sampling</a></li>
+<li><a href="#raking-survey-weight-sampling-and-integerisation"
+id="toc-raking-survey-weight-sampling-and-integerisation"><span
+class="toc-section-number">2.4.2</span> Raking, survey-weight sampling,
+and integerisation</a></li>
+<li><a href="#balanced-sampling" id="toc-balanced-sampling"><span
+class="toc-section-number">2.4.3</span> Balanced sampling</a></li>
+<li><a href="#convex-sparse-calibration"
+id="toc-convex-sparse-calibration"><span
+class="toc-section-number">2.4.4</span> Convex sparse
+calibration</a></li>
 <li><a href="#informed-selection" id="toc-informed-selection"><span
-class="toc-section-number">2.4.3</span> Informed selection</a></li>
+class="toc-section-number">2.4.5</span> Informed selection</a></li>
 </ul></li>
 <li><a href="#l_0-regularization-and-the-hard-concrete-distribution"
 id="toc-l_0-regularization-and-the-hard-concrete-distribution"><span
 class="toc-section-number">2.5</span> <span
 class="math inline">\(L_0\)</span> regularization and the Hard Concrete
 distribution</a></li>
+<li><a href="#sec:l1_background" id="toc-sec:l1_background"><span
+class="toc-section-number">2.6</span> Convex sparse selection (<span
+class="math inline">\(L_1\)</span>)</a></li>
 <li><a href="#microsimulation-dataset-engines"
 id="toc-microsimulation-dataset-engines"><span
-class="toc-section-number">2.6</span> Microsimulation dataset
+class="toc-section-number">2.7</span> Microsimulation dataset
 engines</a></li>
 </ul></li>
 <li><a href="#sec:data" id="toc-sec:data"><span
@@ -446,41 +609,34 @@ id="toc-sec:experiment_design"><span
 class="toc-section-number">4.4</span> Sampling experiment
 design</a></li>
 <li><a href="#sec:oos" id="toc-sec:oos"><span
-class="toc-section-number">4.5</span> Out-of-sample target
-evaluation</a></li>
+class="toc-section-number">4.5</span> Full-surface scoring</a></li>
 <li><a href="#sec:metrics" id="toc-sec:metrics"><span
 class="toc-section-number">4.6</span> Evaluation metrics</a></li>
 </ul></li>
 <li><a href="#sec:results" id="toc-sec:results"><span
 class="toc-section-number">5</span> Results</a>
 <ul>
-<li><a href="#informed-versus-uninformed-sampling"
-id="toc-informed-versus-uninformed-sampling"><span
-class="toc-section-number">5.1</span> Informed versus uninformed
-sampling</a></li>
-<li><a href="#sec:results-generalization"
-id="toc-sec:results-generalization"><span
-class="toc-section-number">5.2</span> Generalization to held-out target
-families</a></li>
+<li><a href="#the-full-surface-matched-probe"
+id="toc-the-full-surface-matched-probe"><span
+class="toc-section-number">5.1</span> The full-surface matched
+probe</a></li>
 <li><a href="#sec:results-controls" id="toc-sec:results-controls"><span
-class="toc-section-number">5.3</span> The size and concentration
-controls</a></li>
+class="toc-section-number">5.2</span> Size and concentration</a></li>
 <li><a href="#accuracy-by-geography"
 id="toc-accuracy-by-geography"><span
-class="toc-section-number">5.4</span> Accuracy by geography</a></li>
+class="toc-section-number">5.3</span> Accuracy by geography</a></li>
 <li><a href="#sec:results-degenerate"
 id="toc-sec:results-degenerate"><span
-class="toc-section-number">5.5</span> Degenerate targets and metric
-robustness</a></li>
-<li><a href="#sec:results-caveats" id="toc-sec:results-caveats"><span
-class="toc-section-number">5.6</span> Caveats</a></li>
+class="toc-section-number">5.4</span> Raw-error tails</a></li>
+<li><a href="#cost" id="toc-cost"><span
+class="toc-section-number">5.5</span> Cost</a></li>
 </ul></li>
 <li><a href="#sec:discussion" id="toc-sec:discussion"><span
 class="toc-section-number">6</span> Discussion</a>
 <ul>
-<li><a href="#what-the-sampling-comparison-establishes"
-id="toc-what-the-sampling-comparison-establishes"><span
-class="toc-section-number">6.1</span> What the sampling comparison
+<li><a href="#what-the-matched-comparison-establishes"
+id="toc-what-the-matched-comparison-establishes"><span
+class="toc-section-number">6.1</span> What the matched comparison
 establishes</a></li>
 <li><a href="#what-the-controls-establish"
 id="toc-what-the-controls-establish"><span
@@ -490,40 +646,25 @@ establish</a></li>
 id="toc-trade-offs-and-limitations"><span
 class="toc-section-number">6.3</span> Trade-offs and limitations</a>
 <ul>
-<li><a href="#target-selection" id="toc-target-selection"><span
-class="toc-section-number">6.3.1</span> Target selection</a></li>
-<li><a href="#when-informed-selection-helps"
-id="toc-when-informed-selection-helps"><span
-class="toc-section-number">6.3.2</span> When informed selection
-helps</a></li>
-<li><a href="#weight-concentration-and-effective-sample-size"
-id="toc-weight-concentration-and-effective-sample-size"><span
-class="toc-section-number">6.3.3</span> Weight concentration and
-effective sample size</a></li>
-<li><a href="#generalization-across-target-families"
-id="toc-generalization-across-target-families"><span
-class="toc-section-number">6.3.4</span> Generalization across target
-families</a></li>
-<li><a href="#degenerate-targets-and-the-choice-of-error-metric"
-id="toc-degenerate-targets-and-the-choice-of-error-metric"><span
-class="toc-section-number">6.3.5</span> Degenerate targets and the
-choice of error metric</a></li>
-<li><a href="#relation-to-convex-sparse-methods"
-id="toc-relation-to-convex-sparse-methods"><span
-class="toc-section-number">6.3.6</span> Relation to convex sparse
-methods</a></li>
-<li><a href="#hyperparameter-sensitivity"
-id="toc-hyperparameter-sensitivity"><span
-class="toc-section-number">6.3.7</span> Hyperparameter
-sensitivity</a></li>
+<li><a href="#single-penalty-and-seed"
+id="toc-single-penalty-and-seed"><span
+class="toc-section-number">6.3.1</span> Single penalty and seed</a></li>
+<li><a href="#target-surface" id="toc-target-surface"><span
+class="toc-section-number">6.3.2</span> Target surface</a></li>
+<li><a href="#random-baselines" id="toc-random-baselines"><span
+class="toc-section-number">6.3.3</span> Random baselines</a></li>
+<li><a href="#raw-error-metrics" id="toc-raw-error-metrics"><span
+class="toc-section-number">6.3.4</span> Raw error metrics</a></li>
 <li><a href="#computational-cost" id="toc-computational-cost"><span
-class="toc-section-number">6.3.8</span> Computational cost</a></li>
+class="toc-section-number">6.3.5</span> Computational cost</a></li>
 </ul></li>
 <li><a href="#generalizability" id="toc-generalizability"><span
 class="toc-section-number">6.4</span> Generalizability</a></li>
 </ul></li>
+<li><a href="#sec:future_work" id="toc-sec:future_work"><span
+class="toc-section-number">7</span> Future work</a></li>
 <li><a href="#sec:conclusion" id="toc-sec:conclusion"><span
-class="toc-section-number">7</span> Conclusion</a></li>
+class="toc-section-number">8</span> Conclusion</a></li>
 <li><a href="#conflict-of-interest"
 id="toc-conflict-of-interest">Conflict of interest</a></li>
 <li><a href="#funding" id="toc-funding">Funding</a></li>
@@ -532,10 +673,7 @@ id="toc-data-and-code-availability">Data and code availability</a></li>
 <li><a href="#use-of-generative-ai" id="toc-use-of-generative-ai">Use of
 generative AI</a></li>
 <li><a href="#app:targets" id="toc-app:targets"><span
-class="toc-section-number">8</span> Calibration targets</a></li>
-<li><a href="#app:presets" id="toc-app:presets"><span
-class="toc-section-number">9</span> From a record budget to the sparsity
-penalty</a></li>
+class="toc-section-number">9</span> Calibration targets</a></li>
 <li><a href="#app:hyperparameters" id="toc-app:hyperparameters"><span
 class="toc-section-number">10</span> Optimization
 hyperparameters</a></li>
@@ -588,7 +726,8 @@ subset and reweight it to the targets. We study an alternative in which
 the selection itself is informed by the targets.</p>
 <p>The method is <span class="math inline">\(L_0\)</span> regularization
 with the Hard Concrete relaxation <span class="citation"
-data-cites="louizos2018"><a href="#ref-louizos2018" role="doc-biblioref">(Louizos et al. 2018)</a></span>. Each candidate
+data-cites="louizos2018">(<a href="#ref-louizos2018"
+role="doc-biblioref">Louizos et al. 2018</a>)</span>. Each candidate
 record receives a gate that the optimizer can drive toward zero or one,
 and the expected number of open gates enters the objective directly.
 Minimizing calibration error and the gate count together selects a
@@ -600,8 +739,9 @@ become. In practical terms, one framework can target a compact national
 dataset or a larger subnational dataset, at a chosen record budget, with
 weights kept inside a usable range.</p>
 <p>We situate this work in <span class="smallcaps">Populace</span> <span
-class="citation" data-cites="populace2026"><a href="#ref-populace2026" role="doc-biblioref">(PolicyEngine 2026b)</a></span>,
-PolicyEngine’s pipeline for microsimulation dataset construction. <span
+class="citation" data-cites="populace2026">(<a href="#ref-populace2026"
+role="doc-biblioref">PolicyEngine 2026b</a>)</span>, PolicyEngine’s
+pipeline for microsimulation dataset construction. <span
 class="smallcaps">Populace</span> passes a single weighted data
 structure through a sequence of modular stages—source loading,
 imputation, geographic assignment, target construction, and
@@ -613,27 +753,31 @@ calibration step studied here is one such component. The paper describes
 the pipeline at the level needed to follow the calibration step, and
 then describes the configuration used here.</p>
 <p>This paper is a proof of concept on <span
-class="smallcaps">Populace</span>’s current target surface: it asks
+class="smallcaps">Populace</span>’s current full target surface: it asks
 whether <span class="math inline">\(L_0\)</span> selection with Hard
 Concrete gates can produce a sparse, calibrated dataset on the targets
-<span class="smallcaps">Populace</span> assembles today. Local-area and
-subnational calibration are the production motivation for the method and
-a future application of it, rather than results this paper presents.</p>
+<span class="smallcaps">Populace</span> assembles today, including the
+congressional-district surface that motivates the build-big, then-prune
+workflow. Local-area and subnational calibration are therefore part of
+the target surface being fit, while full production release engineering
+remains outside the scope of the proof of concept.</p>
 <p>The empirical question is whether informed selection earns its added
-complexity. We ask three things. First, when does informed <span
-class="math inline">\(L_0\)</span> selection reproduce the targets more
-accurately than random sampling and survey-weight sampling at the same
-record budget, and how does that comparison change as the budget
-tightens? Second, does the retained sample generalize, in the sense that
-it also matches whole target families held out of the fit? Third, does
-the framework give usable control over the size of the output, the
-geographic level it focuses on, and the concentration of the fitted
-weights, and what does tightening the concentration control cost in
-accuracy? The answers are regime-dependent: informed selection’s
-accuracy advantage over the baselines concentrates at small budgets,
-while its control over size, geography, and weight concentration is what
-distinguishes it at the larger budgets at which a dataset is
-shipped.</p>
+complexity. We ask three things. First, on the actual <span
+class="smallcaps">Populace</span> loss over the full target surface,
+does informed <span class="math inline">\(L_0\)</span> selection or its
+post-<span class="math inline">\(L_0\)</span> refit reproduce the
+targets more accurately than dense calibration and sampling baselines
+under the same optimizer budget? Second, what do supplemental raw-error
+diagnostics reveal about the tail of the target distribution? Third,
+does the framework give usable control over the size of the output and
+the concentration of the fitted weights? The current full-surface probe
+gives a constructive answer: the raw gated <span
+class="math inline">\(L_0\)</span> weights are not good enough by
+themselves, but the support selected by the gates becomes more accurate
+than matched random support and slightly lower-loss than the
+1<span>,</span>500-epoch dense no-<span
+class="math inline">\(L_0\)</span> run after an ordinary calibration
+refit.</p>
 <p>The rest of the paper follows that structure. Section <a
 href="#sec:background" data-reference-type="ref"
 data-reference="sec:background">2</a> places the work in the literature
@@ -650,7 +794,7 @@ geography, and weight controls. Section <a href="#sec:discussion"
 data-reference-type="ref" data-reference="sec:discussion">6</a>
 interprets those results and discusses their limits, and Section <a
 href="#sec:conclusion" data-reference-type="ref"
-data-reference="sec:conclusion">7</a> concludes.</p>
+data-reference="sec:conclusion">8</a> concludes.</p>
 <h1 data-number="2" id="sec:background"><span
 class="header-section-number">2</span> Background and related work</h1>
 <h2 data-number="2.1"
@@ -664,8 +808,10 @@ every local area to support direct estimation. Spatial microsimulation
 addresses that gap either by reweighting existing survey records or by
 building synthetic small-area populations from aggregate constraints
 <span class="citation"
-data-cites="tanton2014review odonoghue2014review"><a href="#ref-tanton2014review" role="doc-biblioref">(Tanton 2014;
-O’Donoghue et al. 2014)</a></span>.</p>
+data-cites="tanton2014review odonoghue2014review">(<a
+href="#ref-tanton2014review" role="doc-biblioref">Tanton 2014</a>; <a
+href="#ref-odonoghue2014review" role="doc-biblioref">O’Donoghue et al.
+2014</a>)</span>.</p>
 <p>This distinction matters for the present work, because our pipeline
 is a reweighting system built on observed CPS households. It places
 households across geographies to create local variants, but the core
@@ -673,18 +819,22 @@ problem remains the calibration of survey-based microdata to
 administrative targets, which keeps calibration methods as the closest
 reference point.</p>
 <p>The spatial microsimulation literature supplies further context.
-<span class="citation" data-cites="williamson1998"><a href="#ref-williamson1998" role="doc-biblioref">Williamson et al.
-(1998)</a></span>, <span class="citation" data-cites="huang2001"><a href="#ref-huang2001" role="doc-biblioref">Huang and
-Williamson (2001)</a></span>, and <span class="citation"
-data-cites="harland2012"><a href="#ref-harland2012" role="doc-biblioref">Harland et al. (2012)</a></span> describe
+<span class="citation" data-cites="williamson1998">Williamson et al. (<a
+href="#ref-williamson1998" role="doc-biblioref">1998</a>)</span>, <span
+class="citation" data-cites="huang2001">Huang and Williamson (<a
+href="#ref-huang2001" role="doc-biblioref">2001</a>)</span>, and <span
+class="citation" data-cites="harland2012">Harland et al. (<a
+href="#ref-harland2012" role="doc-biblioref">2012</a>)</span> describe
 combinatorial and synthetic-population approaches that search over
 record assignments area by area. <span class="citation"
-data-cites="tanton2011"><a href="#ref-tanton2011" role="doc-biblioref">Tanton et al. (2011)</a></span> and <span
-class="citation" data-cites="lovelace2016"><a href="#ref-lovelace2016" role="doc-biblioref">Lovelace and Dumont
-(2016)</a></span> discuss reweighting for small-area estimation and policy
-analysis. These methods usually target one geographic layer at a time,
-whereas our setting asks one weighted dataset to reproduce state and
-national targets together.</p>
+data-cites="tanton2011">Tanton et al. (<a href="#ref-tanton2011"
+role="doc-biblioref">2011</a>)</span> and <span class="citation"
+data-cites="lovelace2016">Lovelace and Dumont (<a
+href="#ref-lovelace2016" role="doc-biblioref">2016</a>)</span> discuss
+reweighting for small-area estimation and policy analysis. These methods
+usually target one geographic layer at a time, whereas our setting asks
+one weighted dataset to reproduce state and national targets
+together.</p>
 <h2 data-number="2.2" id="survey-calibration"><span
 class="header-section-number">2.2</span> Survey calibration</h2>
 <p>Let <span class="math inline">\(i = 1, \ldots, n\)</span> index
@@ -699,10 +849,11 @@ population totals: <span class="math display">\[\begin{equation}
     \label{eq:calibration_constraint}
 \end{equation}\]</span> where <span class="math inline">\(\mathbf{T} \in
 \mathbb{R}^p\)</span> is the vector of published totals <span
-class="citation" data-cites="deville1992 sarndal2007"><a href="#ref-deville1992" role="doc-biblioref">(Deville and
-Särndal 1992; Särndal 2007)</a></span>. The auxiliary variables may be
-counts, indicators, or continuous quantities such as income
-components.</p>
+class="citation" data-cites="deville1992 sarndal2007">(<a
+href="#ref-deville1992" role="doc-biblioref">Deville and Särndal
+1992</a>; <a href="#ref-sarndal2007" role="doc-biblioref">Särndal
+2007</a>)</span>. The auxiliary variables may be counts, indicators, or
+continuous quantities such as income components.</p>
 <p>The subnational problem extends this setup in two ways. The target
 vector draws on several administrative sources, so it mixes count and
 dollar constraints. The constraints are also nested by geography:
@@ -715,68 +866,113 @@ class="header-section-number">2.3</span> Calibration estimators</h2>
 <p>Two classical methods are the standard references for this kind of
 problem. Generalized regression (GREG) minimizes a distance from the
 initial weights subject to the calibration equations <span
-class="citation" data-cites="deville1992 sarndal2007"><a href="#ref-deville1992" role="doc-biblioref">(Deville and
-Särndal 1992; Särndal 2007)</a></span>. It accepts quantitative targets
-directly and is well understood, but it can return negative weights and
-becomes harder to solve as the target system grows and its rows become
-collinear. Negative weights are acceptable in some estimation settings
-and awkward in a microdata file meant for tax-benefit simulation, where
-a household is expected to represent positive population mass.</p>
+class="citation" data-cites="deville1992 sarndal2007">(<a
+href="#ref-deville1992" role="doc-biblioref">Deville and Särndal
+1992</a>; <a href="#ref-sarndal2007" role="doc-biblioref">Särndal
+2007</a>)</span>. It accepts quantitative targets directly and is well
+understood, but it can return negative weights and becomes harder to
+solve as the target system grows and its rows become collinear. Negative
+weights are acceptable in some estimation settings and awkward in a
+microdata file meant for tax-benefit simulation, where a household is
+expected to represent positive population mass.</p>
 <p>Iterative proportional fitting <span class="citation"
-data-cites="deming1940 ireland1968"><a href="#ref-deming1940" role="doc-biblioref">(IPF, or raking; Deming and Stephan
-1940; Ireland and Kullback 1968)</a></span> adjusts weights multiplicatively
-so that selected margins match published totals. It preserves
-non-negativity and avoids matrix inversion, which makes it a natural
-choice for count-style margins, but classical IPF is built for
-categorical margins rather than arbitrary linear dollar targets and does
-not encode a large mixed hierarchical system in one pass.</p>
+data-cites="deming1940 ireland1968">(IPF, or raking; <a
+href="#ref-deming1940" role="doc-biblioref">Deming and Stephan 1940</a>;
+<a href="#ref-ireland1968" role="doc-biblioref">Ireland and Kullback
+1968</a>)</span> adjusts weights multiplicatively so that selected
+margins match published totals. It preserves non-negativity and avoids
+matrix inversion, which makes it a natural choice for count-style
+margins. In spatial microsimulation and population synthesis, raking is
+commonly paired with a sampling step in one of two orders: draw a sample
+first and rake that fixed sample, or rake the full file first and
+integerise the fractional weights into a finite population. Iterative
+proportional updating and related extensions handle household and person
+margins simultaneously <span class="citation"
+data-cites="pritchard2012">(<a href="#ref-pritchard2012"
+role="doc-biblioref">Pritchard and Miller 2012</a>)</span>. These
+raking-based workflows are natural comparators for pruning methods on
+categorical margin surfaces. They are not direct full-surface baselines
+here: classical IPF is built for non-negative categorical margins,
+whereas the production target surface mixes counts, dollar totals,
+overlapping families, near-zero targets, and hierarchical constraints.
+Generalized raking or entropy calibration can extend the idea to broader
+linear constraints, but then the method becomes a general calibration
+optimizer rather than the classical IPF workflow.</p>
 <p>A third approach treats calibration as an optimization problem to be
 solved numerically. The two methods above are special cases of one
-problem: <span class="citation" data-cites="deville1992"><a href="#ref-deville1992" role="doc-biblioref">Deville and
-Särndal (1992)</a></span> define the calibrated weights as those closest to
-the design weights, under a chosen distance, subject to reproducing the
-targets, with GREG and raking the closed-form solutions for particular
-distances. When the target system is large, collinear, mixes count and
-dollar constraints, and restricts weights to be positive, the classical
-Newton and Lagrange solvers become hard to apply or fail to converge,
-which motivates minimizing the calibration objective directly. <span
-class="citation" data-cites="espuny2018"><a href="#ref-espuny2018" role="doc-biblioref">Espuny-Pujol et al.
-(2018)</a></span> do so with a global optimization that enforces the range
-restrictions on the weights explicitly, and minimum-distance reweighting
-has long been used this way in tax microsimulation <span
-class="citation" data-cites="creedy2003"><a href="#ref-creedy2003" role="doc-biblioref">(Creedy 2003)</a></span>. At the
-scale of an enhanced microdata file the practical solver is stochastic
-gradient descent: the weights are parameterized to stay positive,
-typically in log space; a loss measures the relative discrepancy between
-the weighted estimates and the targets; and an optimizer such as Adam
-<span class="citation" data-cites="kingma2015"><a href="#ref-kingma2015" role="doc-biblioref">(Kingma and Ba
-2015)</a></span> minimizes it, which scales to thousands of mixed,
-hierarchical targets without inverting a matrix. <span class="citation"
-data-cites="woodruff2024"><a href="#ref-woodruff2024" role="doc-biblioref">Woodruff and Ghenis (2024)</a></span> calibrate
-PolicyEngine’s enhanced CPS in exactly this way.</p>
+problem: <span class="citation" data-cites="deville1992">Deville and
+Särndal (<a href="#ref-deville1992"
+role="doc-biblioref">1992</a>)</span> define the calibrated weights as
+those closest to the design weights, under a chosen distance, subject to
+reproducing the targets, with GREG and raking the closed-form solutions
+for particular distances. When the target system is large, collinear,
+mixes count and dollar constraints, and restricts weights to be
+positive, the classical Newton and Lagrange solvers become hard to apply
+or fail to converge, which motivates minimizing the calibration
+objective directly. <span class="citation"
+data-cites="espuny2018">Espuny-Pujol et al. (<a href="#ref-espuny2018"
+role="doc-biblioref">2018</a>)</span> do so with a global optimization
+that enforces the range restrictions on the weights explicitly, and
+minimum-distance reweighting has long been used this way in tax
+microsimulation <span class="citation" data-cites="creedy2003">(<a
+href="#ref-creedy2003" role="doc-biblioref">Creedy 2003</a>)</span>. At
+the scale of an enhanced microdata file the practical solver is
+stochastic gradient descent: the weights are parameterized to stay
+positive, typically in log space; a loss measures the relative
+discrepancy between the weighted estimates and the targets; and an
+optimizer such as Adam <span class="citation"
+data-cites="kingma2015">(<a href="#ref-kingma2015"
+role="doc-biblioref">Kingma and Ba 2015</a>)</span> minimizes it, which
+scales to thousands of mixed, hierarchical targets without inverting a
+matrix. <span class="citation" data-cites="woodruff2024">Woodruff and
+Ghenis (<a href="#ref-woodruff2024"
+role="doc-biblioref">2024</a>)</span> calibrate PolicyEngine’s enhanced
+CPS in exactly this way.</p>
 <p>These estimators answer a calibration question rather than a sampling
 one: given a fixed set of records, they find weights that match the
 targets. The method studied here selects records and fits weights at the
 same time, extending the gradient-based calibration just described with
-explicit record selection. A direct head-to-head benchmark of the
-sampling method against GREG and IPF is left to future work; here they
-serve as the calibration context the sampler is expected to respect.</p>
+explicit record selection. Classical calibration still matters for the
+comparison set, because it can be combined with selection: sampling
+followed by raking is the classical reduce-then-calibrate analogue to
+random sampling followed by gradient reweighting, while raking followed
+by integerisation is the classical calibrate-then-reduce analogue to
+sampling from dense calibrated weights.</p>
 <h2 data-number="2.4" id="sec:reduction_methods"><span
 class="header-section-number">2.4</span> Reducing microdata by selecting
 records</h2>
 <p>Reducing a large candidate dataset to a fixed budget is a sampling
 problem with a long statistical history, and several established methods
 reduce a microdata file by selecting actual records to match known
-totals. They differ mainly in where calibration enters. We review the
-two with the clearest track record in microdata construction; random
-sampling and survey-weight sampling form the matched-budget comparison
-set in Section <a href="#sec:methodology" data-reference-type="ref"
-data-reference="sec:methodology">4</a>. We also note the coreset view
-from machine learning, where a weighted subset is chosen so that a model
-fit on the subset approximates the fit on the full data <span
-class="citation"
-data-cites="feldman2020coresets bachem2017coresets"><a href="#ref-feldman2020coresets" role="doc-biblioref">(Feldman 2020;
-Bachem et al. 2017)</a></span>.</p>
+totals. They differ mainly in where calibration enters: before
+selection, after selection, or inside the selection step itself. We
+review the broad option space because it defines what a reasonable
+analyst might try: random sampling followed by calibration, calibration
+followed by integerisation, raking-based variants of both, balanced
+sampling, combinatorial optimisation, and sparse optimization
+relaxations. Not all of these are equally applicable to the production
+problem. The target surface here is large, mixed, and hierarchical, so
+methods built for categorical margins or discrete area-by-area searches
+are reference points rather than direct full-surface baselines. The
+matched-budget comparison in Section <a href="#sec:methodology"
+data-reference-type="ref" data-reference="sec:methodology">4</a>
+therefore focuses on the tractable full-surface set: informed <span
+class="math inline">\(L_0\)</span>, informed <span
+class="math inline">\(L_0\)</span> followed by ordinary refitting on the
+selected records, dense no-<span class="math inline">\(L_0\)</span>
+calibration on the full candidate universe, random sampling with
+reweighting, and a no-refit random sample of dense calibrated weights
+scaled back to total mass. Raking-based reductions, survey-weight
+sampling, convex sparse calibration, balanced sampling, and
+combinatorial optimisation remain published comparators that motivate
+robustness checks where their assumptions fit cleanly. We also note the
+coreset view from machine learning, where a weighted subset is chosen so
+that a model fit on the subset approximates the fit on the full data
+<span class="citation"
+data-cites="feldman2020coresets bachem2017coresets">(<a
+href="#ref-feldman2020coresets" role="doc-biblioref">Feldman 2020</a>;
+<a href="#ref-bachem2017coresets" role="doc-biblioref">Bachem et al.
+2017</a>)</span>.</p>
 <h3 data-number="2.4.1" id="random-sampling"><span
 class="header-section-number">2.4.1</span> Random sampling</h3>
 <p>The simplest reduction draws records at random. Under simple random
@@ -784,21 +980,31 @@ sampling without replacement each record has inclusion probability <span
 class="math inline">\(n/N\)</span> and design weight <span
 class="math inline">\(N/n\)</span>, and the Horvitz–Thompson estimator
 recovers population totals without bias <span class="citation"
-data-cites="horvitz1952 cochran1977 sarndal1992"><a href="#ref-horvitz1952" role="doc-biblioref">(Horvitz and Thompson
-1952; Cochran 1977; Särndal et al. 1992)</a></span>. A random subsample
-preserves the conditional distribution of the data in expectation, but
-it does not reproduce administrative totals, so it has to be calibrated
-after the draw. Random selection is also the reference that the
-data-reduction literature treats as the genuine test:
-informativeness-based schemes are measured against it <span
-class="citation" data-cites="ma2015leveraging"><a href="#ref-ma2015leveraging" role="doc-biblioref">(Ma et al. 2015)</a></span>,
-and pruning methods in deep learning often fail to beat it at high
-reduction ratios <span class="citation"
-data-cites="guo2022deepcore"><a href="#ref-guo2022deepcore" role="doc-biblioref">(Guo et al. 2022)</a></span>. In our setting it
-is the reduce-first, calibrate-after baseline, a random draw followed by
-gradient-descent reweighting to the targets.</p>
-<h3 data-number="2.4.2" id="survey-weight-sampling"><span
-class="header-section-number">2.4.2</span> Survey-weight sampling</h3>
+data-cites="horvitz1952 cochran1977 sarndal1992">(<a
+href="#ref-horvitz1952" role="doc-biblioref">Horvitz and Thompson
+1952</a>; <a href="#ref-cochran1977" role="doc-biblioref">Cochran
+1977</a>; <a href="#ref-sarndal1992" role="doc-biblioref">Särndal et al.
+1992</a>)</span>. A random subsample preserves the conditional
+distribution of the data in expectation, but it does not reproduce
+administrative totals, so it has to be calibrated after the draw. Random
+selection is also the reference that the data-reduction literature
+treats as the genuine test: informativeness-based schemes are measured
+against it <span class="citation" data-cites="ma2015leveraging">(<a
+href="#ref-ma2015leveraging" role="doc-biblioref">Ma et al.
+2015</a>)</span>, and pruning methods in deep learning often fail to
+beat it at high reduction ratios <span class="citation"
+data-cites="guo2022deepcore">(<a href="#ref-guo2022deepcore"
+role="doc-biblioref">Guo et al. 2022</a>)</span>. In our setting it is
+the reduce-first, calibrate-after baseline, a random draw followed by
+gradient-descent reweighting to the targets. Replacing the gradient
+reweighting step with raking gives the classical sampling-then-raking
+workflow; it is directly comparable on a raking-compatible categorical
+margin subset, but not on the full mixed count-and-dollar target surface
+without changing the problem into generalized calibration.</p>
+<h3 data-number="2.4.2"
+id="raking-survey-weight-sampling-and-integerisation"><span
+class="header-section-number">2.4.2</span> Raking, survey-weight
+sampling, and integerisation</h3>
 <p>A second approach calibrates first and reduces second. Given
 fractional weights from a calibration step, survey-weight sampling
 selects records with probability proportional to those weights, which
@@ -806,34 +1012,99 @@ turns a reweighted file into a finite, integer-weighted population that
 approximately preserves both the calibrated totals and the distribution.
 This is unequal-probability, probability-proportional-to-size sampling
 in the survey tradition <span class="citation"
-data-cites="hansen1943 horvitz1952"><a href="#ref-hansen1943" role="doc-biblioref">(Hansen and Hurwitz 1943; Horvitz
-and Thompson 1952)</a></span>, applied to microsimulation as integerisation.
-<span class="citation" data-cites="lovelace2013trs"><a href="#ref-lovelace2013trs" role="doc-biblioref">Lovelace and Ballas
-(2013)</a></span> catalogue the common integerisation methods and show that
+data-cites="hansen1943 horvitz1952">(<a href="#ref-hansen1943"
+role="doc-biblioref">Hansen and Hurwitz 1943</a>; <a
+href="#ref-horvitz1952" role="doc-biblioref">Horvitz and Thompson
+1952</a>)</span>, applied to microsimulation as integerisation. The
+upstream calibration can be IPF/raking, GREG, or a numerical optimizer;
+the downstream question is how to convert fractional weights into a
+finite file. <span class="citation"
+data-cites="lovelace2013trs">Lovelace and Ballas (<a
+href="#ref-lovelace2013trs" role="doc-biblioref">2013</a>)</span>
+catalogue the common integerisation methods and show that
 truncate-replicate-sample reproduces the targets most accurately while
 fixing the reduced population to an exact size; earlier top-up schemes
-are due to <span class="citation" data-cites="ballas2005"><a href="#ref-ballas2005" role="doc-biblioref">Ballas et al.
-(2005)</a></span>. Because the selection probabilities are the calibration
-weights, survey-weight sampling presupposes a calibration step, so in
-our comparison it is the calibrate-then-reduce baseline, with gradient
-descent supplying the weights.</p>
-<h3 data-number="2.4.3" id="informed-selection"><span
-class="header-section-number">2.4.3</span> Informed selection</h3>
+are due to <span class="citation" data-cites="ballas2005">Ballas et al.
+(<a href="#ref-ballas2005" role="doc-biblioref">2005</a>)</span>.
+Because the selection probabilities are the calibration weights,
+survey-weight sampling presupposes a calibration step and is the
+calibrate-then-reduce member of the literature most adjacent to our
+setting. It is informed selection, but it prioritises records by the
+population mass each carries rather than by their contribution to target
+fit: a record is retained with probability proportional to its prior
+weight, so the step keeps records that represent more population, not
+records that help match a target the fit would otherwise miss. The
+administrative targets enter only through the upstream weights, and the
+sampling preserves that calibrated distribution instead of re-optimising
+against the targets. We therefore treat it as a related literature
+method rather than a target-fitting baseline run here, and note it as a
+natural calibrate-then-reduce comparator for a future sweep (Section <a
+href="#sec:future_work" data-reference-type="ref"
+data-reference="sec:future_work">7</a>). A raking-then-TRS variant is
+the corresponding classical baseline on a categorical margin surface,
+but it does not naturally extend to the full mixed production target
+surface without replacing IPF with a broader calibration solver.</p>
+<h3 data-number="2.4.3" id="balanced-sampling"><span
+class="header-section-number">2.4.3</span> Balanced sampling</h3>
+<p>Balanced sampling selects a fixed-size sample whose Horvitz–Thompson
+estimates reproduce auxiliary totals exactly or nearly exactly. The cube
+method of <span class="citation" data-cites="deville2004cube">Deville
+and Tillé (<a href="#ref-deville2004cube"
+role="doc-biblioref">2004</a>)</span> is the standard construction: it
+chooses inclusion indicators while preserving prescribed balancing
+equations, then uses the resulting sample weights for estimation. This
+makes balanced sampling a target-aware selection method rather than a
+post-sampling calibration method, and therefore a relevant published
+neighbour of <span class="math inline">\(L_0\)</span> selection. Its fit
+to the present problem is not exact. Classical balanced sampling usually
+treats the auxiliary totals as design constraints with predetermined
+inclusion probabilities, whereas the production calibration surface here
+mixes categorical counts, dollar totals, and hierarchical relationships
+and then fits positive weights after selection. Still, it is an
+important reference point for the idea that the sample itself, not only
+its weights, can be chosen to preserve known totals.</p>
+<h3 data-number="2.4.4" id="convex-sparse-calibration"><span
+class="header-section-number">2.4.4</span> Convex sparse
+calibration</h3>
+<p>A final family keeps the continuous optimization setup but replaces
+the direct retained-record count with a convex sparsity surrogate. An
+<span class="math inline">\(L_1\)</span> penalty on fitted weights,
+implemented with proximal soft-thresholding, can drive weights exactly
+to zero while preserving the same calibration loss, and it is tractable
+on the full target surface. Its limitation is structural rather than
+computational: the single penalty couples how many records survive with
+how much the surviving weights shrink, so its tuning parameter is not a
+direct retained-record-count control in the way the expected <span
+class="math inline">\(L_0\)</span> norm is. We therefore read it as a
+penalty-based analogue of the <span class="math inline">\(L_0\)</span>
+selector that this study does not implement, and one we expect to make a
+weaker sampler for that reason; Section <a href="#sec:l1_background"
+data-reference-type="ref" data-reference="sec:l1_background">2.6</a>
+develops the mechanism and the coupling argument.</p>
+<h3 data-number="2.4.5" id="informed-selection"><span
+class="header-section-number">2.4.5</span> Informed selection</h3>
 <p>These methods share the idea that a carefully chosen weighted subset
 can stand in for a larger dataset, but they reach it differently: random
-sampling ignores the targets and repairs the gap afterwards, while
-survey-weight sampling inherits the targets from a prior calibration. A
-third tradition makes selection itself the calibration: combinatorial
-optimisation chooses a combination of records, with integer
-multiplicities, to match the benchmark totals directly, searched with
-metaheuristics such as simulated annealing <span class="citation"
-data-cites="williamson1998 voas2000"><a href="#ref-williamson1998" role="doc-biblioref">(Williamson et al. 1998; Voas and
-Williamson 2000)</a></span>. It is the closest precedent for target-informed
-selection, but it is discrete and gradient-free; we note it as related
-work rather than include it in the matched-budget comparison. The method
-studied here also pursues the targets at selection, but with a
-continuous, gradient-based relaxation that fits the selection and the
-weights jointly. The next subsection sets out that relaxation.</p>
+sampling ignores the targets and repairs the gap afterwards,
+survey-weight sampling inherits the targets from a prior calibration,
+balanced sampling tries to preserve auxiliary totals through the sample
+design, and convex sparse calibration remains in the same optimizer but
+changes the penalty. A fourth tradition makes selection itself the
+calibration: combinatorial optimisation chooses a combination of
+records, with integer multiplicities, to match the benchmark totals
+directly, searched with metaheuristics such as simulated annealing <span
+class="citation"
+data-cites="kirkpatrick1983 williamson1998 voas2000">(<a
+href="#ref-kirkpatrick1983" role="doc-biblioref">Kirkpatrick et al.
+1983</a>; <a href="#ref-williamson1998" role="doc-biblioref">Williamson
+et al. 1998</a>; <a href="#ref-voas2000" role="doc-biblioref">Voas and
+Williamson 2000</a>)</span>. It is the closest precedent for
+target-informed selection, but it is discrete and gradient-free; we note
+it as related work rather than include it in the matched-budget
+comparison. The method studied here also pursues the targets at
+selection, but with a continuous, gradient-based relaxation that fits
+the selection and the weights jointly. The next subsection sets out that
+relaxation.</p>
 <h2 data-number="2.5"
 id="l_0-regularization-and-the-hard-concrete-distribution"><span
 class="header-section-number">2.5</span> <span
@@ -847,18 +1118,18 @@ class="math inline">\(L_0\)</span>-penalized problem. The difficulty is
 that the <span class="math inline">\(L_0\)</span> norm is
 non-differentiable and combinatorial, so it cannot be minimized by
 gradient descent in its raw form.</p>
-<p><span class="citation" data-cites="louizos2018"><a href="#ref-louizos2018" role="doc-biblioref">Louizos et al.
-(2018)</a></span> make the penalty differentiable by attaching a stochastic
-gate <span class="math inline">\(z_i \in [0, 1]\)</span> to each
-parameter and optimizing the expected <span
-class="math inline">\(L_0\)</span> norm. The gate is drawn from a Hard
-Concrete distribution: a binary concrete (continuous-relaxation)
-variable stretched beyond the unit interval and then clipped back into
-it. With a learned location parameter <span class="math inline">\(\log
-\alpha_i\)</span> and a fixed temperature <span
-class="math inline">\(\beta\)</span>, draw <span class="math inline">\(u
-\sim \mathrm{Uniform}(0, 1)\)</span> and set <span
-class="math display">\[\begin{align}
+<p><span class="citation" data-cites="louizos2018">Louizos et al. (<a
+href="#ref-louizos2018" role="doc-biblioref">2018</a>)</span> make the
+penalty differentiable by attaching a stochastic gate <span
+class="math inline">\(z_i \in [0, 1]\)</span> to each parameter and
+optimizing the expected <span class="math inline">\(L_0\)</span> norm.
+The gate is drawn from a Hard Concrete distribution: a binary concrete
+(continuous-relaxation) variable stretched beyond the unit interval and
+then clipped back into it. With a learned location parameter <span
+class="math inline">\(\log \alpha_i\)</span> and a fixed temperature
+<span class="math inline">\(\beta\)</span>, draw <span
+class="math inline">\(u \sim \mathrm{Uniform}(0, 1)\)</span> and set
+<span class="math display">\[\begin{align}
     s_i      &amp;= \sigma\!\left(\frac{\log u - \log(1 - u) + \log
 \alpha_i}{\beta}\right), \\
     \bar{s}_i &amp;= s_i (\zeta - \gamma) + \gamma, \\
@@ -913,24 +1184,74 @@ turn record selection into a term the optimizer can minimize alongside
 calibration error. This is what makes the retained-record count a
 control variable rather than the result of a separate thresholding
 step.</p>
-<h2 data-number="2.6" id="microsimulation-dataset-engines"><span
-class="header-section-number">2.6</span> Microsimulation dataset
+<h2 data-number="2.6" id="sec:l1_background"><span
+class="header-section-number">2.6</span> Convex sparse selection (<span
+class="math inline">\(L_1\)</span>)</h2>
+<p>The <span class="math inline">\(L_0\)</span> count is the natural
+sparsity objective but a hard one. The standard convex surrogate
+replaces it with the <span class="math inline">\(L_1\)</span> norm of
+the weights, <span class="math inline">\(\lVert \mathbf{w} \rVert_1 =
+\sum_i |w_i|\)</span>, which is the LASSO of <span class="citation"
+data-cites="tibshirani1996">Tibshirani (<a href="#ref-tibshirani1996"
+role="doc-biblioref">1996</a>)</span>. Adding the penalty to the
+calibration loss gives the convex program <span
+class="math display">\[\begin{equation}
+    \min_{\mathbf{w} \ge 0}\; \mathcal{L}_{\mathrm{cal}}(\mathbf{w}) +
+\lambda_{L_1} \sum_{i=1}^{n} w_i,
+    \label{eq:l1}
+\end{equation}\]</span> where <span
+class="math inline">\(\lambda_{L_1}\)</span> sets the strength of the
+penalty and the weights are non-negative here, so <span
+class="math inline">\(|w_i| = w_i\)</span>. The <span
+class="math inline">\(L_1\)</span> norm is the standard tool for sparse
+regression and feature selection: unlike the smooth <span
+class="math inline">\(L_2\)</span> (ridge) penalty, which shrinks
+coefficients but rarely sets them to zero, its corner at the origin
+drives small coefficients to exact zeros. The program is convex and is
+minimized by proximal gradient descent, each gradient step followed by a
+soft-thresholding step <span class="math inline">\(w_i \leftarrow
+\max(w_i - \tau,\, 0)\)</span> that subtracts a fixed amount <span
+class="math inline">\(\tau \propto \lambda_{L_1}\)</span> from every
+weight and clips at zero <span class="citation"
+data-cites="beck2009fista">(<a href="#ref-beck2009fista"
+role="doc-biblioref">Beck and Teboulle 2009</a>)</span>, so a record
+whose pull on the targets does not clear the threshold is dropped while
+the rest are kept and shrunk. The trade-off is structural: the single
+penalty <span class="math inline">\(\lambda_{L_1}\)</span> controls both
+how many records survive and how much their weights shrink, because the
+same norm that zeroes small weights also pulls the surviving ones toward
+zero, so forcing a small sample forces heavy shrinkage on the records
+that remain. This coupling is why we expect <span
+class="math inline">\(L_1\)</span> to be a weaker selector than <span
+class="math inline">\(L_0\)</span>: the Hard Concrete gates separate the
+decision to keep a record from the weight it carries, whereas a single
+<span class="math inline">\(L_1\)</span> penalty cannot. We therefore do
+not implement <span class="math inline">\(L_1\)</span> in this study and
+treat it as an analogous penalty method worth testing directly in future
+work (Section <a href="#sec:future_work" data-reference-type="ref"
+data-reference="sec:future_work">7</a>), where running it against <span
+class="math inline">\(L_0\)</span> on the same surface would show
+whether the coupling actually costs it.</p>
+<h2 data-number="2.7" id="microsimulation-dataset-engines"><span
+class="header-section-number">2.7</span> Microsimulation dataset
 engines</h2>
 <p>Beyond the calibration step itself, <span class="citation"
-data-cites="woodruff2024"><a href="#ref-woodruff2024" role="doc-biblioref">Woodruff and Ghenis (2024)</a></span> embed that
-gradient-based reweighting in a national pipeline that first imputes tax
-variables from the IRS Public Use File onto CPS records, and that
-regularizes the weights with dropout rather than an explicit selection
-mechanism. The present work keeps the gradient-based calibration but
-replaces dropout with the <span class="math inline">\(L_0\)</span> and
-Hard Concrete gates of the previous subsection, so that record selection
-becomes explicit and the fitted weights are exactly sparse. It also runs
-within <span class="smallcaps">Populace</span>, a pipeline that
-expresses dataset construction as a sequence of modular stages over a
-shared data structure. The data sources, the imputation model, the
-geographic assignment, and the calibration method are interchangeable
-components rather than fixed steps, which lets the same pipeline support
-different countries and different methodological choices. Section <a
+data-cites="woodruff2024">Woodruff and Ghenis (<a
+href="#ref-woodruff2024" role="doc-biblioref">2024</a>)</span> embed
+that gradient-based reweighting in a national pipeline that first
+imputes tax variables from the IRS Public Use File onto CPS records, and
+that regularizes the weights with dropout rather than an explicit
+selection mechanism. The present work keeps the gradient-based
+calibration but replaces dropout with the <span
+class="math inline">\(L_0\)</span> and Hard Concrete gates of the
+previous subsection, so that record selection becomes explicit and the
+fitted weights are exactly sparse. It also runs within <span
+class="smallcaps">Populace</span>, a pipeline that expresses dataset
+construction as a sequence of modular stages over a shared data
+structure. The data sources, the imputation model, the geographic
+assignment, and the calibration method are interchangeable components
+rather than fixed steps, which lets the same pipeline support different
+countries and different methodological choices. Section <a
 href="#sec:data" data-reference-type="ref"
 data-reference="sec:data">3</a> describes the pipeline and the
 configuration used here.</p>
@@ -972,35 +1293,51 @@ impute missing variables, assign geography, construct the calibration
 targets, and calibrate. The calibration stage is the focus of this
 paper.</figcaption>
 </figure>
-<p>For this build the candidate universe is the <span
-class="smallcaps">Populace</span>-US 2024 household file:
-75<span>,</span>112 households at period 2024, one row per household. We
-pin the exact artifact for reproducibility: HuggingFace repository
-<code>policyengine/populace-us</code>, snapshot <code>be80a14f</code>,
-built from <span class="smallcaps">Populace</span> commit
-<code>6e1bcd0</code>, with H5 SHA-256 beginning <code>f0af2519</code>.
-The repository’s <code>main</code> branch now points to a newer release,
-so the numbers reported here are tied to this pinned snapshot and file
-hash.</p>
+<p>For this build the candidate universe is a three-year pooled ASEC
+support file for period 2024 (constructed as described below):
+337<span>,</span>704 household records, one row per candidate household
+placement. We pin the exact build for reproducibility: <span
+class="smallcaps">Populace</span> commit <code>558e46c1</code>, base H5
+SHA-256 beginning <code>ec290055</code>, Ledger facts SHA-256 beginning
+<code>82cd9e87</code>, and target-registry version
+<code>5a22295b02b6</code>. The run resets household weights to a uniform
+prior before calibration, so the comparison is about support selection
+and reweighting rather than inherited survey weights.</p>
 <h2 data-number="3.2" id="base-microdata"><span
 class="header-section-number">3.2</span> Base microdata</h2>
 <h3 data-number="3.2.1" id="current-population-survey"><span
 class="header-section-number">3.2.1</span> Current Population
 Survey</h3>
 <p>The primary source is the Current Population Survey Annual Social and
-Economic Supplement <span class="citation" data-cites="census2024"><a href="#ref-census2024" role="doc-biblioref">(CPS
-ASEC; U.S. Census Bureau 2024)</a></span>, a nationally representative
-household survey from the US Census Bureau and the Bureau of Labor
-Statistics. The CPS provides demographic structure, household
-relationships, labour income, transfer income, and reported
-participation in programmes such as SNAP, Medicaid, SSI, and TANF.</p>
+Economic Supplement <span class="citation" data-cites="census2024">(CPS
+ASEC; <a href="#ref-census2024" role="doc-biblioref">U.S. Census Bureau
+2024</a>)</span>, a nationally representative household survey from the
+US Census Bureau and the Bureau of Labor Statistics. The CPS provides
+demographic structure, household relationships, labour income, transfer
+income, and reported participation in programmes such as SNAP, Medicaid,
+SSI, and TANF.</p>
+<p>The candidate universe is not a single survey year. To widen the
+support before pruning, <span class="smallcaps">Populace</span> pools
+the three most recently published CPS ASEC files—one per survey year—and
+ages the two earlier vintages forward to the latest year, so all three
+are expressed at a common period, 2024 for this build. Pooling three
+years rather than one substantially increases the number of candidate
+records and widens the variation the frame carries, while aging keeps
+the older vintages comparable to the most recent one; the result is a
+larger, richer candidate frame that still inherits the CPS survey
+design. This is the generate side of the generate-then-prune setting:
+the pooled file is deliberately larger than the deployable dataset, and
+calibration decides which of its 337<span>,</span>704 records
+survive.</p>
 <p>The CPS is not a complete tax-benefit dataset on its own. Some tax
 variables are missing, others are measured with error, and top incomes
 are imperfectly captured relative to tax records <span class="citation"
-data-cites="burkhauser2012"><a href="#ref-burkhauser2012" role="doc-biblioref">(Burkhauser et al. 2012)</a></span>. Benefit
-receipt is also underreported relative to administrative sources <span
-class="citation" data-cites="meyer2015"><a href="#ref-meyer2015" role="doc-biblioref">(Meyer et al. 2015)</a></span>. The
-pipeline therefore augments the CPS before calibration.</p>
+data-cites="burkhauser2012">(<a href="#ref-burkhauser2012"
+role="doc-biblioref">Burkhauser et al. 2012</a>)</span>. Benefit receipt
+is also underreported relative to administrative sources <span
+class="citation" data-cites="meyer2015">(<a href="#ref-meyer2015"
+role="doc-biblioref">Meyer et al. 2015</a>)</span>. The pipeline
+therefore augments the CPS before calibration.</p>
 <h3 data-number="3.2.2"
 id="imputation-from-administrative-and-survey-sources"><span
 class="header-section-number">3.2.2</span> Imputation from
@@ -1008,18 +1345,21 @@ administrative and survey sources</h3>
 <p>The pipeline enriches the CPS base by imputing variables from
 administrative and survey donors. It imputes tax-return detail from the
 IRS Public Use File <span class="citation"
-data-cites="bryant2023a"><a href="#ref-bryant2023a" role="doc-biblioref">(PUF; Bryant 2023)</a></span> onto CPS records
-following <span class="citation" data-cites="woodruff2024"><a href="#ref-woodruff2024" role="doc-biblioref">Woodruff and
-Ghenis (2024)</a></span>: the PUF carries detailed tax-return information
-but lacks household structure and demographic coverage, so quantile
-regression forests <span class="citation"
-data-cites="meinshausen2006quantile"><a href="#ref-meinshausen2006quantile" role="doc-biblioref">(Meinshausen 2006)</a></span> predict
-the PUF variables on the CPS; <span class="citation"
-data-cites="meyer2021"><a href="#ref-meyer2021" role="doc-biblioref">Meyer et al. (2020)</a></span> assess the accuracy of
-such survey–administrative tax imputations. The imputation is sequential
-and regime-gated, drawing from a weighted bootstrap, so later variables
-condition on earlier imputed values. The same machinery draws further
-variables from the donors in Table <a href="#tab:donors"
+data-cites="bryant2023a">(PUF; <a href="#ref-bryant2023a"
+role="doc-biblioref">Bryant 2023</a>)</span> onto CPS records following
+<span class="citation" data-cites="woodruff2024">Woodruff and Ghenis (<a
+href="#ref-woodruff2024" role="doc-biblioref">2024</a>)</span>: the PUF
+carries detailed tax-return information but lacks household structure
+and demographic coverage, so quantile regression forests <span
+class="citation" data-cites="meinshausen2006quantile">(<a
+href="#ref-meinshausen2006quantile" role="doc-biblioref">Meinshausen
+2006</a>)</span> predict the PUF variables on the CPS; <span
+class="citation" data-cites="meyer2021">Meyer et al. (<a
+href="#ref-meyer2021" role="doc-biblioref">2020</a>)</span> assess the
+accuracy of such survey–administrative tax imputations. The imputation
+is sequential and regime-gated, drawing from a weighted bootstrap, so
+later variables condition on earlier imputed values. The same machinery
+draws further variables from the donors in Table <a href="#tab:donors"
 data-reference-type="ref" data-reference="tab:donors">1</a> where the
 CPS is thin. Each step adds variables to the existing households rather
 than new records, so the candidate universe stays at one row per
@@ -1080,35 +1420,32 @@ ratio</td>
 <h3 data-number="3.2.3" id="geography"><span
 class="header-section-number">3.2.3</span> Geography</h3>
 <p>Each household carries a geographic identity. The CPS ASEC reports
-the household’s state, which supports the state-level administrative
-targets this study calibrates to. The assembled file also carries
-county, congressional-district, tract, and block identifiers, but this
-study calibrates only to national and state targets, so the finer levels
-are present without being scored. For this build the candidate universe
-is one row per household: records are not replicated across alternative
-geographic placements, so the candidate count is the household count of
-75<span>,</span>112.</p>
+the household’s state, and <span class="smallcaps">Populace</span>
+attaches congressional-district identifiers so the same frame can be
+calibrated against national, state, and district targets. The current
+support file intentionally contains many more candidate household
+placements than the final deployable file should retain. That is the
+build-big, then-prune setting: <span class="smallcaps">Populace</span>
+creates a support rich enough to cover the target surface, and the
+calibration method decides which records survive.</p>
 <h2 data-number="3.3" id="calibration-targets"><span
 class="header-section-number">3.3</span> Calibration targets</h2>
 <p>The target system combines aggregates from several administrative
-sources at the national and state levels. This study does not calibrate
-to every target the pipeline could construct. It calibrates to a
-prioritized subset, and it reports that subset explicitly rather than
-describing it as a complete or maximal target set. Appendix <a
+sources at the national, state, and congressional-district levels. The
+headline experiment uses the full materialized target surface compiled
+from the current <span class="smallcaps">Populace</span> US fiscal
+registry: 37<span>,</span>053 Ledger facts produce 32<span>,</span>633
+targets after materialization against the candidate frame. Appendix <a
 href="#app:targets" data-reference-type="ref"
-data-reference="app:targets">8</a> lists the target families used and
-the reason for including them. The exact counts come from each
-experiment’s run manifest rather than from a pipeline-wide
-inventory.</p>
+data-reference="app:targets">9</a> lists the target families and
+sources. The exact counts come from the run registry rather than from a
+pipeline-wide inventory.</p>
 <div id="tab:target_subset">
 <table>
-<caption>Prioritized target subset used in this study, by family and
-geographic level. The subset is chosen for the reasons given in
-Appendix <a href="#app:targets" data-reference-type="ref"
-data-reference="app:targets">8</a> and is not a complete inventory of
-the targets the pipeline can construct. All targets are at the national
-or state level; the surface holds no congressional-district
-targets.</caption>
+<caption>Full materialized Populace target surface used in the matched
+full-surface probe, by family and geographic level. The surface contains
+24<span>,</span>340 congressional-district targets, 7<span>,</span>815
+state targets, and 478 national targets.</caption>
 <thead>
 <tr>
 <th style="text-align: left;">Target family</th>
@@ -1120,12 +1457,12 @@ targets.</caption>
 <tr>
 <td style="text-align: left;">IRS Statistics of Income
 (<code>irs_soi</code>)</td>
-<td style="text-align: left;">National, state</td>
-<td style="text-align: right;">3<span>,</span>107</td>
+<td style="text-align: left;">National, state, district</td>
+<td style="text-align: right;">31<span>,</span>350</td>
 </tr>
 <tr>
 <td style="text-align: left;">Census population estimates
-(<code>census_population</code>)</td>
+(<code>census_pep</code>)</td>
 <td style="text-align: left;">National, state</td>
 <td style="text-align: right;">936</td>
 </tr>
@@ -1133,7 +1470,7 @@ targets.</caption>
 <td style="text-align: left;">Medicaid and CHIP, CMS
 (<code>cms_medicaid</code>)</td>
 <td style="text-align: left;">National, state</td>
-<td style="text-align: right;">104</td>
+<td style="text-align: right;">102</td>
 </tr>
 <tr>
 <td style="text-align: left;">ACA marketplace, CMS
@@ -1147,10 +1484,10 @@ targets.</caption>
 <td style="text-align: right;">52</td>
 </tr>
 <tr>
-<td style="text-align: left;">State income tax, Census STC
-(<code>state_income_tax</code>)</td>
+<td style="text-align: left;">State tax collections, Census STC
+(<code>census_stc</code>)</td>
 <td style="text-align: left;">State</td>
-<td style="text-align: right;">45</td>
+<td style="text-align: right;">44</td>
 </tr>
 <tr>
 <td style="text-align: left;">TANF, HHS ACF
@@ -1159,20 +1496,20 @@ targets.</caption>
 <td style="text-align: right;">30</td>
 </tr>
 <tr>
-<td style="text-align: left;">Social Security OASDI, SSA
-(<code>ssa</code>)</td>
+<td style="text-align: left;">Social Security supplement, SSA
+(<code>ssa_supplement</code>)</td>
 <td style="text-align: left;">National</td>
 <td style="text-align: right;">6</td>
 </tr>
 <tr>
-<td style="text-align: left;">CBO revenue projections
-(<code>cbo</code>)</td>
+<td style="text-align: left;">JCT tax expenditures
+(<code>jct</code>)</td>
 <td style="text-align: left;">National</td>
 <td style="text-align: right;">5</td>
 </tr>
 <tr>
-<td style="text-align: left;">JCT tax expenditures
-(<code>jct</code>)</td>
+<td style="text-align: left;">CBO revenue projections
+(<code>cbo</code>)</td>
 <td style="text-align: left;">National</td>
 <td style="text-align: right;">5</td>
 </tr>
@@ -1185,17 +1522,18 @@ targets.</caption>
 <tr>
 <td style="text-align: left;"><strong>Total</strong></td>
 <td style="text-align: left;"></td>
-<td style="text-align: right;"><strong>4<span>,</span>393</strong></td>
+<td style="text-align: right;"><strong>32<span>,</span>633</strong></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p><span>Counts are read from the run manifest. The <code>cbo</code>
-family is held out as a validation-only diagnostic and is never used to
-fit weights (Section <a href="#sec:oos" data-reference-type="ref"
-data-reference="sec:oos">4.5</a>); the source for each family is listed
+<p><span>Counts are read from the run registry. In the headline
+experiment all targets, including <code>cbo</code>, are fit and scored;
+holdout variants are supplemental diagnostics (Section <a
+href="#sec:oos" data-reference-type="ref"
+data-reference="sec:oos">4.5</a>). The source for each family is listed
 in Appendix <a href="#app:targets" data-reference-type="ref"
-data-reference="app:targets">8</a>.</span></p>
+data-reference="app:targets">9</a>.</span></p>
 <h1 data-number="4" id="sec:methodology"><span
 class="header-section-number">4</span> Methodology</h1>
 <p>This section describes the calibration method that selects and
@@ -1220,7 +1558,7 @@ class="math display">\[\begin{equation}
     \hat{t}_j = \sum_{i=1}^{n} M_{ji}\, w_i.
     \label{eq:estimate}
 \end{equation}\]</span></p>
-<p>The three methods compared in this study fit weights with the same
+<p>The methods compared in this study fit weights with the same
 calibrator, the <code>calibrate</code> routine in <span
 class="smallcaps">Populace</span>. It minimizes a capped, weighted mean
 absolute percentage error (capped weighted MAPE) of the estimates
@@ -1235,30 +1573,34 @@ t_j}{s_j}\right|,\, c\right)}
 floor of one unit so a zero-valued target stays well defined; <span
 class="math inline">\(c\)</span> caps the contribution of any single
 hard-to-fit target, so one badly conditioned target cannot dominate the
-gradient, and is set to <span class="math inline">\(c = 10\)</span> in
-the runs reported here; and <span
-class="math inline">\(\omega_j\)</span> are per-target weights,
+gradient, and is set to the production value <span
+class="math inline">\(c = 1\)</span> in the runs reported here; and
+<span class="math inline">\(\omega_j\)</span> are per-target weights,
 normalised by their sum so only their relative magnitudes matter. The
 error is relative, so a one per cent miss on a small target and on a
 large one count the same. The weights are parameterized in log space,
 <span class="math inline">\(w_i = \exp(\theta_i)\)</span>, so the fitted
 weights stay positive; an Adam optimizer <span class="citation"
-data-cites="kingma2015"><a href="#ref-kingma2015" role="doc-biblioref">(Kingma and Ba 2015)</a></span> implemented in
-PyTorch <span class="citation" data-cites="pytorch2019"><a href="#ref-pytorch2019" role="doc-biblioref">(<span
-class="nocase">Paszke et al.</span> 2019)</a></span> minimizes the loss, and
-the total weight is held to the input population. On a fixed set of
-records this calibrator answers a calibration question: it finds weights
-that match the targets. The two baselines use it unchanged; informed
-<span class="math inline">\(L_0\)</span> extends it.</p>
+data-cites="kingma2015">(<a href="#ref-kingma2015"
+role="doc-biblioref">Kingma and Ba 2015</a>)</span> implemented in
+PyTorch <span class="citation" data-cites="pytorch2019">(<a
+href="#ref-pytorch2019" role="doc-biblioref"><span class="nocase">Paszke
+et al.</span> 2019</a>)</span> minimizes the loss, and the total weight
+is held to the input population. On a fixed set of records this
+calibrator answers a calibration question: it finds weights that match
+the targets. Dense no-<span class="math inline">\(L_0\)</span>,
+post-<span class="math inline">\(L_0\)</span> refit, and random +
+reweight use it unchanged on different supports; informed <span
+class="math inline">\(L_0\)</span> extends it with a selection term.</p>
 <p>The per-target weights <span class="math inline">\(\omega_j\)</span>
 in the runs reported here follow <span
 class="smallcaps">Populace</span>’s production US-fiscal weighting,
 computed through the same code path the production US build uses rather
 than a separate reimplementation. The weighting is built in four steps.
 Each target is first assigned to one of two value bases from its measure
-metadata: a <em>count</em> basis (indicator, enrollment, recipient, and
-return-count measures) or an <em>amount</em> basis (dollar measures).
-Within a basis, a target’s raw weight is proportional to <span
+metadata: a count basis (indicator, enrollment, recipient, and
+return-count measures) or an amount basis (dollar measures). Within a
+basis, a target’s raw weight is proportional to <span
 class="math inline">\(\max(|t_j|, 1)^{1/2}\)</span>, the square root of
 its own magnitude, so a larger aggregate carries more weight but
 sublinearly (a target a hundred times larger receives about ten times
@@ -1277,39 +1619,45 @@ optimization</h2>
 terms to the shared calibrator that turn weight fitting into record
 selection. Each candidate <span class="math inline">\(i\)</span> carries
 a Hard Concrete gate <span class="math inline">\(z_i \in [0, 1]\)</span>
-<span class="citation" data-cites="louizos2018"><a href="#ref-louizos2018" role="doc-biblioref">(Louizos et al.
-2018)</a></span>, the gated estimate becomes <span
+<span class="citation" data-cites="louizos2018">(<a
+href="#ref-louizos2018" role="doc-biblioref">Louizos et al.
+2018</a>)</span>, the gated estimate becomes <span
 class="math inline">\(\hat{t}_j = \sum_i M_{ji} w_i z_i\)</span>, and
 the optimizer minimizes <span class="math display">\[\begin{equation}
     \mathcal{L}(\mathbf{w}, \boldsymbol{\alpha}) =
     \mathcal{L}_{\mathrm{cal}}(\mathbf{w}, \mathbf{z}) +
-    \lambda_{L_0} \sum_{i=1}^{n} \bar{z}_i +
+    \lambda_{\mathrm{share}}\frac{1}{n}\sum_{i=1}^{n} \bar{z}_i +
     \lambda_{L_2} \frac{1}{n} \sum_{i=1}^{n}
 \left(\frac{w_i}{w_{0,i}}\right)^2.
     \label{eq:loss}
 \end{equation}\]</span> The first term is the capped weighted MAPE of
-the calibration-loss equation, now evaluated on the
+Equation <a href="#eq:loss_cal" data-reference-type="ref"
+data-reference="eq:loss_cal">[eq:loss_cal]</a>, now evaluated on the
 gated weights <span class="math inline">\(w_i z_i\)</span>. The second
 term is the <span class="math inline">\(L_0\)</span> penalty and sets
 the sample size: <span class="math inline">\(\bar{z}_i = \Pr(z_i \neq
 0)\)</span> is the expected activation of gate <span
-class="math inline">\(i\)</span> (the Hard Concrete activation probability), so <span
+class="math inline">\(i\)</span> (Equation <a href="#eq:l0penalty"
+data-reference-type="ref"
+data-reference="eq:l0penalty">[eq:l0penalty]</a>), so <span
 class="math inline">\(\sum_i \bar{z}_i\)</span> is the expected number
 of open gates, the expected retained-record count, and <span
 class="math inline">\(\lambda_{L_0}\)</span> sets how aggressively the
-optimizer prunes. Rather than set <span
-class="math inline">\(\lambda_{L_0}\)</span> by hand, each build tunes
-it by an outer bisection to a requested record count (Appendix <a
-href="#app:presets" data-reference-type="ref"
-data-reference="app:presets">9</a>). The third term is a soft
-concentration penalty: <span
+optimizer prunes. In the full-surface probe we report <span
+class="math inline">\(\lambda_{L_0}\)</span> through a normalized
+penalty share, <span
+class="math inline">\(\lambda_{\mathrm{share}}\sum_i\bar{z}_i/n\)</span>,
+so the sparsity price is comparable when the candidate record count
+changes. The raw coefficient passed to the optimizer is therefore <span
+class="math inline">\(\lambda_{L_0}=\lambda_{\mathrm{share}}/n\)</span>.
+The third term is a soft concentration penalty: <span
 class="math inline">\(\lambda_{L_2}\)</span> multiplies the mean squared
 ratio of each fitted weight to its initial weight <span
 class="math inline">\(w_{0,i}\)</span>, which discourages the optimizer
 from carrying the fit on a few heavily inflated records. It applies to
-informed <span class="math inline">\(L_0\)</span> and is zero for the
-two baselines, which run the shared calibrator without the gate and
-concentration terms.</p>
+informed <span class="math inline">\(L_0\)</span> only; the dense and
+random baselines run the shared calibrator without any selection or
+concentration term.</p>
 <p>Read as a sampler, the calibration term keeps the retained sample
 faithful to the targets, the <span class="math inline">\(L_0\)</span>
 penalty sets the sample size, and the <span
@@ -1322,30 +1670,27 @@ controls act on the ratio of each fitted weight to its initial weight,
 <span class="math inline">\(w_i / w_{0,i}\)</span>. The <span
 class="math inline">\(L_2\)</span> term is a soft penalty on the mean
 square of that ratio that discourages large inflations smoothly, and it
-is the control we sweep to trace the accuracy-concentration trade-off.
+is the natural control for tracing the accuracy-concentration trade-off.
 <code>max_weight_ratio</code> is a hard per-record cap on the same
 ratio: no fitted weight may exceed a fixed multiple of that record’s
 initial weight, clamped after every optimizer step. The soft penalty
 shapes the whole weight distribution during optimization; the cap bounds
 the single largest weight. Size and concentration are therefore set by
 separate controls: <span class="math inline">\(\lambda_{L_0}\)</span>
-fixes how many records remain, and the <span
+sets how many records remain, and the <span
 class="math inline">\(L_2\)</span> penalty and
-<code>max_weight_ratio</code> fix how concentrated their weights may
-become. The headline runs leave the cap off and set <span
-class="math inline">\(\lambda_{L_2}=0\)</span>, so the reported accuracy
-frontier is the pure-calibration result; Section <a
-href="#sec:results-controls" data-reference-type="ref"
-data-reference="sec:results-controls">5.3</a> reports <span
-class="math inline">\(\lambda_{L_2}=10^{-4}\)</span> beside it as an
-operability contrast, tracing what the penalty buys in effective sample
-size against what it costs in fit. Tightening either control bounds how
-much population a single record can carry, at some cost to calibration
-fit. Appendix <a href="#app:hyperparameters" data-reference-type="ref"
+<code>max_weight_ratio</code> can fix how concentrated their weights may
+become. The headline full-surface probe leaves the cap off and sets
+<span class="math inline">\(\lambda_{L_2}=0\)</span>, so the reported
+accuracy comparison is the pure-calibration result. Tightening either
+control is a natural robustness panel: it bounds how much population a
+single record can carry, at some cost to calibration fit. Appendix <a
+href="#app:hyperparameters" data-reference-type="ref"
 data-reference="app:hyperparameters">10</a> lists the full
 configuration, and Appendix <a href="#app:algorithm"
 data-reference-type="ref" data-reference="app:algorithm">11</a> gives
-the optimization loop as <a href="#app:algorithm">the algorithm pseudocode</a>.</p>
+the optimization loop as Algorithm <a href="#alg:l0"
+data-reference-type="ref" data-reference="alg:l0">[alg:l0]</a>.</p>
 <p>The gates and the weights are learned together: the gate decides
 whether a record is in the sample, and the weight decides how much it
 counts. Because both are fit against the same calibration loss,
@@ -1366,142 +1711,116 @@ matters operationally but is not the object of the experiment.</p>
 <h2 data-number="4.4" id="sec:experiment_design"><span
 class="header-section-number">4.4</span> Sampling experiment design</h2>
 <p>The experiment evaluates whether informed selection produces a better
-dataset than the alternative samplers at the same record budget. From
-one candidate universe and one target set, we compare informed <span
-class="math inline">\(L_0\)</span> selection against two matched-budget
-baselines, which span where calibration enters the reduction (Section <a
-href="#sec:reduction_methods" data-reference-type="ref"
-data-reference="sec:reduction_methods">2.4</a>):</p>
+dataset than the alternative samplers at the same record budget. The
+literature offers more possible comparators than can be run cleanly on
+the full mixed target surface: raking-based workflows are natural on
+categorical margins, balanced sampling is designed for fixed balancing
+variables, and combinatorial optimisation is discrete and costly at
+production scale. The headline comparison therefore keeps the candidate
+universe, target surface, positivity restriction, and calibration loss
+fixed, and varies only the way records are selected and, for the
+post-selection arms, refit. From one candidate universe and one target
+set, the matched full-surface probe compares five method arms: informed
+<span class="math inline">\(L_0\)</span> selection, informed <span
+class="math inline">\(L_0\)</span> selection followed by an ordinary
+calibration refit on the selected records, dense no-<span
+class="math inline">\(L_0\)</span> calibration on the full candidate
+universe, random sampling followed by gradient reweighting, and a
+no-refit random sample of dense calibrated weights scaled back to total
+mass. The run arms are:</p>
 <ul>
 <li><p><strong>Informed <span class="math inline">\(L_0\)</span>
 sampling with Hard Concrete gates.</strong> The shared calibrator with
 the gate and concentration terms above selects records and fits their
 weights jointly at a chosen budget, set through <span
 class="math inline">\(\lambda_{L_0}\)</span>.</p></li>
+<li><p><strong>Informed <span class="math inline">\(L_0\)</span> +
+refit.</strong> The same selected records are kept, but the gates are
+removed and the shared calibrator refits ordinary dense weights on that
+retained subset, initialized from the informed <span
+class="math inline">\(L_0\)</span> weights. This post-<span
+class="math inline">\(L_0\)</span> refit isolates the value of the
+selected subset from the particular gated weights returned by the joint
+optimization.</p></li>
+<li><p><strong>Dense no-<span class="math inline">\(L_0\)</span>
+calibration.</strong> The shared calibrator fits positive weights on the
+full 337<span>,</span>704-record candidate universe, with gates off and
+no sparsity or concentration penalty. This is the finite-optimization
+dense benchmark.</p></li>
 <li><p><strong>Random sampling with gradient-descent
 reweighting.</strong> A random subset of the candidate universe of the
 same size is drawn, then the shared calibrator fits its weights to the
 same targets without the gate or concentration terms. This is the
 reduce-first, calibrate-after baseline.</p></li>
-<li><p><strong>Survey-weight sampling (Hansen–Hurwitz).</strong> The
-shared calibrator first reweights the full universe to the targets, and
-records are then drawn with probability proportional to those weights,
-<em>with replacement</em>; each of the <span
-class="math inline">\(n\)</span> draws receives an equal share <span
-class="math inline">\(W/n\)</span> of the total weight <span
-class="math inline">\(W\)</span>, and repeated draws accumulate on the
-same record. This is the unbiased Hansen–Hurwitz integerisation <span
-class="citation" data-cites="hansen1943"><a href="#ref-hansen1943" role="doc-biblioref">(Hansen and Hurwitz
-1943)</a></span> of the dense weights, which preserves their expectation at
-every budget, and is the calibrate-then-reduce baseline.</p></li>
+<li><p><strong>Dense random scaled sample.</strong> Dense no-<span
+class="math inline">\(L_0\)</span> weights are fit once on the full
+universe; a uniform random subset of the matched size is retained; the
+retained dense weights are then scaled so their total equals the dense
+total, with no post-sampling refit. This tests whether dense calibration
+alone can be made sparse by random thinning and mass scaling.</p></li>
 </ul>
+<p>This design does not claim that raking, GREG, balanced sampling, or
+combinatorial optimisation are irrelevant in general. They remain the
+reference methods for simpler margin surfaces, classical calibration,
+target-balanced survey designs, and discrete synthetic-population
+construction. The empirical comparison below focuses on the methods that
+can be applied to the full Populace target surface under the same
+scoring loss and that were run in the real-data probe.</p>
 <p>Holding the candidate universe and the target set fixed isolates the
-effect of how records are chosen. We sweep the retained-record budget
-across 2<span>,</span>000, 5<span>,</span>000, 10<span>,</span>000,
-20<span>,</span>000, and 40<span>,</span>000 records, from aggressive
-compression of the candidate universe up to a large fraction of it, and
-run each budget over three calibration seeds (seeds <span
-class="math inline">\(0\)</span>–<span
-class="math inline">\(2\)</span>). Informed <span
-class="math inline">\(L_0\)</span> sets the achieved budget at each grid
-point through its <span class="math inline">\(\lambda_{L_0}\)</span>
-bisection, and the baselines are matched to the same retained count.</p>
+effect of how records are chosen. Every method starts from the same
+candidate frame with its weights reset to a uniform prior, so each
+record’s initial weight <span class="math inline">\(w_{0,i}\)</span> is
+one shared constant. The reported probe uses <span
+class="math inline">\(\lambda_{\mathrm{share}}=0.8\)</span>, which
+equals raw <span
+class="math inline">\(\lambda_{L_0}=2.37\times10^{-6}\)</span> for the
+337<span>,</span>704 candidate records and retains 57<span>,</span>240
+records. The post-<span class="math inline">\(L_0\)</span> refit, dense
+no-<span class="math inline">\(L_0\)</span>, and random + reweight
+baselines each use a 1<span>,</span>500-epoch optimizer budget; the
+sparse baselines use the same 57<span>,</span>240-record count. Sweeps
+across penalties and concentration controls are the next robustness
+panel rather than part of the headline evidence here.</p>
 <h2 data-number="4.5" id="sec:oos"><span
-class="header-section-number">4.5</span> Out-of-sample target
-evaluation</h2>
-<p>A sampler can match the targets it is fit to and still generalize
-poorly. To test generalization, the design separates the targets used to
-fit the weights from the targets used to score the result, and holds out
-<em>whole target families</em> rather than a random subset of targets.
-The reason is structural: targets within a family nest (a national total
-is the sum of its state cells), so a random target split leaks: a
-held-out cell is nearly determined by its retained siblings, which would
-overstate generalization. Holding out a whole family removes that
-leakage.</p>
-<p>The fixed holdout comprises the <code>cms_medicaid</code>,
-<code>usda_snap</code>, and <code>state_income_tax</code> families, 201
-targets spanning three domains (Medicaid enrollment and spending, SNAP,
-and state income tax). These families are held out of every method’s fit
-and scored only out-of-sample. Each held-out family keeps a related
-family in the fit, so the test asks each method to reproduce a held-out
-family while a structurally similar family remains in the fit, rather
-than orphaning a domain entirely (Table <a href="#tab:holdout_siblings"
-data-reference-type="ref" data-reference="tab:holdout_siblings">3</a>).
-The <code>cbo</code> family is additionally held out as a <span
-class="smallcaps">Populace</span> validation-only family (forecast and
-aging projections used as diagnostics rather than contemporaneous
-targets), so it is never fit. Of the 4<span>,</span>393 targets in the
-system, 4<span>,</span>187 are used to fit the weights and 206 are held
-out (the 201 contemporaneous targets plus the 5 <code>cbo</code>
-validation-only targets).</p>
-<div id="tab:holdout_siblings">
-<table>
-<caption>The fixed family-level holdout. Each contemporaneous held-out
-family keeps a structurally related family in the fit, so generalization
-is tested against a similar but unseen family rather than an orphaned
-domain. The <code>cbo</code> family is held out as a validation-only
-diagnostic.</caption>
-<thead>
-<tr>
-<th style="text-align: left;">Held-out family</th>
-<th style="text-align: left;">Domain</th>
-<th style="text-align: left;">Related family kept in the fit</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><code>cms_medicaid</code></td>
-<td style="text-align: left;">Medicaid enrollment and spending</td>
-<td style="text-align: left;"><code>cms_aca</code>,
-<code>cms_medicare</code> (other health-program enrollment)</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>state_income_tax</code></td>
-<td style="text-align: left;">State income tax</td>
-<td style="text-align: left;"><code>irs_soi</code> (federal income-tax
-aggregates)</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>usda_snap</code></td>
-<td style="text-align: left;">SNAP enrollment and spending</td>
-<td style="text-align: left;"><code>hhs_acf_tanf</code> (a related
-means-tested transfer)</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>cbo</code></td>
-<td style="text-align: left;">CBO revenue and aging projections</td>
-<td style="text-align: left;">none; validation-only, never fit</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><span>Family counts are read from the run manifest. The
-related-family pairing is a property of the target system, not of any
-method.</span></p>
-<p>As a stricter robustness check we also rotate whole families through
-the holdout in a family-grouped five-fold design: the families are dealt
-into five folds balanced by target count, and each fold is held out in
-turn. Because the folds hold out structurally different families rather
-than independent draws, we report them per fold rather than as a single
-inferential test (Section <a href="#sec:results-generalization"
+class="header-section-number">4.5</span> Full-surface scoring</h2>
+<p>The production motivation is to construct a deployable dataset that
+fits the full target surface <span class="smallcaps">Populace</span>
+currently assembles. The headline experiment therefore fits and scores
+every materialized target, including validation-only families and
+congressional-district targets. In the run reported here,
+37<span>,</span>053 Ledger facts compile to 32<span>,</span>633
+materialized calibration targets on 337<span>,</span>704 candidate
+household records. The reported objective is the same capped, weighted
+calibration loss in Equation <a href="#eq:loss_cal"
 data-reference-type="ref"
-data-reference="sec:results-generalization">5.2</a>); the rotation
-surfaces in particular the fold that holds out the dominant
-<code>irs_soi</code> family.</p>
+data-reference="eq:loss_cal">[eq:loss_cal]</a>, evaluated on the final
+retained weights and excluding the <span
+class="math inline">\(L_0\)</span> and <span
+class="math inline">\(L_2\)</span> penalties. This is the frontier an
+analyst would use when choosing a publishable record budget for the
+actual <span class="smallcaps">Populace</span> build.</p>
+<p>Generalization to structurally different targets is a separate
+question this proof of concept does not test. A meaningful holdout here
+would withhold whole target families rather than random target rows,
+because targets nest within a family (a national total is the sum of its
+state cells) and a random split would leak, with a held-out cell nearly
+determined by its retained siblings; we leave that family-level holdout
+robustness to future work (Section <a href="#sec:future_work"
+data-reference-type="ref" data-reference="sec:future_work">7</a>).</p>
 <h2 data-number="4.6" id="sec:metrics"><span
 class="header-section-number">4.6</span> Evaluation metrics</h2>
 <p>Each run reports the metrics in Table <a href="#tab:metrics"
-data-reference-type="ref" data-reference="tab:metrics">4</a> for the
-scored targets, both in-sample and out-of-sample. They fall into two
-groups: accuracy measures, which ask how closely the weighted estimates
-reproduce the targets, and representativeness measures, which ask at
-what cost in weight concentration and compute that accuracy is
-bought.</p>
+data-reference-type="ref" data-reference="tab:metrics">3</a> for the
+scored targets. They fall into two groups: accuracy measures, which ask
+how closely the weighted estimates reproduce the targets, and
+representativeness measures, which ask at what cost in weight
+concentration and compute that accuracy is bought.</p>
 <div id="tab:metrics">
 <table>
-<caption>Metrics reported for each run, in-sample and out-of-sample.
-Accuracy is led by the median ARE; the effective sample size measures
-the weight concentration that accuracy is achieved at.</caption>
+<caption>Metrics reported for each run. Accuracy is led by the Populace
+objective loss, with raw ARE metrics reported as supplemental
+diagnostics; effective sample size measures the weight concentration
+that accuracy is achieved at.</caption>
 <thead>
 <tr>
 <th style="text-align: left;">Metric</th>
@@ -1511,27 +1830,28 @@ the weight concentration that accuracy is achieved at.</caption>
 </thead>
 <tbody>
 <tr>
+<td style="text-align: left;">Populace objective loss</td>
+<td style="text-align: left;">Equation <a href="#eq:loss_cal"
+data-reference-type="ref"
+data-reference="eq:loss_cal">[eq:loss_cal]</a>: capped, target-weighted
+relative error, penalty-free</td>
+<td style="text-align: left;">Headline target-fit metric; this is the
+loss the production calibrator optimizes</td>
+</tr>
+<tr>
 <td style="text-align: left;">Median ARE</td>
 <td style="text-align: left;">Median absolute relative error <span
 class="math inline">\(|\hat{t}_j - t_j| / |t_j|\)</span> over scored
 targets</td>
-<td style="text-align: left;">Headline accuracy; robust to the
-near-zero-denominator tail</td>
+<td style="text-align: left;">Supplemental accuracy diagnostic, robust
+to the near-zero-denominator tail</td>
 </tr>
 <tr>
 <td style="text-align: left;">Mean and max ARE</td>
 <td style="text-align: left;">Mean and maximum of the same per-target
 errors</td>
-<td style="text-align: left;">Reported alongside the median, flagged as
-tail-sensitive</td>
-</tr>
-<tr>
-<td style="text-align: left;">Micro vs. macro average</td>
-<td style="text-align: left;">Mean over all targets vs. mean of the
-per-family means</td>
-<td style="text-align: left;">The micro mean is dominated by
-<code>irs_soi</code> (71% of targets); the macro mean weights each
-family equally</td>
+<td style="text-align: left;">Supplemental, tail-sensitive
+diagnostics</td>
 </tr>
 <tr>
 <td style="text-align: left;">Effective sample size</td>
@@ -1543,18 +1863,26 @@ concentrating population mass on a few records, so ESS is a primary
 result, not a footnote</td>
 </tr>
 <tr>
-<td style="text-align: left;">Retained count, max weight, runtime</td>
-<td style="text-align: left;">Non-zero record count, largest fitted
-weights, wall-clock time</td>
-<td style="text-align: left;">Sample size, weight concentration, and
-compute cost</td>
+<td style="text-align: left;">Retained count</td>
+<td style="text-align: left;">Non-zero record count</td>
+<td style="text-align: left;">Sample size</td>
+</tr>
+<tr>
+<td style="text-align: left;">Max weight</td>
+<td style="text-align: left;">Largest fitted weight</td>
+<td style="text-align: left;">Weight concentration</td>
+</tr>
+<tr>
+<td style="text-align: left;">Runtime</td>
+<td style="text-align: left;">Wall-clock time</td>
+<td style="text-align: left;">Compute cost</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>Errors are reported by geographic level and by target family as well
-as in aggregate, because a sampler can match national totals while
-missing local ones, or match one source while missing another.</p>
+<p>Errors are reported by geographic level as well as in aggregate,
+because a sampler can match national totals while missing local
+ones.</p>
 <p>A small number of targets have denominators so small that a single
 record can swing their relative error past 100 per cent. We identify
 these structurally rather than by an arbitrary cutoff: target <span
@@ -1571,350 +1899,163 @@ degenerate targets is visible and attributable. Target counts are read
 from each run’s manifest.</p>
 <h1 data-number="5" id="sec:results"><span
 class="header-section-number">5</span> Results</h1>
-<p>The results address the questions from the introduction: when
-informed <span class="math inline">\(L_0\)</span> selection reproduces
-the targets more accurately than the matched-budget baselines, whether
-the retained sample generalizes to held-out target families, and whether
-the size, geography, and concentration controls behave as intended. The
-reported runs share one frozen candidate universe and a fixed target
-system. The <code>cms_medicaid</code>, <code>usda_snap</code>, and
-<code>state_income_tax</code> families (and the <code>cbo</code>
-validation-only family) are held out of every method’s fit and scored
-only out-of-sample (Section <a href="#sec:oos" data-reference-type="ref"
-data-reference="sec:oos">4.5</a>). Each budget is run over three seeds;
-cells report the cross-seed median or mean as noted, with a 95%
-confidence interval where shown. Accuracy is led by the median absolute
-relative error, with the mean reported alongside but treated as
-tail-sensitive (Section <a href="#sec:metrics" data-reference-type="ref"
-data-reference="sec:metrics">4.6</a>).</p>
-<h2 data-number="5.1" id="informed-versus-uninformed-sampling"><span
-class="header-section-number">5.1</span> Informed versus uninformed
-sampling</h2>
-<p>Figure <a href="#fig:budget_frontier" data-reference-type="ref"
-data-reference="fig:budget_frontier">2</a> is the central result:
-out-of-sample calibration error against the average retained-record
-count (the achieved count, within three per cent of each requested
-budget; Section <a href="#sec:results-controls"
+<p>The results answer the production question directly: with the
+candidate universe, target surface, and record budget fixed, which
+retained weight vector best fits the current <span
+class="smallcaps">Populace</span> target surface? All methods are scored
+on the full set of 32<span>,</span>633 materialized targets, using the
+penalty-free Populace objective loss in Equation <a href="#eq:loss_cal"
 data-reference-type="ref"
-data-reference="sec:results-controls">5.3</a>), swept from aggressive
-compression up to the largest budget, for informed <span
-class="math inline">\(L_0\)</span> selection, random sampling with
-reweighting, and the Hansen–Hurwitz survey-weight baseline. The regimes
-are distinct. At the 2<span>,</span>000-record budget informed <span
-class="math inline">\(L_0\)</span> holds out-of-sample error bounded
-(median ARE 39.8%, mean 53.5%), while random + reweight cannot fit the
-target system from so small a draw: its median is 57.0% and its mean
-reaches 2<span>,</span>293%, with wide seed-to-seed variation (95% CI
-<span class="math inline">\([1{,}020,\,3{,}566]\)</span>). Survey-weight
-sampling falls between the two (median 46.8%, mean 93.4%). The gap
-closes as the budget grows. At 5<span>,</span>000 records the medians
-are level (26.3% for informed <span class="math inline">\(L_0\)</span>,
-25.2% for random + reweight), though random + reweight’s mean stays
-raised by occasional poor draws (301.9% against 38.2%). From
-10<span>,</span>000 records up, random + reweight reaches lower
-out-of-sample error than informed <span
-class="math inline">\(L_0\)</span>: its mean ARE is 7.9 pp lower at
-10<span>,</span>000, 4.3 pp lower at 20<span>,</span>000, and 3.0 pp
-lower at 40<span>,</span>000 (Table <a href="#tab:paired_comparison"
-data-reference-type="ref" data-reference="tab:paired_comparison">5</a>).
-Survey-weight sampling is the least accurate at every budget (median 29%
-to 40%). The frontier reads as graceful degradation under compression:
-informed selection is decisive only where the budget is too small for a
-random draw to span the targets, and once the budget is large enough
-that almost any subset can be reweighted, the accuracy edge passes to
-random + reweight.</p>
-<p><a href="#tab:sampling_comparison">The representative-budget table</a> reports the three methods at the anchor budget with the operational
-diagnostics, in particular the effective sample size that the matched
-accuracy is achieved at.</p>
+data-reference="eq:loss_cal">[eq:loss_cal]</a>. The run reported here is
+a matched full-surface probe rather than a full budget frontier: a
+normalized <span class="math inline">\(L_0\)</span> penalty selects a
+sparse support, the same retained count is used for the post-<span
+class="math inline">\(L_0\)</span> refit and sparse baselines, and an
+epoch-matched dense no-<span class="math inline">\(L_0\)</span>
+calibration anchors the comparison. Raw absolute-relative-error (ARE)
+summaries, effective sample size, and max weight are reported as
+diagnostics around the headline loss.</p>
+<h2 data-number="5.1" id="the-full-surface-matched-probe"><span
+class="header-section-number">5.1</span> The full-surface matched
+probe</h2>
+<p>Figure <a href="#fig:objective_frontier" data-reference-type="ref"
+data-reference="fig:objective_frontier">2</a> is the headline result. On
+the current three-year ASEC support file, the normalized <span
+class="math inline">\(L_0\)</span> penalty selects 57<span>,</span>240
+of 337<span>,</span>704 candidate households, or 17.0% of the candidate
+universe. The raw gated <span class="math inline">\(L_0\)</span> weights
+are not the right publication weights: scored after thresholding, they
+reach a Populace objective loss of 9.86%. Removing the gates and
+refitting ordinary calibration weights on exactly the selected records
+lowers that loss to 4.74%. A dense no-<span
+class="math inline">\(L_0\)</span> calibration using all
+337<span>,</span>704 records and the same 1<span>,</span>500-epoch
+optimizer budget reaches 5.07%. A random subset of the same size as the
+<span class="math inline">\(L_0\)</span> support, followed by the same
+1<span>,</span>500-epoch gradient reweighting, reaches 7.55%. A random
+subset of the dense calibrated weights, scaled back to the dense total
+but not refit, reaches 24.24%.</p>
+<p>The practical interpretation is that the <span
+class="math inline">\(L_0\)</span> selector is doing useful
+support-selection work, but the post-<span
+class="math inline">\(L_0\)</span> refit is essential. The selected
+support gives a lower finite-budget optimizer loss than the full dense
+run at 1<span>,</span>500 epochs and fits the full target surface much
+more closely than a random support of the same size. This should not be
+read as a claim that the dense feasible set is worse: the dense no-<span
+class="math inline">\(L_0\)</span> loss is still declining at the end of
+the 1<span>,</span>500-epoch budget. The defensible claim is that this
+<span class="math inline">\(L_0\)</span> support gives a better sparse
+support and a faster route to low loss under the completed optimizer
+budget. The current evidence should still be read as a single
+fixed-penalty probe, not as proof that this exact penalty is optimal:
+the next sweep needs to trace the normalized penalty across multiple
+retained counts and concentration settings.</p>
+<figure id="fig:objective_frontier" data-latex-placement="H">
+<img src="/papers/l0/web/figures/f0_objective_frontier.png" style="width:96.0%" />
+<figcaption>Full-surface Populace objective loss in the matched probe.
+The objective is the capped, target-weighted calibration loss in
+Equation <a href="#eq:loss_cal" data-reference-type="ref"
+data-reference="eq:loss_cal">[eq:loss_cal]</a>, evaluated on each
+method’s final retained/sampled weight vector and excluding sparsity or
+concentration penalties. The <span class="math inline">\(L_0\)</span>
+run uses a normalized penalty share of 0.8, equivalent to raw <span
+class="math inline">\(\lambda_{L_0}=2.37\times10^{-6}\)</span> for
+337<span>,</span>704 candidate households.</figcaption>
+</figure>
+<p>Table <a href="#tab:sampling_comparison" data-reference-type="ref"
+data-reference="tab:sampling_comparison">[tab:sampling_comparison]</a>
+reports the same comparison with raw ARE and weight diagnostics. The
+median ARE gives a different view from the capped objective: dense
+no-<span class="math inline">\(L_0\)</span> has the lowest median ARE
+(0.56%), while the post-<span class="math inline">\(L_0\)</span> refit
+is close (0.89%) and has the lowest capped Populace loss. Random +
+reweight has 6.70% median ARE, raw gated <span
+class="math inline">\(L_0\)</span> has 11.66%, and the dense random
+scaled sample has 55.24%. The mean ARE remains much larger because a
+small tail of difficult IRS targets can have very large relative misses
+even when the capped Populace loss is low.</p>
 <p><span> </span></p>
-<p><span>The matched record budget and target counts are read from each
-run’s manifest; the out-of-sample columns score the held-out families.
-The survey-weight baseline is the unbiased Hansen–Hurwitz integerisation
-(probability-proportional-to-size with replacement). Informed <span
-class="math inline">\(L_0\)</span> runtime includes the eight-step
-budget bisection that sets <span
-class="math inline">\(\lambda_{L_0}\)</span>; the baselines are run once
-at the matched budget. Runtime and the family macro-average are reported
-in the run summary.</span></p>
-<figure id="fig:budget_frontier" data-latex-placement="H">
-<img src="/papers/l0/web/figures/f1_frontier.png" />
-<figcaption>Out-of-sample calibration error against the average
-retained-record count, for informed <span
-class="math inline">\(L_0\)</span> selection, random sampling with
-reweighting, and the Hansen–Hurwitz survey-weight baseline. The mean and
-median panels are reported together because a few near-zero-denominator
-targets inflate the mean (Section <a href="#sec:results-degenerate"
-data-reference-type="ref"
-data-reference="sec:results-degenerate">5.5</a>); the median is less
-sensitive to that tail. Lines are the mean over three seeds and bands
-the 95% confidence interval.</figcaption>
-</figure>
-<p>The hypothesis behind informed selection is that it lowers
-calibration error at a fixed budget, because the gates retain the
-records the targets constrain. Table <a href="#tab:paired_comparison"
-data-reference-type="ref" data-reference="tab:paired_comparison">5</a>
-reports the same-seed difference against random + reweight at each
-budget. With only three seeds, the paired <span
-class="math inline">\(t\)</span>-statistics are descriptive diagnostics
-rather than strong inferential evidence. On that descriptive read, the
-advantage appears only under aggressive compression: informed <span
-class="math inline">\(L_0\)</span> is ahead at 2<span>,</span>000
-records (<span class="math inline">\(p=0.017\)</span>), the two are
-close at 5<span>,</span>000 (<span
-class="math inline">\(p=0.43\)</span>, where random + reweight’s seed
-variance is large), and random + reweight is ahead at
-10<span>,</span>000 and 20<span>,</span>000 (<span
-class="math inline">\(p=0.023\)</span> and <span
-class="math inline">\(p=0.049\)</span>); the 40<span>,</span>000-record
-difference is smaller (<span
-class="math inline">\(p=0.086\)</span>).</p>
-<div id="tab:paired_comparison">
-<table>
-<caption>Paired out-of-sample comparison of informed <span
-class="math inline">\(L_0\)</span> against random + reweight at each
-budget. <span class="math inline">\(\Delta\)</span> is the cross-seed
-mean of the per-seed out-of-sample error difference (negative favours
-informed <span class="math inline">\(L_0\)</span>) with a 95% confidence
-interval; <span class="math inline">\(p\)</span> is a paired <span
-class="math inline">\(t\)</span>-test across the three paired seeds and
-should be read as descriptive rather than strong inferential evidence.
-Numbers are the un-penalised (<span
-class="math inline">\(\lambda_{L_2}=0\)</span>) rows of the
-<code>weighted-loss-3seed</code> run.</caption>
-<thead>
-<tr>
-<th style="text-align: right;">Budget</th>
-<th style="text-align: right;">Informed <span
-class="math inline">\(L_0\)</span> (%)</th>
-<th style="text-align: right;">Random + reweight (%)</th>
-<th style="text-align: right;"><span
-class="math inline">\(\Delta\)</span> (pp)</th>
-<th style="text-align: right;"><span
-class="math inline">\(p\)</span></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;">2<span>,</span>000</td>
-<td style="text-align: right;">53.5</td>
-<td style="text-align: right;">2<span>,</span>292.9</td>
-<td style="text-align: right;">-2<span>,</span>239.3
-<span>[-3<span>,</span>508.7, -970.0]</span></td>
-<td style="text-align: right;">0.017</td>
-</tr>
-<tr>
-<td style="text-align: right;">5<span>,</span>000</td>
-<td style="text-align: right;">38.2</td>
-<td style="text-align: right;">301.9</td>
-<td style="text-align: right;">-263.7 <span>[-1<span>,</span>412.0,
-884.5]</span></td>
-<td style="text-align: right;">0.427</td>
-</tr>
-<tr>
-<td style="text-align: right;">10<span>,</span>000</td>
-<td style="text-align: right;">36.0</td>
-<td style="text-align: right;">28.1</td>
-<td style="text-align: right;">7.9 <span>[2.6, 13.2]</span></td>
-<td style="text-align: right;">0.023</td>
-</tr>
-<tr>
-<td style="text-align: right;">20<span>,</span>000</td>
-<td style="text-align: right;">32.5</td>
-<td style="text-align: right;">28.2</td>
-<td style="text-align: right;">4.3 <span>[0.0, 8.5]</span></td>
-<td style="text-align: right;">0.049</td>
-</tr>
-<tr>
-<td style="text-align: right;">40<span>,</span>000</td>
-<td style="text-align: right;">31.3</td>
-<td style="text-align: right;">28.3</td>
-<td style="text-align: right;">3.0 <span>[-1.1, 7.1]</span></td>
-<td style="text-align: right;">0.086</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 data-number="5.2" id="sec:results-generalization"><span
-class="header-section-number">5.2</span> Generalization to held-out
-target families</h2>
-<p>The out-of-sample columns above test generalization against the fixed
-family-level holdout: the <code>cms_medicaid</code>,
-<code>usda_snap</code>, and <code>state_income_tax</code> families are
-scored but never fit, so no method can have tuned to them, and each
-keeps a sibling family in the fit (Section <a href="#sec:oos"
-data-reference-type="ref" data-reference="sec:oos">4.5</a>). Figure <a
-href="#fig:generalization_gap" data-reference-type="ref"
-data-reference="fig:generalization_gap">3</a> plots the gap between
-out-of-sample and in-sample error across the budget sweep, and Figure <a
-href="#fig:by_family" data-reference-type="ref"
-data-reference="fig:by_family">4</a> breaks the out-of-sample error down
-by held-out family at the representative budget.</p>
-<p>In-sample, informed <span class="math inline">\(L_0\)</span> fits the
-targets it sees well, with median ARE falling from 11.0% at
-10<span>,</span>000 records to 3.2% at 40<span>,</span>000 (the <a href="#tab:sampling_comparison">representative-budget table</a>).
-Random + reweight fits the in-sample targets more tightly still at the
-larger budgets (in-sample median 2.0% at 10<span>,</span>000), since it
-carries no sparsity or concentration term to trade against fit. The
-question is whether that fit survives on families the method never saw.
-On the median, informed <span class="math inline">\(L_0\)</span>’s gap
-is the smaller of the two at 10<span>,</span>000 records: its
-out-of-sample median rises to 23.6% (a 12.6 pp gap) against random +
-reweight’s rise from 2.0% to 19.6% (a 17.6 pp gap), so informed <span
-class="math inline">\(L_0\)</span> fits its targets less aggressively
-but carries over with the smaller gap. On the mean, Figure <a
-href="#fig:generalization_gap" data-reference-type="ref"
-data-reference="fig:generalization_gap">3</a> shows the same
-near-zero-denominator tail (Section <a href="#sec:results-degenerate"
-data-reference-type="ref"
-data-reference="sec:results-degenerate">5.5</a>) at work: informed <span
-class="math inline">\(L_0\)</span>’s mean gap stays small and stable
-(about 5 to 19 pp across budgets), while random + reweight’s mean gap is
-small at the larger budgets but reaches about <span
-class="math inline">\(-160\)</span> pp at the smallest, where its
-in-sample and out-of-sample means are both inflated. The held-out
-families differ in difficulty (Figure <a href="#fig:by_family"
-data-reference-type="ref" data-reference="fig:by_family">4</a>):
-<code>usda_snap</code> is the hardest for every method (out-of-sample
-mean ARE 52% for informed <span class="math inline">\(L_0\)</span>, 43%
-for random + reweight, 54% for survey-weight), informed <span
-class="math inline">\(L_0\)</span> and random + reweight track each
-other on the state income-tax family (<code>census_stc</code>; 22% each)
-and stay within about ten points on <code>cms_medicaid</code> (34% and
-23%), while survey-weight sampling reproduces the state income-tax
-family far less well (87%).</p>
-<figure id="fig:generalization_gap" data-latex-placement="H">
-<img src="/papers/l0/web/figures/f3_generalization_gap.png" style="width:75.0%" />
-<figcaption>Generalization gap: out-of-sample minus in-sample mean ARE
-against the average retained-record count, for the three methods. A gap
-near zero means the retained sample reproduces the held-out families
-about as well as the families it was fit to; a positive gap measures the
-cost of generalization, and a negative gap (random + reweight at the
-smallest budget) marks a case where the in-sample mean is as inflated as
-the out-of-sample mean. Each line is the mean over three
-seeds.</figcaption>
-</figure>
-<figure id="fig:by_family" data-latex-placement="H">
-<img src="/papers/l0/web/figures/f4_by_family.png" style="width:85.0%" />
-<figcaption>Out-of-sample mean ARE by held-out family at the <span
-class="math inline">\(\sim\)</span>10<span>,</span>000-record budget,
-for the three methods (fixed family-level holdout, <span
-class="math inline">\(\lambda_{L_2}=0\)</span>). <code>census_stc</code>
-is the state income-tax family and <code>cbo</code> is the
-validation-only family (Section <a href="#sec:oos"
-data-reference-type="ref" data-reference="sec:oos">4.5</a>). The
-per-family view shows which held-out families each method reproduces,
-beneath the aggregate frontier of Figure <a href="#fig:budget_frontier"
-data-reference-type="ref"
-data-reference="fig:budget_frontier">2</a>.</figcaption>
-</figure>
-<p>As a stricter, descriptive robustness check we rotate whole families
-through the holdout in a family-grouped five-fold design and report each
-fold separately rather than as a single inferential test. Informed <span
-class="math inline">\(L_0\)</span> has the lowest median out-of-sample
-ARE in three of the five folds (folds 0, 2, and 3). On the
-target-weighted mean across folds the ranking reverses: informed <span
-class="math inline">\(L_0\)</span> averages 1<span>,</span>005% against
-608% for random + reweight and 616% for survey-weight. The reversal
-comes from the fold that holds out <code>irs_soi</code>, the family
-supplying 71% of the targets. Removing it leaves a thin, badly
-conditioned fit surface on which every method’s mean is dominated by a
-few near-zero-denominator targets, and informed <span
-class="math inline">\(L_0\)</span>’s mean is highest there
-(1<span>,</span>405% against 838% for random + reweight). The medians on
-that same fold are close (51% for informed <span
-class="math inline">\(L_0\)</span>, 53% for random + reweight, 55% for
-survey-weight), which places the reversal in the tail rather than the
-typical target. We report the rotation per fold and treat the
-<code>irs_soi</code> fold as a limitation rather than a headline
-comparison.</p>
-<h2 data-number="5.3" id="sec:results-controls"><span
-class="header-section-number">5.3</span> The size and concentration
-controls</h2>
-<p>A second question is whether the framework gives usable control over
-the output. The size control works as designed: <span
-class="math inline">\(\lambda_{L_0}\)</span> sets the retained-record
-count, and the eight-step bisection over <span
-class="math inline">\(\lambda_{L_0}\)</span> hits each requested budget
-to within about three per cent (the achieved budgets are what Figure <a
-href="#fig:budget_frontier" data-reference-type="ref"
-data-reference="fig:budget_frontier">2</a> plots). Because the sparsity
-penalty produces exact zeros, the dataset size is an output of the
-optimisation rather than a post-processing cutoff.</p>
-<p>Weight concentration is a measured trade-off rather than a fixed
-setting. The two concentration controls act on the ratio of each fitted
-weight to its initial weight (Section <a href="#sec:methodology"
-data-reference-type="ref" data-reference="sec:methodology">4</a>): the
-soft <span class="math inline">\(L_2\)</span> penalty shapes the whole
-distribution, and the hard <code>max_weight_ratio</code> caps the
-largest weight. Figure <a href="#fig:usability"
-data-reference-type="ref" data-reference="fig:usability">5</a> reports
-the effective sample size and the largest fitted weight across methods
-and budgets, and Figure <a href="#fig:operability"
-data-reference-type="ref" data-reference="fig:operability">6</a>
-compares informed <span class="math inline">\(L_0\)</span> with and
-without the <span class="math inline">\(L_2\)</span> penalty (<span
-class="math inline">\(\lambda_{L_2}=0\)</span> against <span
-class="math inline">\(\lambda_{L_2}=10^{-4}\)</span>) across the budget
-sweep, tracing what raising the effective sample size costs in
-out-of-sample accuracy. The operability picture is budget-dependent. At
-the larger budgets the <span class="math inline">\(L_2\)</span> penalty
-buys effective sample size cheaply: at 40<span>,</span>000 records <span
-class="math inline">\(\lambda_{L_2}=10^{-4}\)</span> raises the
-effective sample size from 2<span>,</span>094 to 3<span>,</span>186
-(52%) while the median out-of-sample ARE moves only from 18.0% to 19.1%,
-and at 20<span>,</span>000 records it raises the effective sample size
-from 1<span>,</span>920 to 2<span>,</span>453. At the smaller budgets
-the same penalty is costly: at 10<span>,</span>000 records it raises the
-median out-of-sample ARE from 23.6% to 33.1%, and at 2<span>,</span>000
-it pushes the mean from 53.5% to 263%, because there the fit already
-depends on concentrating weight onto a few records. We report the
-un-penalised frontier (<span
-class="math inline">\(\lambda_{L_2}=0\)</span>) as the accuracy result
-and treat <span class="math inline">\(\lambda_{L_2}=10^{-4}\)</span> as
-an operability setting: it earns its accuracy cost where the budget is
-large, and not where the budget is tight.</p>
+<p><span>The <span class="math inline">\(L_0\)</span> run uses
+normalized penalty share 0.8, equivalent to raw <span
+class="math inline">\(\lambda_{L_0}=2.37\times 10^{-6}\)</span>. Dense
+no-<span class="math inline">\(L_0\)</span> is still declining at epoch
+1<span>,</span>500, so its row is an epoch-matched finite-optimization
+baseline rather than a convergence certificate.</span></p>
+<p>Table <a href="#tab:paired_comparison" data-reference-type="ref"
+data-reference="tab:paired_comparison">[tab:paired_comparison]</a>
+expresses the comparison on the headline loss scale. Relative to dense
+no-<span class="math inline">\(L_0\)</span>, the post-<span
+class="math inline">\(L_0\)</span> refit lowers the completed-run
+Populace objective by 6.4%. Relative to random + reweight, it lowers the
+objective by 37.2%. Relative to the raw gated <span
+class="math inline">\(L_0\)</span> weights, it lowers the objective by
+51.9%. The comparison isolates the value of the support and the refit:
+keeping dense weights on a random retained set and merely scaling them
+back to total mass performs poorly, so a sparse file still needs a
+reweighting step.</p>
+<p><span> </span></p>
+<p><span>This table is descriptive because the current matched
+full-surface run uses one seed and one normalized <span
+class="math inline">\(L_0\)</span> penalty. Dense no-<span
+class="math inline">\(L_0\)</span>, the post-<span
+class="math inline">\(L_0\)</span> refit, and random + reweight all use
+1<span>,</span>500 optimizer epochs, but dense no-<span
+class="math inline">\(L_0\)</span> is still slowly declining at the end
+of that budget.</span></p>
+<h2 data-number="5.2" id="sec:results-controls"><span
+class="header-section-number">5.2</span> Size and concentration</h2>
+<p>The normalized penalty gives a usable size control in this probe. We
+parameterize the sparsity price as a share of the mean calibration loss,
+<span
+class="math inline">\(\lambda_{\mathrm{share}}\sum_i\bar{z}_i/n\)</span>,
+rather than as an unscaled raw coefficient. With <span
+class="math inline">\(\lambda_{\mathrm{share}}=0.8\)</span>, the
+optimizer retained 57<span>,</span>240 records. This scaling matters
+operationally: the same raw coefficient has very different meanings when
+the candidate universe changes from tens of thousands to hundreds of
+thousands of records.</p>
+<p>The selected support is more concentrated than the full dense
+calibration but better conditioned than the matched random sparse
+baselines. Dense no-<span class="math inline">\(L_0\)</span> has an
+effective sample size of 5<span>,</span>970 and a maximum weight of
+579<span>,</span>298. The post-<span class="math inline">\(L_0\)</span>
+refit has ESS 4<span>,</span>726 and maximum weight
+913<span>,</span>836. Random + reweight has lower ESS,
+2<span>,</span>480, and a higher maximum weight,
+1<span>,</span>163<span>,</span>939; the dense random scaled sample is
+worse again, with ESS 981 and maximum weight
+2<span>,</span>176<span>,</span>121. The raw gated <span
+class="math inline">\(L_0\)</span> weights have higher ESS,
+6<span>,</span>879, but worse target fit, which is why the refit is the
+publishable sparse variant.</p>
 <figure id="fig:usability" data-latex-placement="H">
 <img src="/papers/l0/web/figures/f2_usability.png" />
-<figcaption>Effective sample size (left) and the largest fitted weight
-(right) against the average retained-record count, for the three
-methods. An effective sample size well below the retained-record count
-signals weight concentration: a sampler can fit the targets while
-loading population mass onto a few records. Lines are the mean over
-three seeds, bands the 95% confidence interval.</figcaption>
+<figcaption>Weight concentration in the matched full-surface probe.
+Effective sample size and maximum weight are computed on each method’s
+final retained/sampled weight vector. Dense no-<span
+class="math inline">\(L_0\)</span> retains all 337<span>,</span>704
+records; the other sparse rows retain 57<span>,</span>240
+records.</figcaption>
 </figure>
-<figure id="fig:operability" data-latex-placement="H">
-<img src="/papers/l0/web/figures/f6_operability.png" />
-<figcaption>Operability of the <span
-class="math inline">\(\lambda_{L_2}\)</span> penalty for informed <span
-class="math inline">\(L_0\)</span>, across the budget sweep: the
-effective sample size it buys (left) against the out-of-sample mean ARE
-it costs (right), with <span
-class="math inline">\(\lambda_{L_2}=0\)</span> (solid) and <span
-class="math inline">\(\lambda_{L_2}=10^{-4}\)</span> (dashed). Lines are
-the mean over three seeds, bands the 95% confidence
-interval.</figcaption>
-</figure>
-<h2 data-number="5.4" id="accuracy-by-geography"><span
-class="header-section-number">5.4</span> Accuracy by geography</h2>
+<h2 data-number="5.3" id="accuracy-by-geography"><span
+class="header-section-number">5.3</span> Accuracy by geography</h2>
 <p>Table <a href="#tab:calibration_accuracy" data-reference-type="ref"
-data-reference="tab:calibration_accuracy">6</a> reports absolute
-relative error by geographic level for the informed <span
-class="math inline">\(L_0\)</span> run, since a sampler can match
-national totals while leaving local totals off. The current target
-surface is national and state only; no congressional-district targets
-are in the prioritized subset, so that level is not scored.</p>
+data-reference="tab:calibration_accuracy">4</a> breaks the post-<span
+class="math inline">\(L_0\)</span> refit diagnostics down by geography.
+The fit is strongest at the state level, where median ARE is 0.31%,
+followed by national targets at 1.30% and district targets at 1.48%.
+District targets are the intended stress test for the method: they are
+the largest part of the target surface, and they are the reason <span
+class="smallcaps">Populace</span> needs to build a large candidate
+universe before pruning it.</p>
 <div id="tab:calibration_accuracy">
 <table>
-<caption>Calibration accuracy by geographic level for the informed <span
-class="math inline">\(L_0\)</span> run at the representative <span
-class="math inline">\(\sim\)</span>10<span>,</span>000-record budget,
-measured as absolute relative error (ARE) across the in-sample targets.
-The median reports the typical target’s error; the mean and maximum are
-inflated by a handful of near-zero-denominator targets whose relative
-error is large despite small absolute misses (Section <a
-href="#sec:results-degenerate" data-reference-type="ref"
-data-reference="sec:results-degenerate">5.5</a>). Numbers are filled
-from the <code>weighted-loss-3seed</code> run.</caption>
+<caption>Calibration accuracy by geographic level for the Informed <span
+class="math inline">\(L_0\)</span> + refit run at 57<span>,</span>240
+records, measured as absolute relative error (ARE) across the full
+target surface. The median reports the typical target’s error; the mean
+and maximum are tail-sensitive diagnostics.</caption>
 <thead>
 <tr>
 <th style="text-align: left;">Geographic level</th>
@@ -1927,275 +2068,286 @@ from the <code>weighted-loss-3seed</code> run.</caption>
 <tbody>
 <tr>
 <td style="text-align: left;">National</td>
-<td style="text-align: right;">129</td>
-<td style="text-align: right;">7.6</td>
-<td style="text-align: right;">39.2</td>
-<td style="text-align: right;">680.9</td>
+<td style="text-align: right;">478</td>
+<td style="text-align: right;">1.30</td>
+<td style="text-align: right;">20.12</td>
+<td style="text-align: right;">557.29</td>
 </tr>
 <tr>
 <td style="text-align: left;">State</td>
-<td style="text-align: right;">4<span>,</span>058</td>
-<td style="text-align: right;">11.2</td>
-<td style="text-align: right;">16.8</td>
-<td style="text-align: right;">14<span>,</span>543.7</td>
+<td style="text-align: right;">7<span>,</span>815</td>
+<td style="text-align: right;">0.31</td>
+<td style="text-align: right;">86.36</td>
+<td style="text-align: right;">122<span>,</span>712.20</td>
+</tr>
+<tr>
+<td style="text-align: left;">Congressional district</td>
+<td style="text-align: right;">24<span>,</span>340</td>
+<td style="text-align: right;">1.48</td>
+<td style="text-align: right;">85.29</td>
+<td style="text-align: right;">162<span>,</span>495.93</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>All scored targets</strong></td>
-<td style="text-align: right;">4<span>,</span>187</td>
-<td style="text-align: right;">11.0</td>
-<td style="text-align: right;">17.5</td>
-<td style="text-align: right;">14<span>,</span>543.7</td>
+<td style="text-align: right;">32<span>,</span>633</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">84.64</td>
+<td style="text-align: right;">162<span>,</span>495.93</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p><span>Target counts are read from the run manifest. No
-congressional-district targets are in the prioritized subset, so that
-level is not scored. Out-of-sample geographic accuracy is not broken out
-here; the aggregate held-out error appears in the <a href="#tab:sampling_comparison">representative-budget table</a> and Figure <a href="#fig:budget_frontier" data-reference-type="ref"
-data-reference="fig:budget_frontier">2</a>.</span></p>
-<h2 data-number="5.5" id="sec:results-degenerate"><span
-class="header-section-number">5.5</span> Degenerate targets and metric
-robustness</h2>
-<p>A small number of targets are denominator-degenerate: their value
-falls below their identifiability floor, so a single record’s placement
-swings their relative error past 100 per cent (Section <a
-href="#sec:metrics" data-reference-type="ref"
-data-reference="sec:metrics">4.6</a>). In the fit set, 741 of the
-4<span>,</span>187 scored targets are degenerate by this test, and 735
-of them are <code>irs_soi</code> cells (chiefly the state
-EITC-by-number-of-children counts); the remaining six fall in
-<code>hhs_acf_tanf</code> and <code>cms_aca</code>. The 44 degenerate
-targets in the held-out set are state income tax cells
-(<code>census_stc</code>) and one <code>cbo</code> target. We name these
-targets in a one-time audit rather than winsorize or trim, and report
-the mean recomputed with exactly them dropped beside the full mean. At
-the 10<span>,</span>000-record budget this targeted removal lowers
-informed <span class="math inline">\(L_0\)</span>’s in-sample mean ARE
-from 17.5% to 12.8%, against a median of 11.0%; the degenerate targets
-barely move the median, which is why we lead with it.</p>
-<h2 data-number="5.6" id="sec:results-caveats"><span
-class="header-section-number">5.6</span> Caveats</h2>
-<p>Three caveats bound the claims. First, mean ARE is inflated by
-near-zero-denominator targets, so we lead with the median and report a
-named targeted-removal sensitivity rather than a winsorized aggregate
-(Section <a href="#sec:results-degenerate" data-reference-type="ref"
-data-reference="sec:results-degenerate">5.5</a>). Second, weight
-concentration can be high: the effective sample size can fall well below
-the retained-record count, which is acceptable for the calibrated
-aggregates but a cost for analyses sensitive to the weight distribution.
-Figure <a href="#fig:operability" data-reference-type="ref"
-data-reference="fig:operability">6</a> is how we expose that cost.
-Third, the whole-family rotation is a hard test that no method passes
-uniformly, and the ranking can reverse on individual folds; we report it
-per fold and treat widening the held-out surface as future work.</p>
+<p><span>Raw ARE is undefined for 26 IRS SOI national targets where both
+target and achieved values are zero; those rows are included in the
+target count and the Populace loss but omitted from the raw ARE
+summary.</span></p>
+<h2 data-number="5.4" id="sec:results-degenerate"><span
+class="header-section-number">5.4</span> Raw-error tails</h2>
+<p>The Populace objective is the headline score because it is capped and
+target weighted; raw ARE summaries are supplemental. In the matched
+probe, raw ARE is defined for 32<span>,</span>607 of the
+32<span>,</span>633 scored targets. The remaining 26 rows are IRS SOI
+national targets with both target and achieved values equal to zero, so
+they are omitted from raw relative-error summaries but do not affect the
+capped loss. Among the defined rows, the post-<span
+class="math inline">\(L_0\)</span> refit has a 0.89% median ARE and an
+84.64% mean ARE. The gap between the median and the mean is the reason
+the paper leads with the Populace loss and reports raw ARE only as a
+diagnostic.</p>
+<h2 data-number="5.5" id="cost"><span
+class="header-section-number">5.5</span> Cost</h2>
+<p>The matched probe took 39.4 minutes for the <span
+class="math inline">\(L_0\)</span> selection run. The post-<span
+class="math inline">\(L_0\)</span> refit then added about 9.5 minutes,
+for a combined 48.9 minutes reported in the artifact. Dense no-<span
+class="math inline">\(L_0\)</span> took 38.7 minutes for
+1<span>,</span>500 epochs, random + reweight took 7.3 minutes, and the
+dense random scaled sample required no extra optimization beyond the
+dense fit. The selector is therefore computationally expensive, and the
+dense run is still slowly declining at the endpoint. The accuracy gain
+over dense and random + reweight is large enough in this probe to
+justify a broader normalized-penalty sweep, but not enough to skip the
+next robustness work: more penalties, longer dense convergence checks,
+more candidate-support regimes, and concentration controls. Figure <a
+href="#fig:cost_accuracy" data-reference-type="ref"
+data-reference="fig:cost_accuracy">4</a> in Appendix <a href="#app:cost"
+data-reference-type="ref" data-reference="app:cost">13</a> plots
+wall-clock runtime against accuracy across requested record budgets as a
+supplemental cost diagnostic from the earlier budget sweep.</p>
 <h1 data-number="6" id="sec:discussion"><span
 class="header-section-number">6</span> Discussion</h1>
-<h2 data-number="6.1"
-id="what-the-sampling-comparison-establishes"><span
-class="header-section-number">6.1</span> What the sampling comparison
+<h2 data-number="6.1" id="what-the-matched-comparison-establishes"><span
+class="header-section-number">6.1</span> What the matched comparison
 establishes</h2>
-<p>The comparison against random sampling is the core test, and it turns
-on the record budget. Under aggressive compression, where the budget is
-too small for a random draw to span the target system, informed <span
-class="math inline">\(L_0\)</span> selection reaches much lower
-out-of-sample error, because the gates spend the budget on the records
-the targets constrain: at 2<span>,</span>000 records its out-of-sample
-mean ARE is 53.5% against 2<span>,</span>293% for random + reweight.
-Where the budget is generous enough that almost any subset can be
-reweighted to fit, the two converge and the accuracy edge passes to
-random + reweight, by 7.9 pp at 10<span>,</span>000 records and 3.0 pp
-at 40<span>,</span>000. The result is graceful degradation under
-compression rather than a blanket accuracy win, and the budget at which
-the methods cross, near 5<span>,</span>000 records here, is itself a
-finding. Past the crossover the case for informed <span
-class="math inline">\(L_0\)</span> rests on its controls and on
-robustness rather than on an accuracy gap. It removes the risk of a poor
-random draw, the seed-to-seed variation that swings random + reweight’s
-small-budget mean by thousands of percent, and it sets the dataset size,
-the geographic emphasis, and the weight concentration through explicit
-parameters in one optimization. That control matters most in the
-build-big-then-prune setting the method is designed for, where a
-pipeline assembles a candidate universe far larger than it can ship and
-must reduce it to a fixed budget under subnational calibration targets;
-this study tests the national and state surface, and the subnational
-case is left to future work. Reporting out-of-sample error on held-out
-families keeps the comparison honest, since a method can always match
-the targets it was fit to more tightly than a method that was not.</p>
+<p>The matched full-surface probe supports the central version of the
+<span class="math inline">\(L_0\)</span> hypothesis, with an important
+qualification. If the claim is that the raw gated weights returned by
+the joint <span class="math inline">\(L_0\)</span> optimization should
+be the final publication weights, the evidence does not support it: the
+thresholded gated weights have a 9.86% Populace loss. If the claim is
+instead that target-informed gates can select a useful support for
+ordinary calibration, the evidence is positive. After the gates choose
+57<span>,</span>240 records, an ordinary calibration refit on that
+support reaches 4.74% loss, below the dense no-<span
+class="math inline">\(L_0\)</span> calibration and the matched sampling
+baselines reported in Section <a href="#sec:results"
+data-reference-type="ref" data-reference="sec:results">5</a>.</p>
+<p>That distinction is useful. It separates selection from weighting.
+The Hard Concrete gates appear valuable as a way to decide which records
+survive, but the final dataset should be produced by a post-selection
+calibration refit rather than by directly publishing the stochastic-gate
+weights. This is also consistent with how the method would be used
+operationally: choose a sparsity penalty, use <span
+class="math inline">\(L_0\)</span> to prune a deliberately overbuilt
+support, then run the standard Populace calibrator on the retained
+records. The slight edge over dense no-<span
+class="math inline">\(L_0\)</span> at 1<span>,</span>500 epochs should
+be read as a finite-optimization result: the dense run is still
+declining, so a longer dense convergence check remains necessary.</p>
 <h2 data-number="6.2" id="what-the-controls-establish"><span
 class="header-section-number">6.2</span> What the controls
 establish</h2>
-<p>The second contribution is operational: the same framework produces
-datasets of different sizes by changing the <span
-class="math inline">\(L_0\)</span> penalty, focuses on a geographic
-level by weighting its targets, and shapes the weight distribution
-through two concentration controls, a soft <span
-class="math inline">\(L_2\)</span> penalty and a hard per-record cap. We
-treat the last of these as a measured frontier rather than a fixed
-setting: sweeping the <span class="math inline">\(L_2\)</span> penalty
-traces what tightening concentration (raising the effective sample size
-and lowering the largest weights) costs in calibration accuracy, so an
-operator can choose a point on that trade-off rather than accept
-whatever concentration the unconstrained fit produces. A random-sampling
-baseline can also produce a dataset of a chosen size, but it cannot make
-the choice of records respond to the targets, and it controls
-concentration only through the reweighting step. The value here is that
-size, geographic focus, and weight stability are set through explicit
-parameters in one optimization rather than through separate
-heuristics.</p>
+<p>The normalized sparsity scale is necessary. A raw <span
+class="math inline">\(\lambda_{L_0}\)</span> cannot be interpreted
+across candidate universes of different sizes: the same coefficient can
+be mild on a small support and overwhelming on a larger one. Expressing
+the penalty as <span
+class="math inline">\(\lambda_{\mathrm{share}}\sum_i\bar{z}_i/n\)</span>
+gives a dimensionless control, and <span
+class="math inline">\(\lambda_{\mathrm{share}}=0.8\)</span> selected a
+meaningful sparse support in the three-year ASEC build. This does not
+remove the need for a sweep, but it gives the sweep a stable axis.</p>
+<p>The concentration diagnostics are also encouraging in this probe.
+Dense no-<span class="math inline">\(L_0\)</span> has the highest ESS
+among the publishable fits, but it retains every record. Among the
+sparse 57<span>,</span>240-record fits, the post-<span
+class="math inline">\(L_0\)</span> refit has higher ESS and lower
+maximum weight than the matched random + reweight baseline, while
+fitting the targets more closely. That does not prove the concentration
+issue is solved: different penalties, seeds, and candidate-support
+regimes may move the frontier. But it means the current positive result
+is not bought by making the random baseline look better-conditioned.</p>
 <h2 data-number="6.3" id="trade-offs-and-limitations"><span
 class="header-section-number">6.3</span> Trade-offs and limitations</h2>
-<p>The method does not remove modelling judgment, and several choices
-stay consequential.</p>
-<h3 data-number="6.3.1" id="target-selection"><span
-class="header-section-number">6.3.1</span> Target selection</h3>
-<p>The target set is a prioritized subset, not a complete inventory. The
-reasons for including each family are stated in Appendix <a
-href="#app:targets" data-reference-type="ref"
-data-reference="app:targets">8</a>, and the empirical claims are tied to
-the exact targets in each run’s manifest. A different target set could
-change the comparison, and the paper does not claim the chosen set is
-maximal.</p>
-<h3 data-number="6.3.2" id="when-informed-selection-helps"><span
-class="header-section-number">6.3.2</span> When informed selection
-helps</h3>
-<p>Informed selection should help most when the targets are specific and
-local, so the choice of records matters. When the targets are few and
-broad, a random draw may already contain the records needed to match
-them, and the advantage of informed selection narrows. The paper reports
-the regimes it tests and does not extrapolate beyond them.</p>
-<h3 data-number="6.3.3"
-id="weight-concentration-and-effective-sample-size"><span
-class="header-section-number">6.3.3</span> Weight concentration and
-effective sample size</h3>
-<p>Matching a demanding fiscal target system from a uniform prior can
-require the optimizer to load a large share of the population onto a
-small number of records, so the effective sample size can fall well
-below the retained-record count even when the calibration fit is good.
-That concentration is acceptable for the aggregates the dataset is
-calibrated to, but it is a real cost for any downstream estimand that is
-sensitive to the weight distribution. We expose the cost rather than
-hide it: the effective sample size and the largest weights are reported
-as primary results, and the <span class="math inline">\(L_2\)</span>
-sweep shows how much accuracy raising the effective sample size costs.
-That cost depends on the budget. At 40<span>,</span>000 records <span
-class="math inline">\(\lambda_{L_2}=10^{-4}\)</span> raises the
-effective sample size by about half (from 2<span>,</span>094 to
-3<span>,</span>186) for roughly a percentage point of median accuracy,
-while at 10<span>,</span>000 records it costs about ten points of median
-accuracy for a smaller gain. The penalty is worth applying at large
-budgets and not at tight ones, which is why we report the un-penalised
-frontier as the accuracy result and the penalty as a separate
-operability setting.</p>
-<h3 data-number="6.3.4" id="generalization-across-target-families"><span
-class="header-section-number">6.3.4</span> Generalization across target
-families</h3>
-<p>Holding out whole families is a deliberately hard test of
-generalization, harder than holding out a random subset of targets, and
-it need not flatter any method. On the fixed holdout, informed <span
-class="math inline">\(L_0\)</span> generalizes with a smaller gap
-between in-sample and out-of-sample error than random + reweight (about
-12.6 pp against 17.6 pp at 10<span>,</span>000 records), even though
-random + reweight fits the in-sample targets more tightly; informed
-selection trades some in-sample fit for a sample that carries over
-better to unseen families. The stricter family rotation is less
-forgiving. On the target-weighted mean across folds the ranking
-reverses, with informed <span class="math inline">\(L_0\)</span> worst,
-but the reversal is confined to the fold that holds out the dominant
-<code>irs_soi</code> family: with 71% of the targets removed, every
-method’s mean is dominated by a few near-zero-denominator targets, and
-the fold medians stay close (51% to 55% across methods). We read the
-rotation as a limitation to be reported per fold rather than as a single
-headline number, and widening the held-out surface further is left to
-future work.</p>
-<h3 data-number="6.3.5"
-id="degenerate-targets-and-the-choice-of-error-metric"><span
-class="header-section-number">6.3.5</span> Degenerate targets and the
-choice of error metric</h3>
-<p>A handful of targets have denominators small enough that one record’s
-placement swings their relative error past 100 per cent, which inflates
-the mean absolute relative error without reflecting calibration quality.
-Rather than winsorize or trim the distribution by an arbitrary cutoff,
-we lead with the median, name the affected targets in a one-time audit,
-and report the mean recomputed with exactly those named targets removed.
-This keeps the metric honest and the dropped targets visible and
-attributable, but it does mean the headline accuracy figure depends on a
-stated, auditable choice rather than on the raw mean alone.</p>
-<h3 data-number="6.3.6" id="relation-to-convex-sparse-methods"><span
-class="header-section-number">6.3.6</span> Relation to convex sparse
-methods</h3>
-<p><span class="math inline">\(L_0\)</span> with Hard Concrete is one
-way to obtain a sparse, positively weighted sample. Convex sparse
-penalties such as <span class="math inline">\(L_1\)</span> are another,
-and they can be more stable to optimize. The case for the <span
-class="math inline">\(L_0\)</span> approach here rests on the joint
-selection-and-weighting framing and the explicit control over the
-retained count, not on a claim that it is the most accurate sparse
-method in every setting. A comparison with convex sparse methods is a
-natural extension. The accompanying experiment package now includes a
-proximal <span class="math inline">\(L_1\)</span> arm to support that
-rerun, but the real-data results reported here predate it.</p>
-<h3 data-number="6.3.7" id="hyperparameter-sensitivity"><span
-class="header-section-number">6.3.7</span> Hyperparameter
-sensitivity</h3>
-<p>The method has parameters. The gate temperature, the initialization,
-and the two penalties all affect the path the optimizer takes. The
-configuration is reported in Appendix <a href="#app:hyperparameters"
-data-reference-type="ref" data-reference="app:hyperparameters">10</a>
-and is part of the method specification rather than a detail.</p>
-<h3 data-number="6.3.8" id="computational-cost"><span
-class="header-section-number">6.3.8</span> Computational cost</h3>
-<p>Building the calibration matrix and running gradient-based
-optimization cost more than a small classical calibration, and informed
-<span class="math inline">\(L_0\)</span> adds the eight-step budget
-bisection on top of a single fit; Appendix <a href="#app:cost"
-data-reference-type="ref" data-reference="app:cost">13</a> reports the
-runtime each method reaches against the accuracy it buys. That cost is
-justified only when the problem requires it, which is why the comparison
-against a simpler random-sampling baseline matters.</p>
+<h3 data-number="6.3.1" id="single-penalty-and-seed"><span
+class="header-section-number">6.3.1</span> Single penalty and seed</h3>
+<p>The current result is a matched full-surface probe, not a completed
+frontier. It uses one normalized sparsity penalty and one seed. The next
+version should sweep <span
+class="math inline">\(\lambda_{\mathrm{share}}\)</span> across multiple
+retained counts and run dense no-<span
+class="math inline">\(L_0\)</span> to an explicit stopping rule;
+replicating the key points across seeds would harden the comparison but
+is secondary to mapping the penalty frontier. The present result is
+enough to justify that sweep because it shows a clear separation from
+random + reweight at one large, realistic support size and a small
+finite-budget edge over dense no-<span
+class="math inline">\(L_0\)</span>.</p>
+<h3 data-number="6.3.2" id="target-surface"><span
+class="header-section-number">6.3.2</span> Target surface</h3>
+<p>The target set is the current materialized Populace surface, not a
+hand-pruned paper subset. It is still conditional on what the source
+facts and current PolicyEngine variables can materialize, and the
+empirical claims are tied to the exact targets in each run’s manifest. A
+different Ledger surface, PolicyEngine version, materialization
+registry, or production weighting scheme could change the
+comparison.</p>
+<h3 data-number="6.3.3" id="random-baselines"><span
+class="header-section-number">6.3.3</span> Random baselines</h3>
+<p>The random + reweight baseline is strong because it uses the same
+gradient calibrator as the post-<span class="math inline">\(L_0\)</span>
+refit after drawing the subset. It is therefore not a straw baseline: it
+is the practical reduce-first, calibrate-after workflow an analyst could
+run today. The dense random scaled sample answers a different question:
+whether one can dense-calibrate once, keep a random subset of the dense
+weights, scale the retained mass back up, and avoid refitting. On this
+surface that is not competitive. A fuller paper should still add the
+probability-proportional-to-size calibrate-then-sample comparator from
+the literature and classical calibration comparators on target subsets
+where they are well-defined.</p>
+<h3 data-number="6.3.4" id="raw-error-metrics"><span
+class="header-section-number">6.3.4</span> Raw error metrics</h3>
+<p>The raw mean ARE remains tail-sensitive even when the Populace loss
+is low. The paper therefore leads with the capped, target-weighted
+Populace objective loss and reports median/mean ARE as supplemental
+diagnostics. The raw median is useful for typical target fit; the raw
+mean is useful for finding the tail.</p>
+<h3 data-number="6.3.5" id="computational-cost"><span
+class="header-section-number">6.3.5</span> Computational cost</h3>
+<p>Informed <span class="math inline">\(L_0\)</span> is more expensive
+than the random baseline because it first has to learn the support.
+Dense no-<span class="math inline">\(L_0\)</span> is also expensive
+because it keeps all records active. In this matched probe, <span
+class="math inline">\(L_0\)</span> selection plus refit takes longer
+than the 1<span>,</span>500-epoch dense no-<span
+class="math inline">\(L_0\)</span> run but returns a sparse
+57<span>,</span>240-record support with lower completed-run loss. That
+cost is only worth paying if the selected subset is materially better,
+or if the method delivers an operational constraint that the baselines
+cannot. A production build still needs a penalty schedule, dense
+convergence checks, and checkpointing that make the sweep reliable.</p>
 <h2 data-number="6.4" id="generalizability"><span
 class="header-section-number">6.4</span> Generalizability</h2>
 <p>The data engineering here is specific to the United States, but the
 question is general. Many microsimulation projects combine sources into
 a candidate dataset larger than they can ship, and then have to reduce
-it. Where the reduction has to respect calibration targets and keep
-weights usable, framing it as informed sampling, rather than as a random
-draw followed by reweighting, may carry over to other countries and
-other engines. <span class="smallcaps">Populace</span> makes that
-portability concrete, since the method is a configuration choice rather
-than a fixed pipeline.</p>
-<h1 data-number="7" id="sec:conclusion"><span
-class="header-section-number">7</span> Conclusion</h1>
+it. This run shows that target-informed sampling can be evaluated on the
+real production loss and target surface. It also clarifies the
+benchmark: the method should be judged by whether the selected support,
+after ordinary refit, beats random + reweight and other practical
+baselines at the same retained count.</p>
+<h1 data-number="7" id="sec:future_work"><span
+class="header-section-number">7</span> Future work</h1>
+<p>This study moves the proof of concept onto <span
+class="smallcaps">Populace</span>’s current full target surface,
+including congressional-district targets. The next empirical step is to
+turn the matched probe into a frontier by sweeping the normalized
+sparsity share across retained counts. Holdout panels should remain
+separate robustness checks that ask narrower questions: which target
+families or geographies generalize when withheld, which targets dominate
+the loss, and how sensitive the result is to the production target
+weights and cap.</p>
+<p>A related thread varies the penalties the headline run deliberately
+holds fixed. The reported experiments set <span
+class="math inline">\(\lambda_{L_2}=0\)</span> and leave the weight cap
+off, so the comparison isolates the effect of the <span
+class="math inline">\(L_0\)</span> gates on sparsification; this leaves
+the concentration controls as a clean axis to study on their own. Three
+experiments follow. First, evaluate the convex <span
+class="math inline">\(L_1\)</span> selector of Section <a
+href="#sec:l1_background" data-reference-type="ref"
+data-reference="sec:l1_background">2.6</a> head-to-head with <span
+class="math inline">\(L_0\)</span> on the same surface: because a single
+<span class="math inline">\(L_1\)</span> penalty couples how many
+records survive with how much the survivors shrink, we expect it to be a
+weaker selector than the <span class="math inline">\(L_0\)</span> gates,
+and running it would show whether that coupling actually costs it.
+Second, sweep the soft concentration penalty <span
+class="math inline">\(\lambda_{L_2}\)</span> and the hard
+<code>max_weight_ratio</code> cap against <span
+class="math inline">\(\lambda_{L_0}\)</span>. Third, use that sweep to
+trace the effective-sample-size against accuracy trade-off, quantifying
+how much calibration fit a build gives up to bound weight
+concentration.</p>
+<p>A second thread is the build-large-then-prune regime the controls are
+designed for, in which a pipeline assembles a candidate universe far
+larger than it can ship—hundreds of thousands or millions of records
+rather than a compact survey file—and prunes it to a deployable budget
+under the calibration targets. The current three-year support file is a
+step in that direction. More aggressive support expansion is where
+target-informed selection has its clearest opportunity to justify its
+cost: a random draw from a tight budget is least likely to span a
+demanding target system, so a selector trained on the targets has the
+most to add.</p>
+<p>The full-surface design also clarifies which classical comparators
+are worth adding. Survey-weight (probability-proportional-to-size)
+sampling is the natural calibrate-then-reduce counterpart to random +
+reweight and belongs in the next frontier as a literature comparator,
+with the caveat that it selects records by the population mass they
+represent rather than by their fit to the targets. Raking, GREG,
+balanced sampling, and combinatorial optimization remain relevant
+reference methods, but not all are natural baselines for a heterogeneous
+32<span>,</span>633-target fiscal surface. The appropriate next
+comparison is on the simpler categorical-margin subsets where their
+assumptions hold cleanly, in the spirit of <span class="citation"
+data-cites="tanton2014co">Tanton et al. (<a href="#ref-tanton2014co"
+role="doc-biblioref">2014</a>)</span>’s comparison of generalized
+regression with combinatorial optimisation for small-area reweighting,
+while the production frontier continues to use the Populace loss over
+the complete surface.</p>
+<h1 data-number="8" id="sec:conclusion"><span
+class="header-section-number">8</span> Conclusion</h1>
 <p>This paper studies <span class="math inline">\(L_0\)</span>
 regularization as a way to subsample a large microsimulation dataset
 down to a usable size. The problem arises because a pipeline built for
-fidelity combines many sources and adds record-level variation, which
-produces more candidate records than a deployable dataset can hold. The
-reduction to a fixed budget is a sampling choice, and the paper treats
-it as one.</p>
+fidelity combines many sources and adds record-level geographic
+variation, which produces more candidate records than a deployable
+dataset can hold. The reduction to a fixed budget is a sampling choice,
+and the paper treats it as one.</p>
 <p>The method uses Hard Concrete gates to select records and fit their
 weights in one optimization, with selection driven by the calibration
-targets. That makes the retained-record count an explicit control and
-keeps the reduced dataset calibrated to its targets. We compare the
-method against two matched-budget baselines that share its calibrator,
-random sampling with reweighting and survey-weight (Hansen–Hurwitz)
-sampling, and report how the size, geography, and weight controls
-behave.</p>
-<p>Across the budget sweep, informed selection reaches much lower
-out-of-sample error than random sampling under aggressive compression,
-the two converge as the budget grows and random sampling becomes the
-more accurate of them, and survey-weight sampling is the least accurate
-throughout. Informed selection’s distinctive value is therefore
-operational: it sets the dataset size, the geographic emphasis, and the
-weight concentration through explicit parameters in one optimization,
-and it avoids the variance of a random draw at tight budgets.</p>
-<p>The contribution is therefore twofold: a target-informed sampling
-method, and an open pipeline, <span class="smallcaps">Populace</span>,
-that makes the method a configuration choice other projects can reuse.
-Future work can benchmark the sampler against classical calibration
-estimators and convex sparse methods, formalize the out-of-sample target
-evaluation, and extend the geographic detail of the candidate
-universe.</p>
+targets. The current full-surface probe shows that the gates are most
+useful as a support selector. On the full Populace target surface, a
+normalized <span class="math inline">\(L_0\)</span> penalty retained
+57<span>,</span>240 of 337<span>,</span>704 candidate household records.
+Publishing the raw gated weights would leave too much loss, but
+refitting ordinary calibration weights on the selected support reduced
+the Populace objective to 4.74%. The same 1<span>,</span>500-epoch
+budget gives 5.07% for dense no-<span class="math inline">\(L_0\)</span>
+calibration, 7.55% for a matched random support followed by the same
+reweighting, and 24.24% for a random sample of dense calibrated weights
+scaled back to total mass without refitting.</p>
+<p>The result is not the final frontier; it is the first presentable
+full-surface signal. It justifies a broader sweep over normalized
+sparsity penalties, seeds, and concentration controls, with dense
+calibration run to a stopping rule and survey-weight and classical
+calibration comparators from the literature added where they are
+appropriate. The contribution is therefore twofold: a target-informed
+sampling method that can select a sparse support with lower
+completed-run loss than the current random and dense baselines, and an
+open <span class="smallcaps">Populace</span> pipeline that makes such
+support-selection experiments reproducible on the real production target
+surface.</p>
 <h1 class="unnumbered" id="conflict-of-interest">Conflict of
 interest</h1>
 <p>All authors are affiliated with PolicyEngine, the nonprofit
@@ -2224,54 +2376,47 @@ class="uri">https://github.com/PolicyEngine/arch-data</a>. The
 optimizer is available at <a
 href="https://github.com/PolicyEngine/l0-python"
 class="uri">https://github.com/PolicyEngine/l0-python</a>. The candidate
-universe used here is the public Hugging Face dataset
-<code>policyengine/populace-us</code>, snapshot <code>be80a14f</code>,
-file <code>populace_us_2024.h5</code>, with H5 SHA-256 beginning
-<code>f0af2519</code>. The current reproduction workflow relies on
+universe used here is a generated three-year pooled ASEC support
+artifact from <span class="smallcaps">Populace</span> commit
+<code>558e46c1</code>, with base H5 SHA-256 beginning
+<code>ec290055</code>; the target facts have SHA-256 beginning
+<code>82cd9e87</code>. The current reproduction workflow relies on
 public code and generated data artifacts.</p>
 <h1 class="unnumbered" id="use-of-generative-ai">Use of generative
 AI</h1>
 <p>The authors used Claude (Anthropic) and Codex (OpenAI) for code
 assistance and manuscript drafting. All technical content, methodology,
 and analysis were designed and validated by the authors.</p>
-<h1 data-number="8" id="app:targets"><span
-class="header-section-number">8</span> Calibration targets</h1>
-<p>This study calibrates to a prioritized subset of the targets the
-pipeline can construct. Every target is a source-backed fact from
-PolicyEngine Ledger <span class="citation"
-data-cites="ledger2026"><a href="#ref-ledger2026" role="doc-biblioref">(PolicyEngine 2026a)</a></span>, the
-<code>arch-data</code> fact store that holds the source publications and
-preserves the provenance of each published value; Populace composes
-calibration targets from those facts. The subset here is a surface of
-the most important national and state aggregates across the major tax
-and transfer families (Table <a href="#tab:target_sources"
-data-reference-type="ref" data-reference="tab:target_sources">7</a>),
-closely following the families Populace calibrates in its production US
-build. We defer congressional-district and finer-geography targets to
-the full build-then-prune configuration that pairs a much larger
-candidate household count with the finer geographic surface; at this
-proof-of-concept household count (75<span>,</span>112), the national and
-state surface is the appropriate scope. The subset is reported here in
-full, so the empirical claims can be read against the exact target
-system used rather than against a pipeline-wide inventory, and it is not
-presented as a complete or maximal target set.</p>
+<h1 data-number="9" id="app:targets"><span
+class="header-section-number">9</span> Calibration targets</h1>
+<p>This study calibrates to the full materialized target surface <span
+class="smallcaps">Populace</span> currently constructs for the US fiscal
+build. Every target is a source-backed fact from PolicyEngine Ledger
+<span class="citation" data-cites="ledger2026">(<a
+href="#ref-ledger2026" role="doc-biblioref">PolicyEngine
+2026a</a>)</span>, the <code>arch-data</code> fact store that holds the
+source publications and preserves the provenance of each published
+value; Populace composes calibration targets from those facts. The
+surface combines national, state, and congressional-district aggregates
+across the major tax and transfer families (Table <a
+href="#tab:target_sources" data-reference-type="ref"
+data-reference="tab:target_sources">5</a>). It is reported here in full
+so the empirical claims can be read against the exact target system used
+rather than against a pipeline-wide inventory.</p>
 <p>Table <a href="#tab:target_sources" data-reference-type="ref"
-data-reference="tab:target_sources">7</a> lists each family with its
-administrative source. The system holds 4<span>,</span>393 targets
-across eleven families and two geographic levels (national and state).
-The <code>irs_soi</code> family supplies 3<span>,</span>107 of them
-(71%), so the micro-average over all targets is dominated by IRS
-income-tax aggregates; the family macro-average (Section <a
-href="#sec:metrics" data-reference-type="ref"
-data-reference="sec:metrics">4.6</a>) is the counterweight that gives
-each family equal weight.</p>
+data-reference="tab:target_sources">5</a> lists each family with its
+administrative source. The system holds 32<span>,</span>633 targets
+across eleven families and three geographic levels: 24<span>,</span>340
+congressional-district, 7<span>,</span>815 state, and 478 national
+targets. The <code>irs_soi</code> family supplies 31<span>,</span>350 of
+them (96%), so any error summary aggregated over all targets is
+dominated by IRS income-tax aggregates.</p>
 <div id="tab:target_sources">
 <table>
 <caption>Calibration target families and their administrative sources.
-Counts and sources are read from the target registry (<span
-class="smallcaps">Populace</span> build <code>18497a03ccd1</code>). The
-<code>cbo</code> family is held out as a validation-only diagnostic and
-is never fit (Section <a href="#sec:oos" data-reference-type="ref"
+Counts and sources are read from the full-surface target registry used
+by the run. In the headline experiment all listed families are fit and
+scored (Section <a href="#sec:oos" data-reference-type="ref"
 data-reference="sec:oos">4.5</a>).</caption>
 <thead>
 <tr>
@@ -2285,13 +2430,12 @@ data-reference="sec:oos">4.5</a>).</caption>
 <tr>
 <td style="text-align: left;"><code>irs_soi</code></td>
 <td style="text-align: left;">IRS Statistics of Income: Historic Table 2
-state totals and congressional-district tables, aggregated to state and
-national</td>
-<td style="text-align: left;">National, state</td>
-<td style="text-align: right;">3<span>,</span>107</td>
+state totals and congressional-district tables</td>
+<td style="text-align: left;">National, state, district</td>
+<td style="text-align: right;">31<span>,</span>350</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>census_population</code></td>
+<td style="text-align: left;"><code>census_pep</code></td>
 <td style="text-align: left;">Census Bureau annual state resident
 population estimates</td>
 <td style="text-align: left;">National, state</td>
@@ -2302,7 +2446,7 @@ population estimates</td>
 <td style="text-align: left;">CMS Medicaid and CHIP applications,
 eligibility, and enrollment reports</td>
 <td style="text-align: left;">National, state</td>
-<td style="text-align: right;">104</td>
+<td style="text-align: right;">102</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>cms_aca</code></td>
@@ -2319,11 +2463,11 @@ and benefit summaries</td>
 <td style="text-align: right;">52</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>state_income_tax</code></td>
+<td style="text-align: left;"><code>census_stc</code></td>
 <td style="text-align: left;">Census Bureau State Tax Collections (STC),
 item T40 individual income taxes</td>
 <td style="text-align: left;">State</td>
-<td style="text-align: right;">45</td>
+<td style="text-align: right;">44</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>hhs_acf_tanf</code></td>
@@ -2333,23 +2477,22 @@ financial data</td>
 <td style="text-align: right;">30</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>ssa</code></td>
+<td style="text-align: left;"><code>ssa_supplement</code></td>
 <td style="text-align: left;">SSA Annual Statistical Supplement, OASDI
 beneficiaries and benefits</td>
 <td style="text-align: left;">National</td>
 <td style="text-align: right;">6</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>cbo</code></td>
-<td style="text-align: left;">CBO revenue projections by category
-(validation-only)</td>
+<td style="text-align: left;"><code>jct</code></td>
+<td style="text-align: left;">JCT estimates of federal tax
+expenditures</td>
 <td style="text-align: left;">National</td>
 <td style="text-align: right;">5</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>jct</code></td>
-<td style="text-align: left;">JCT estimates of federal tax
-expenditures</td>
+<td style="text-align: left;"><code>cbo</code></td>
+<td style="text-align: left;">CBO revenue projections by category</td>
 <td style="text-align: left;">National</td>
 <td style="text-align: right;">5</td>
 </tr>
@@ -2363,107 +2506,31 @@ expenditures</td>
 <td style="text-align: left;"><strong>Total</strong></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
-<td style="text-align: right;"><strong>4<span>,</span>393</strong></td>
+<td style="text-align: right;"><strong>32<span>,</span>633</strong></td>
 </tr>
 </tbody>
 </table>
 </div>
-<h1 data-number="9" id="app:presets"><span
-class="header-section-number">9</span> From a record budget to the
-sparsity penalty</h1>
-<p>The sparsity penalty <span
-class="math inline">\(\lambda_{L_0}\)</span> sets the retained-record
-count, but the map from a penalty to a count is monotone and
-problem-dependent rather than closed-form: a larger <span
-class="math inline">\(\lambda_{L_0}\)</span> prunes more records, and
-how many depends on the candidate universe and the targets. Each build
-therefore specifies a requested record count, and an outer bisection
-adjusts <span class="math inline">\(\lambda_{L_0}\)</span> over eight
-steps (each a full optimization) until the achieved count matches.
-Table <a href="#tab:presets" data-reference-type="ref"
-data-reference="tab:presets">8</a> reports the <span
-class="math inline">\(\lambda_{L_0}\)</span> that each requested count
-converged to in the <code>weighted-loss-3seed</code> run (informed <span
-class="math inline">\(L_0\)</span>, <span
-class="math inline">\(\lambda_{L_2}=0\)</span>), with the achieved
-count. The penalty spans about an order of magnitude across the budget
-range, and the achieved count lands within three per cent of the request
-at every point.</p>
-<div id="tab:presets">
-<table>
-<caption>The sparsity penalty <span
-class="math inline">\(\lambda_{L_0}\)</span> that each requested record
-count converged to under the eight-step budget bisection
-(<code>weighted-loss-3seed</code>, informed <span
-class="math inline">\(L_0\)</span>, <span
-class="math inline">\(\lambda_{L_2}=0\)</span>), with the achieved
-retained-record count. Values are means over three seeds. A larger <span
-class="math inline">\(\lambda_{L_0}\)</span> prunes more records; the
-bisection sets it per build rather than by hand.</caption>
-<thead>
-<tr>
-<th style="text-align: right;">Requested records</th>
-<th style="text-align: right;"><span
-class="math inline">\(\lambda_{L_0}\)</span> (converged)</th>
-<th style="text-align: right;">Achieved records</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;">2<span>,</span>000</td>
-<td style="text-align: right;"><span
-class="math inline">\(4.9\times10^{-5}\)</span></td>
-<td style="text-align: right;">1<span>,</span>962</td>
-</tr>
-<tr>
-<td style="text-align: right;">5<span>,</span>000</td>
-<td style="text-align: right;"><span
-class="math inline">\(2.3\times10^{-5}\)</span></td>
-<td style="text-align: right;">4<span>,</span>935</td>
-</tr>
-<tr>
-<td style="text-align: right;">10<span>,</span>000</td>
-<td style="text-align: right;"><span
-class="math inline">\(1.2\times10^{-5}\)</span></td>
-<td style="text-align: right;">9<span>,</span>770</td>
-</tr>
-<tr>
-<td style="text-align: right;">20<span>,</span>000</td>
-<td style="text-align: right;"><span
-class="math inline">\(5.0\times10^{-6}\)</span></td>
-<td style="text-align: right;">20<span>,</span>406</td>
-</tr>
-<tr>
-<td style="text-align: right;">40<span>,</span>000</td>
-<td style="text-align: right;"><span
-class="math inline">\(2.1\times10^{-6}\)</span></td>
-<td style="text-align: right;">39<span>,</span>586</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><span><span class="math inline">\(\lambda_{L_0}\)</span> and the
-achieved count are read from each run’s metrics; the achieved count is
-within three per cent of the requested count at every budget.</span></p>
 <h1 data-number="10" id="app:hyperparameters"><span
 class="header-section-number">10</span> Optimization
 hyperparameters</h1>
 <p>Table <a href="#tab:hyperparameters_full" data-reference-type="ref"
-data-reference="tab:hyperparameters_full">9</a> lists the
+data-reference="tab:hyperparameters_full">6</a> lists the
 hyperparameters of the <span class="math inline">\(L_0\)</span>
 optimization with their roles. The gate parameters follow the Hard
 Concrete construction of <span class="citation"
-data-cites="louizos2018"><a href="#ref-louizos2018" role="doc-biblioref">Louizos et al. (2018)</a></span>. The sparsity
-penalty <span class="math inline">\(\lambda_{L_0}\)</span> and the epoch
-count are set per build to reach a target dataset size and are reported
-with each run.</p>
+data-cites="louizos2018">Louizos et al. (<a href="#ref-louizos2018"
+role="doc-biblioref">2018</a>)</span>. The sparsity penalty <span
+class="math inline">\(\lambda_{L_0}\)</span> and the epoch count are set
+per build to reach a target dataset size and are reported with each
+run.</p>
 <div id="tab:hyperparameters_full">
 <table>
 <caption>Hyperparameters for the <span
 class="math inline">\(L_0\)</span> optimization. Gate parameters follow
-<span class="citation" data-cites="louizos2018"><a href="#ref-louizos2018" role="doc-biblioref">Louizos et al.
-(2018)</a></span>. Source: the <code>l0-python</code> Hard Concrete
-implementation used by <span
+<span class="citation" data-cites="louizos2018">Louizos et al. (<a
+href="#ref-louizos2018" role="doc-biblioref">2018</a>)</span>. Source:
+the <code>l0-python</code> Hard Concrete implementation used by <span
 class="smallcaps">Populace</span>.</caption>
 <thead>
 <tr>
@@ -2496,8 +2563,9 @@ clipping</td>
 </tr>
 <tr>
 <td style="text-align: left;">Initial keep probability</td>
-<td style="text-align: left;">0.999</td>
-<td style="text-align: left;">Records start nearly fully active</td>
+<td style="text-align: left;">0.8</td>
+<td style="text-align: left;">Records start mostly active while leaving
+room for the sparsity penalty to close gates</td>
 </tr>
 <tr>
 <td style="text-align: left;">Weight jitter SD</td>
@@ -2519,44 +2587,41 @@ initialization</td>
 <tr>
 <td style="text-align: left;">Epochs</td>
 <td style="text-align: left;">1<span>,</span>500</td>
-<td style="text-align: left;">Training iterations</td>
+<td style="text-align: left;">Training iterations in the reported
+fixed-penalty probe</td>
 </tr>
 <tr>
 <td style="text-align: left;">Target loss cap <span
 class="math inline">\(c\)</span></td>
-<td style="text-align: left;">10</td>
+<td style="text-align: left;">1</td>
 <td style="text-align: left;">Caps a single target’s contribution to
 <span class="math inline">\(\mathcal{L}_{\text{cal}}\)</span>; the runs
-reported here used the generic solver default <span
-class="math inline">\(c=10\)</span>, while Populace’s production
-US-fiscal build caps at <span class="math inline">\(c=1\)</span></td>
+reported here use Populace’s production US-fiscal value <span
+class="math inline">\(c=1\)</span></td>
 </tr>
 <tr>
 <td style="text-align: left;"><span
-class="math inline">\(\lambda_{L_0}\)</span></td>
-<td style="text-align: left;"><span
-class="math inline">\(2\times10^{-6}\)</span> to <span
-class="math inline">\(5\times10^{-5}\)</span></td>
-<td style="text-align: left;">Sparsity penalty, set per build by
-bisection to the target size (Appendix <a href="#app:presets"
-data-reference-type="ref" data-reference="app:presets">9</a>)</td>
+class="math inline">\(\lambda_{\mathrm{share}}\)</span></td>
+<td style="text-align: left;">0.8</td>
+<td style="text-align: left;">Normalized sparsity share in <span
+class="math inline">\(\lambda_{\mathrm{share}}\sum_i\bar{z}_i/n\)</span>;
+raw <span class="math inline">\(\lambda_{L_0}=2.37\times10^{-6}\)</span>
+for 337<span>,</span>704 records</td>
 </tr>
 <tr>
 <td style="text-align: left;"><span
 class="math inline">\(\lambda_{L_2}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(0\)</span>
-(headline), <span class="math inline">\(10^{-4}\)</span>
-(operability)</td>
+<td style="text-align: left;"><span
+class="math inline">\(0\)</span></td>
 <td style="text-align: left;">Soft concentration penalty on <span
-class="math inline">\((w_i/w_{0,i})^2\)</span> (mean over records);
-informed <span class="math inline">\(L_0\)</span> only</td>
+class="math inline">\((w_i/w_{0,i})^2\)</span> (mean over records); held
+at zero in the reported full-surface run</td>
 </tr>
 <tr>
 <td style="text-align: left;">Budget bisection steps</td>
-<td style="text-align: left;">8</td>
-<td style="text-align: left;">Re-runs of the optimization that tune
-<span class="math inline">\(\lambda_{L_0}\)</span> to the target
-size</td>
+<td style="text-align: left;">None</td>
+<td style="text-align: left;">The reported full-surface probe uses one
+fixed normalized penalty; a future frontier should sweep this value</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>max_weight_ratio</code></td>
@@ -2570,7 +2635,8 @@ clamped each step</td>
 </div>
 <h1 data-number="11" id="app:algorithm"><span
 class="header-section-number">11</span> Algorithm pseudocode</h1>
-<p><a href="#app:algorithm">the algorithm pseudocode</a> presents the <span
+<p>Algorithm <a href="#alg:l0" data-reference-type="ref"
+data-reference="alg:l0">[alg:l0]</a> presents the <span
 class="math inline">\(L_0\)</span>-regularized calibration
 procedure.</p>
 <div class="algorithm">
@@ -2594,7 +2660,7 @@ class="math inline">\(\hat{\mathbf{w}} \in \mathbb{R}^n\)</span></p>
 <p>Initialize <span class="math inline">\(\log w_i \gets \log w_{0,i} +
 \mathcal{N}(0, 0.05^2)\)</span> for all <span
 class="math inline">\(i\)</span> Initialize <span
-class="math inline">\(\log \alpha_i \gets \text{logit}(0.999) +
+class="math inline">\(\log \alpha_i \gets \text{logit}(0.8) +
 \mathcal{N}(0, 0.01^2)\)</span> for all <span
 class="math inline">\(i\)</span> Initialize Adam optimizer with
 parameters <span class="math inline">\(\{\log w_i, \log
@@ -2650,21 +2716,22 @@ problem and the assembled dataset.</p>
 <h1 data-number="13" id="app:cost"><span
 class="header-section-number">13</span> Cost diagnostics</h1>
 <p>Figure <a href="#fig:cost_accuracy" data-reference-type="ref"
-data-reference="fig:cost_accuracy">7</a> reports the wall-clock runtime
-of each method against the out-of-sample mean ARE it reaches, across the
-budget sweep, so the accuracy comparison can be read alongside its
-compute cost.</p>
+data-reference="fig:cost_accuracy">4</a> is retained as a supplemental
+cost diagnostic from the earlier budget sweep. The matched full-surface
+probe’s current runtimes are reported in Section <a href="#sec:results"
+data-reference-type="ref" data-reference="sec:results">5</a>: dense
+no-<span class="math inline">\(L_0\)</span> took 38.7 minutes for
+1<span>,</span>500 epochs, <span class="math inline">\(L_0\)</span>
+selection plus refit took 48.9 minutes combined, and random + reweight
+took 7.3 minutes.</p>
 <figure id="fig:cost_accuracy" data-latex-placement="H">
 <img src="/papers/l0/web/figures/f5_cost_accuracy.png" style="width:80.0%" />
-<figcaption>Cost against accuracy: wall-clock runtime (log scale)
-against out-of-sample mean ARE (log scale) for the three methods, each
-point labelled by its retained-record budget. Informed <span
-class="math inline">\(L_0\)</span> runtime includes the eight-step <span
-class="math inline">\(\lambda_{L_0}\)</span> budget bisection; the
-baselines run once at the matched budget. Points are the mean over three
-seeds.</figcaption>
+<figcaption>Supplemental historical cost against accuracy: wall-clock
+runtime (log scale) against full-surface median ARE (log scale), each
+point labelled by its requested record budget. This figure predates the
+fixed normalized-penalty full-surface probe and is used only to motivate
+reporting runtime alongside accuracy.</figcaption>
 </figure>
-<h1 class="unnumbered" id="references">References</h1>
 <div id="refs" class="references csl-bib-body hanging-indent"
 role="list">
 <div id="ref-bachem2017coresets" class="csl-entry" role="listitem">
@@ -2677,6 +2744,11 @@ Ballas, Dimitris, Graham Clarke, Danny Dorling, Heather Eyre, Bethan
 Thomas, and David Rossiter. 2005. <span>“<span>SimBritain</span>: A
 Spatial Microsimulation Approach to Population Dynamics.”</span>
 <em>Population, Space and Place</em> 11: 13–34.
+</div>
+<div id="ref-beck2009fista" class="csl-entry" role="listitem">
+Beck, Amir, and Marc Teboulle. 2009. <span>“A Fast Iterative
+Shrinkage-Thresholding Algorithm for Linear Inverse Problems.”</span>
+<em>SIAM Journal on Imaging Sciences</em> 2 (1): 183–202.
 </div>
 <div id="ref-bryant2023a" class="csl-entry" role="listitem">
 Bryant, Victoria. 2023. <em>General Description Booklet for the 2015
@@ -2709,6 +2781,12 @@ Statistics</em> 11 (4): 427–44.
 Deville, Jean-Claude, and Carl-Erik Särndal. 1992. <span>“Calibration
 Estimators in Survey Sampling.”</span> <em>Journal of the American
 Statistical Association</em> 87 (418): 376–82.
+</div>
+<div id="ref-deville2004cube" class="csl-entry" role="listitem">
+Deville, Jean-Claude, and Yves Tillé. 2004. <span>“Efficient Balanced
+Sampling: The Cube Method.”</span> <em>Biometrika</em> 91 (4): 893–912.
+<a
+href="https://doi.org/10.1093/biomet/91.4.893">https://doi.org/10.1093/biomet/91.4.893</a>.
 </div>
 <div id="ref-espuny2018" class="csl-entry" role="listitem">
 Espuny-Pujol, Ferran, Karyn Morrissey, and Paul Williamson. 2018.
@@ -2757,6 +2835,11 @@ Kingma, Diederik P., and Jimmy Ba. 2015. <span>“Adam: A Method for
 Stochastic Optimization.”</span> <em>International Conference on
 Learning Representations</em>. <a
 href="https://arxiv.org/abs/1412.6980">https://arxiv.org/abs/1412.6980</a>.
+</div>
+<div id="ref-kirkpatrick1983" class="csl-entry" role="listitem">
+Kirkpatrick, Scott, C. D. Gelatt, and M. P. Vecchi. 1983.
+<span>“Optimization by Simulated Annealing.”</span> <em>Science</em> 220
+(4598): 671–80.
 </div>
 <div id="ref-louizos2018" class="csl-entry" role="listitem">
 Louizos, Christos, Max Welling, and Diederik P. Kingma. 2018.
@@ -2820,6 +2903,13 @@ PolicyEngine. 2026b. <em>Populace: A Microsimulation Dataset
 Construction Pipeline</em>. <a
 href="https://github.com/PolicyEngine/populace">https://github.com/PolicyEngine/populace</a>.
 </div>
+<div id="ref-pritchard2012" class="csl-entry" role="listitem">
+Pritchard, David R., and Eric J. Miller. 2012. <span>“Advances in
+Population Synthesis: Fitting Many Attributes Per Agent and Fitting to
+Household and Person Margins Simultaneously.”</span>
+<em>Transportation</em> 39 (3): 685–704. <a
+href="https://doi.org/10.1007/s11116-011-9367-4">https://doi.org/10.1007/s11116-011-9367-4</a>.
+</div>
 <div id="ref-sarndal2007" class="csl-entry" role="listitem">
 Särndal, Carl-Erik. 2007. <span>“The Calibration Approach in Survey
 Theory and Practice.”</span> <em>Survey Methodology</em> 33 (2): 99–119.
@@ -2839,6 +2929,17 @@ Tanton, Robert, Yogi Vidyattama, Binod Nepal, and Justine McNamara.
 2011. <span>“Small Area Estimation Using a Reweighting
 Algorithm.”</span> <em>Journal of the Royal Statistical Society: Series
 A</em> 174 (4): 931–51.
+</div>
+<div id="ref-tanton2014co" class="csl-entry" role="listitem">
+Tanton, Robert, Paul Williamson, and Ann Harding. 2014. <span>“Comparing
+Two Methods of Reweighting a Survey File to Small Area Data: Generalised
+Regression and Combinatorial Optimisation.”</span> <em>International
+Journal of Microsimulation</em> 7 (1): 76–99.
+</div>
+<div id="ref-tibshirani1996" class="csl-entry" role="listitem">
+Tibshirani, Robert. 1996. <span>“Regression Shrinkage and Selection via
+the Lasso.”</span> <em>Journal of the Royal Statistical Society: Series
+B (Methodological)</em> 58 (1): 267–88.
 </div>
 <div id="ref-census2024" class="csl-entry" role="listitem">
 U.S. Census Bureau. 2024. <em>Current Population Survey, 2024 Annual
