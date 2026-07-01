@@ -29,6 +29,7 @@
     <a href="#idea">the idea</a>
     <a href="#stack">the stack</a>
     <a href="#sources">sources</a>
+    <a href="#releases">releases</a>
     <a href="#result">evidence</a>
     <a href="#commons">the commons</a>
     <a href="/papers/l0">paper</a>
@@ -134,9 +135,41 @@
     <p class="mono" id="sources-note" style="margin-top: 20px; max-width: 64ch; font-size: 13px; line-height: 1.55; color: var(--paper-faint);"></p>
   </section>
 
+  <section id="releases" class="band">
+    <div class="band-head">
+      <span class="kicker mono">04 — releases</span>
+      <h2>The current data, read live.</h2>
+    </div>
+    <div class="prose">
+      <p>
+        Every release publishes its manifests, calibration diagnostics, and
+        reform validation next to the data. The rows below read the release
+        registry directly, so this page cannot go stale: <strong>latest</strong>
+        is the newest published build; <strong>certified</strong> is the build
+        pinned as the policyengine.py default.
+      </p>
+    </div>
+    <div class="release-rows">
+      <div class="release-row" id="release-row-latest" hidden>
+        <span class="tag tag-live">latest</span>
+        <span class="release-id" data-slot="id"></span>
+        <span class="release-meta" data-slot="meta"></span>
+      </div>
+      <div class="release-row" id="release-row-certified" hidden>
+        <span class="tag tag-cert">certified</span>
+        <span class="release-id" data-slot="id"></span>
+        <span class="release-meta" data-slot="meta"></span>
+      </div>
+    </div>
+    <p class="research-link mono">
+      <a href="/calibration">Browse every target on the calibration dashboard</a>
+      · <a href="https://huggingface.co/datasets/policyengine/populace-us/tree/main">releases on Hugging Face</a>
+    </p>
+  </section>
+
   <section id="result" class="band band-result">
     <div class="band-head">
-      <span class="kicker mono">04 — evidence</span>
+      <span class="kicker mono">05 — evidence</span>
       <h2>It already matches the data it aims to replace.</h2>
     </div>
     <div class="prose">
@@ -184,7 +217,7 @@
 
   <section id="commons" class="band band-commons">
     <div class="band-head">
-      <span class="kicker mono">05 — the commons</span>
+      <span class="kicker mono">06 — the commons</span>
       <h2>Toward one faithful record per person.</h2>
     </div>
     <div class="prose">
@@ -232,5 +265,6 @@
 
 <script src="./field.js" defer></script>
 <script src="./sources.js" defer></script>
+<script src="./releases.js" defer></script>
 </body>
 </html>

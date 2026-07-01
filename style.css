@@ -317,6 +317,30 @@ h2 {
   margin-top: 18px;
 }
 
+/* ---------- releases ---------- */
+.release-rows {
+  display: grid;
+  gap: 14px;
+  max-width: 76ch;
+  margin-top: 40px;
+}
+.release-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 14px;
+  font-family: var(--mono);
+  font-size: 14px;
+  padding: 16px 20px;
+  border: 1px solid var(--line-soft);
+  border-radius: 3px;
+  background: var(--background-secondary);
+}
+.release-row[hidden] { display: none; }
+.release-id { color: var(--paper); word-break: break-all; }
+.release-meta { color: var(--paper-faint); font-size: 12.5px; width: 100%; }
+.tag-cert { background: color-mix(in srgb, var(--primary) 12%, transparent); color: var(--primary); }
+
 /* ---------- commons ---------- */
 .commons-rails {
   list-style: none;
