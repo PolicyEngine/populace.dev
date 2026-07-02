@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Max Ghenis">
+
+<title>populace dynamics: an open, scored longitudinal layer for policy microsimulation</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="paper_files/libs/clipboard/clipboard.min.js"></script>
+<script src="paper_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="paper_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="paper_files/libs/quarto-html/popper.min.js"></script>
+<script src="paper_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="paper_files/libs/quarto-html/anchor.min.js"></script>
+<link href="paper_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="paper_files/libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="paper_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="paper_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="paper_files/libs/bootstrap/bootstrap-138a6193a3bd40baf1e627da441a4734.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
+  <li><a href="#sec-terminology" id="toc-sec-terminology" class="nav-link" data-scroll-target="#sec-terminology"><span class="header-section-number">2</span> Terminology and scope</a></li>
+  <li><a href="#sec-validity" id="toc-sec-validity" class="nav-link" data-scroll-target="#sec-validity"><span class="header-section-number">3</span> Domains of validity</a>
+  <ul class="collapse">
+  <li><a href="#parameter-uncertainty-dominates-the-long-horizon" id="toc-parameter-uncertainty-dominates-the-long-horizon" class="nav-link" data-scroll-target="#parameter-uncertainty-dominates-the-long-horizon"><span class="header-section-number">3.1</span> Parameter uncertainty dominates the long horizon</a></li>
+  <li><a href="#three-output-tiers" id="toc-three-output-tiers" class="nav-link" data-scroll-target="#three-output-tiers"><span class="header-section-number">3.2</span> Three output tiers</a></li>
+  </ul></li>
+  <li><a href="#sec-architecture" id="toc-sec-architecture" class="nav-link" data-scroll-target="#sec-architecture"><span class="header-section-number">4</span> Architecture</a>
+  <ul class="collapse">
+  <li><a href="#the-cross-sectional-foundation" id="toc-the-cross-sectional-foundation" class="nav-link" data-scroll-target="#the-cross-sectional-foundation"><span class="header-section-number">4.1</span> The cross-sectional foundation</a></li>
+  <li><a href="#trajectory-weights-and-population-accounting" id="toc-trajectory-weights-and-population-accounting" class="nav-link" data-scroll-target="#trajectory-weights-and-population-accounting"><span class="header-section-number">4.2</span> Trajectory weights and population accounting</a></li>
+  <li><a href="#the-dynamics-operator" id="toc-the-dynamics-operator" class="nav-link" data-scroll-target="#the-dynamics-operator"><span class="header-section-number">4.3</span> The Dynamics operator</a></li>
+  <li><a href="#rules-and-delivery" id="toc-rules-and-delivery" class="nav-link" data-scroll-target="#rules-and-delivery"><span class="header-section-number">4.4</span> Rules and delivery</a></li>
+  </ul></li>
+  <li><a href="#sec-scoring" id="toc-sec-scoring" class="nav-link" data-scroll-target="#sec-scoring"><span class="header-section-number">5</span> Scoring and resolution</a></li>
+  <li><a href="#sec-domain" id="toc-sec-domain" class="nav-link" data-scroll-target="#sec-domain"><span class="header-section-number">6</span> First validation domain: U.S. Social Security</a></li>
+  <li><a href="#sec-related" id="toc-sec-related" class="nav-link" data-scroll-target="#sec-related"><span class="header-section-number">7</span> Related work</a></li>
+  <li><a href="#sec-status" id="toc-sec-status" class="nav-link" data-scroll-target="#sec-status"><span class="header-section-number">8</span> Status and roadmap</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="../paper.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">populace dynamics: an open, scored longitudinal layer for policy microsimulation</h1>
+</div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Max Ghenis <a href="mailto:max@policyengine.org" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            PolicyEngine
+          </p>
+      </div>
+  </div>
+
+<div class="quarto-title-meta">
+
+      
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">July 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+<div>
+  <div class="abstract">
+    <div class="block-title">Abstract</div>
+    <p>Dynamic microsimulation — the longitudinal aging of a person-level population through earnings, family structure, disability, mortality, and program participation — underpins retirement and social-insurance policy analysis, yet every major United States model of this kind is closed: internal to government, tied to restricted administrative records, or accessible only through institutional relationships. This design paper specifies an open alternative built as an extension of populace, PolicyEngine’s open-source microdata stack, whose cross-sectional layer is the certified default United States microdata in PolicyEngine after outperforming its predecessor on held-out administrative targets. The design contributes four elements: a trajectory-weighted kernel in which multi-period calibration cannot silently destroy panel structure; a Dynamics operator that treats state transitions as conditional models, mixing deterministic demographic hazards with machine-learned earnings processes; an explicit domains-of-validity framework that refuses point forecasts where parameter uncertainty dominates — including the 75-year actuarial balance — and instead publishes sensitivity surfaces; and a scoring protocol under which every claim either resolves against administrative publications, is backtested with leakage control, or is computed exactly from statute, with contributions merging only when they improve held-out scores. United States Social Security is the first validation domain; the layer itself is country-agnostic.</p>
+  </div>
+</div>
+
+
+</header>
+
+
+<section id="introduction" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
+<p>Public microsimulation infrastructure is unevenly distributed. On the tax side, analysts can run open, calibrated models directly: Tax-Calculator <span class="citation" data-cites="taxcalc2026">(<a href="#ref-taxcalc2026" role="doc-biblioref">Policy Simulation Library 2026</a>)</span>, PolicyEngine <span class="citation" data-cites="policyengine2026">(<a href="#ref-policyengine2026" role="doc-biblioref">PolicyEngine 2026</a>)</span>, and FiscalSim-US <span class="citation" data-cites="fiscalsim2026">(<a href="#ref-fiscalsim2026" role="doc-biblioref">Center for Growth and Opportunity at Utah State University 2026</a>)</span> are openly callable on public data, alongside source-available models with restricted inputs <span class="citation" data-cites="yaletaxsimulator2026">(<a href="#ref-yaletaxsimulator2026" role="doc-biblioref">The Budget Lab at Yale 2026</a>)</span> and proprietary models used for outside-facing analysis <span class="citation" data-cites="tpcmodelfaq2025 itepmodel2025 taxfoundationtag2025 pwbm2025">(<a href="#ref-tpcmodelfaq2025" role="doc-biblioref">Tax Policy Center 2025</a>; <a href="#ref-itepmodel2025" role="doc-biblioref">Institute on Taxation and Economic Policy 2025</a>; <a href="#ref-taxfoundationtag2025" role="doc-biblioref">Tax Foundation 2025</a>; <a href="#ref-pwbm2025" role="doc-biblioref">Penn Wharton Budget Model 2025</a>)</span>. On the dynamic side — the longitudinal modeling that retirement and social-insurance policy requires — the benchmark models remain closed. DYNASIM <span class="citation" data-cites="favreault2015 urban2024dynasim4">(<a href="#ref-favreault2015" role="doc-biblioref">Favreault et al. 2015</a>; <a href="#ref-urban2024dynasim4" role="doc-biblioref">Urban Institute 2024</a>)</span>, MINT <span class="citation" data-cites="ssa2024mint">(<a href="#ref-ssa2024mint" role="doc-biblioref">Social Security Administration 2024</a>)</span>, CBOLT <span class="citation" data-cites="cbo2018 cbo2024longterm">(<a href="#ref-cbo2018" role="doc-biblioref">Congressional Budget Office 2018</a>, <a href="#ref-cbo2024longterm" role="doc-biblioref">2024</a>)</span>, and Morningstar’s retirement-outcomes model <span class="citation" data-cites="look2024retirementoutcomes">(<a href="#ref-look2024retirementoutcomes" role="doc-biblioref">Look and VanDerhei 2024</a>)</span> are real and important, but outside users reach them only through institutional relationships. The nearest open analogue, the Cato Social Security model <span class="citation" data-cites="catossmodel2026">(<a href="#ref-catossmodel2026" role="doc-biblioref">Chanwong 2026</a>)</span>, demonstrates feasibility while remaining deliberately narrow in population, scope, and validation.</p>
+<p>This paper specifies the design of an open longitudinal layer — <em>populace dynamics</em> — as an extension of populace, PolicyEngine’s open-source microdata stack. It is a design paper: the cross-sectional foundation is shipped and validated; the longitudinal layer is specified here and built in the open, gated by the scoring protocol of <a href="#sec-scoring" class="quarto-xref">Section&nbsp;5</a>.</p>
+<p>The design makes four contributions:</p>
+<ol type="1">
+<li><strong>A trajectory-weighted kernel.</strong> One weight per trajectory, with multi-period calibration expressed as stacked constraint rows over the same weight vector, so that hitting cross-sectional totals in multiple periods cannot silently destroy panel structure (<a href="#sec-architecture" class="quarto-xref">Section&nbsp;4</a>).</li>
+<li><strong>Transitions as conditional models.</strong> A single operator interface covers deterministic demographic hazards and machine-learned earnings processes, so candidate architectures compete under one evaluation standard (<a href="#sec-architecture" class="quarto-xref">Section&nbsp;4</a>).</li>
+<li><strong>Domains of validity as shipped metadata.</strong> The model states which questions it will not answer with false precision — led by the 75-year actuarial balance, where input uncertainty dominates model fidelity — and publishes long-horizon results as sensitivity surfaces rather than point forecasts (<a href="#sec-validity" class="quarto-xref">Section&nbsp;3</a>).</li>
+<li><strong>A scoring protocol in place of fidelity-only validation.</strong> Claims resolve against administrative publications on an annual calendar, backtest against realized history with leakage control, or compute exactly from statute; contributions merge only when they improve held-out scores (<a href="#sec-scoring" class="quarto-xref">Section&nbsp;5</a>).</li>
+</ol>
+<p>United States Social Security is the first validation domain, chosen because it is the hardest available proving ground: benefit adequacy and reform incidence depend jointly on lifetime earnings, marriage and survivorship, disability, differential mortality, and claiming. The layer itself is country-agnostic and extends to other pension and benefit systems as PolicyEngine’s country coverage grows.</p>
+</section>
+<section id="sec-terminology" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Terminology and scope</h1>
+<p>“Dynamic” is used here in the microsimulation field’s standard sense, following <span class="citation" data-cites="orcutt1961">Orcutt et al. (<a href="#ref-orcutt1961" role="doc-biblioref">1961</a>)</span> and the tradition carried by DYNASIM, MINT, CBOLT, and SimPaths: a longitudinal model that ages a person-level population through time <span class="citation" data-cites="li2013">(<a href="#ref-li2013" role="doc-biblioref">Li and O’Donoghue 2013</a>)</span>. It does not mean “dynamic scoring” — the tax-policy usage denoting macroeconomic feedback in revenue estimation — and the design is not an overlapping-generations general-equilibrium model of the Auerbach–Kotlikoff kind, such as the Penn Wharton Budget Model operates <span class="citation" data-cites="pwbm2025">(<a href="#ref-pwbm2025" role="doc-biblioref">Penn Wharton Budget Model 2025</a>)</span>. The model claims neither macroeconomic feedback nor equilibrium closure. Behavioral responses enter as labeled scenario inputs with documented ranges, not as point estimates carrying model authority.</p>
+</section>
+<section id="sec-validity" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Domains of validity</h1>
+<p>All models are wrong; a model earns its keep only where it improves predictions. The design therefore begins by bounding its own claims.</p>
+<section id="parameter-uncertainty-dominates-the-long-horizon" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="parameter-uncertainty-dominates-the-long-horizon"><span class="header-section-number">3.1</span> Parameter uncertainty dominates the long horizon</h2>
+<p>The 75-year actuarial balance of a pension system is a function of a small set of exogenous assumptions — fertility, mortality improvement, net immigration, real wage growth, interest rates — whose uncertainty dominates the microsimulation machinery that processes them. The public record makes this concrete for United States Social Security. The Trustees’ own low- and high-cost scenarios bracket a range of 75-year balances wider than the intermediate deficit itself <span class="citation" data-cites="ssa2025trustees">(<a href="#ref-ssa2025trustees" role="doc-biblioref">Board of Trustees, Federal Old-Age and Survivors Insurance and Federal Disability Insurance Trust Funds 2025</a>)</span>. The Congressional Budget Office’s long-term projections differ materially from the Trustees’ for assumption reasons rather than benefit arithmetic <span class="citation" data-cites="cbo2024longterm">(<a href="#ref-cbo2024longterm" role="doc-biblioref">Congressional Budget Office 2024</a>)</span>. Successive Technical Panels convened by the Social Security Advisory Board have recommended revising fertility and mortality-improvement assumptions as realized values ran persistently outside the projected path <span class="citation" data-cites="technicalpanel2023">(<a href="#ref-technicalpanel2023" role="doc-biblioref">Technical Panel on Assumptions and Methods 2023</a>)</span>. Two expert institutions with administrative data and decades of refinement disagree with each other and have both missed realized demographic trends; a better microsimulation does not repair that, because the variance lives in the inputs.</p>
+</section>
+<section id="three-output-tiers" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="three-output-tiers"><span class="header-section-number">3.2</span> Three output tiers</h2>
+<p>The model’s outputs are organized into tiers, each attached to the strongest claim it can support.</p>
+<p><strong>Tier 1: distributional analysis under fixed assumptions.</strong> Reform analysis is a difference — outcome under reform minus outcome under baseline, holding the population and assumption path fixed — and much of the unforecastable demographic uncertainty is common to both arms and cancels in the difference. The required ingredients — a calibrated joint distribution of lifetime earnings, family structure, and differential mortality, plus an exact rules engine — are the components that can be validated directly. The slice of a reform delta that does not cancel, such as reform-induced claiming responses, is labeled as the least-validated slice rather than buried.</p>
+<p><strong>Tier 2: near-term components that resolve.</strong> Over roughly a ten-year horizon, outputs are dominated by mechanics rather than demographic extrapolation: beneficiary counts by type, average benefits, covered earnings and taxable payroll, claiming-age distributions, disability incidence. These resolve against administrative publications on an annual cycle and are scored (<a href="#sec-scoring" class="quarto-xref">Section&nbsp;5</a>).</p>
+<p><strong>Tier 3: the long horizon as a sensitivity surface.</strong> Long-horizon outputs are published as surfaces over documented assumption ranges — how the balance, cohort replacement rates, or distributional outcomes move as fertility, mortality improvement, and immigration vary — never as point forecasts. Incumbent practice buries assumption-dependence behind a point estimate and an appendix; an open model can invert that and make the sensitivity the interface.</p>
+<p>Every API response carries its tier, assumption path, and calibration history as metadata, so a downstream consumer — human or machine — weights the output by demonstrated reliability rather than by the producer’s reputation.</p>
+</section>
+</section>
+<section id="sec-architecture" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Architecture</h1>
+<section id="the-cross-sectional-foundation" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="the-cross-sectional-foundation"><span class="header-section-number">4.1</span> The cross-sectional foundation</h2>
+<p>populace builds a calibrated synthetic population entirely from primary-source government data — the Current Population Survey ASEC, the IRS Public Use File, the Survey of Consumer Finances, SIPP, CPS outgoing-rotation groups, MEPS, and the ACS — synthesizing missing variables with weight-aware conditional models and calibrating to administrative aggregates treated as uncertainty-weighted facts. In June 2026 it replaced PolicyEngine’s enhanced CPS as the certified default United States microdata in PolicyEngine, after a matched, symmetric-refit comparison on 41,314 households with a 739-target holdout (<a href="#tbl-scorecard" class="quarto-xref">Table&nbsp;1</a>).</p>
+<div id="tbl-scorecard" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-scorecard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Certification comparison from the populace release manifest. The per-target asymmetry is reported deliberately: the enhanced CPS wins more individual targets narrowly while its largest misses are far larger, and publishing the number that cuts against the headline is the discipline the scoring protocol requires.
+</figcaption>
+<div aria-describedby="tbl-scorecard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Metric (lower is better)</th>
+<th>populace</th>
+<th>enhanced CPS</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Holdout loss (739 held-out targets)</td>
+<td>0.038</td>
+<td>0.317</td>
+</tr>
+<tr class="even">
+<td>Training loss</td>
+<td>0.190</td>
+<td>1.089</td>
+</tr>
+<tr class="odd">
+<td>Full loss</td>
+<td>0.228</td>
+<td>1.405</td>
+</tr>
+<tr class="even">
+<td>Per-target wins</td>
+<td>1,040</td>
+<td>2,613 (51 ties)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="trajectory-weights-and-population-accounting" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="trajectory-weights-and-population-accounting"><span class="header-section-number">4.2</span> Trajectory weights and population accounting</h2>
+<p>The longitudinal extension follows two kernel rules set in populace’s charter. First, <strong>one weight per trajectory</strong>: multi-period calibration targets stack as (target, period) constraint rows over a single trajectory-level weight vector, so that calibrating cross-sections independently — the standard way panels die — is a kernel-level error rather than a modeling temptation. Second, <strong>population is not closed</strong>: trajectories carry entry and exit markers (birth, death, immigration, emigration), and a trajectory’s weight contributes to a period only while the person is present. Household and couple links are period-scoped, so family recomposition preserves per-period accounting identities.</p>
+</section>
+<section id="the-dynamics-operator" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="the-dynamics-operator"><span class="header-section-number">4.3</span> The Dynamics operator</h2>
+<p>Dynamics is an operator from a population and a transition specification to a population with extended periods. A transition is a conditional distribution — the probability of next-period state given current state and covariates — which is the same interface populace’s synthesis models already implement. The shipped baseline for earnings is a regime-gated, sequentially chained, weighted quantile-regression-forest imputer <span class="citation" data-cites="meinshausen2006">(<a href="#ref-meinshausen2006" role="doc-biblioref">Meinshausen 2006</a>)</span> whose zero-inflation gate doubles as a nonemployment model; richer architectures (zero-inflated neural distribution models, normalizing flows) are candidates that must beat the baseline on held-out longitudinal moments to merge.</p>
+<p>The design is deliberately hybrid. Where the evidence base is tabular — mortality from official life tables with published income gradients, fertility and marriage from vital statistics, disability incidence from program statistics — transitions are deterministic hazards, auditable row by row. Machine learning is reserved for processes with rich conditional structure, led by earnings dynamics, where held-out panel moments such as higher-order earnings-change distributions <span class="citation" data-cites="guvenen2015earningsrisk">(<a href="#ref-guvenen2015earningsrisk" role="doc-biblioref">Guvenen et al. 2015</a>)</span> provide a demanding evaluation standard. Backcasting histories from an observed cross-section and projecting forward are the same operator run in either direction, with cohort aggregates constraining the backcast.</p>
+</section>
+<section id="rules-and-delivery" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="rules-and-delivery"><span class="header-section-number">4.4</span> Rules and delivery</h2>
+<p>Statute is the deterministic slice of any policy forecast. Benefit formulas — average indexed monthly earnings, primary insurance amounts, actuarial adjustments, auxiliary and survivor benefits, benefit taxation, and program interactions — compute exactly through PolicyEngine’s rules engine via populace’s rules-adapter protocol, vectorized over person-periods. Uncertainty budgets therefore attach only to the genuinely uncertain components. The deliverable is a versioned artifact — a longitudinal population release with a manifest and scorecard, certified through the same path as the cross-sectional release — exposed through a Python library, a REST API, and a Model Context Protocol server so that AI agents can run baseline distributions and reform analyses with validity metadata attached.</p>
+</section>
+</section>
+<section id="sec-scoring" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Scoring and resolution</h1>
+<p>Most microsimulation validation asks whether the model matches published aggregates. That standard is necessary but weak: a model can be tuned to reproduce the tables it was built from. This project’s standard is that a claim is validated when it improves prediction of something that subsequently resolves. Five scoring surfaces implement it.</p>
+<ol type="1">
+<li><strong>Annually resolving components.</strong> Beneficiary counts by type, average and aggregate benefits, covered earnings and taxable payroll, cost-of-living adjustments, disability incidence, and claiming-age distributions resolve against administrative publications each year. Every published forecast cell carries a resolution rule naming the exact table and vintage that settles it.</li>
+<li><strong>Forecasting the forecasters.</strong> Official projections revise constantly; predicting the next revision of headline quantities resolves in months rather than decades and is decision-relevant to anyone who acts on the official number.</li>
+<li><strong>Retrodiction with leakage control.</strong> The model is built from data vintages available at a historical date and scored against realized outcomes. populace’s versioned data registry pins vintages, making “what could the model have known” an enforceable constraint. Retrodictive calibration under the historical regime does not guarantee calibration under a new one, so backtests complement rather than substitute for live resolution.</li>
+<li><strong>Statutory resolution.</strong> Where an output is fixed by law, the rules engine computes it exactly, and enacted policy settles the corresponding conditional cells immediately.</li>
+<li><strong>Held-out panel moments.</strong> The population layer is scored against moments it was not fit to: earnings-mobility matrices, autocorrelation and higher-order moments of earnings changes, cohort age-earnings profiles, and family-transition rates on held-out panel records.</li>
+</ol>
+<p>Two governance rules complete the protocol. <strong>Merge on score</strong>: a contribution — a mortality module, a claiming model, an earnings architecture, from any contributor — merges if and only if it improves the population’s score on held-out facts, the rule populace already applies to its cross-sectional layer. <strong>Publication discipline</strong>: misses publish with the same prominence as hits; superseded methods keep their historical scorecards; and stage gates in the development roadmap are pre-specified score thresholds, not narrative judgments.</p>
+</section>
+<section id="sec-domain" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> First validation domain: U.S. Social Security</h1>
+<p>Social Security is the first domain because it is the hardest available test of the machinery: eligibility and benefits depend on the highest thirty-five years of indexed earnings, marital and survivorship histories, disability pathways, differential mortality, and claiming timing — jointly. A layer that scores well here earns reuse in easier adjacent domains (Supplemental Security Income interactions, retirement adequacy with wealth, long-term care) and in other countries’ pension systems.</p>
+<p>The domain also sharpens the honesty argument. The canonical output of existing Social Security models — the 75-year balance and depletion date — is precisely the quantity <a href="#sec-validity" class="quarto-xref">Section&nbsp;3</a> declines to forecast. What the open layer offers instead is the combination the field lacks: tier-1 distributional incidence of reforms with reproducible assumptions; tier-2 near-term components with a public resolution record; and tier-3 sensitivity surfaces that make the assumption-dependence of long-horizon claims the interface rather than the appendix. No existing model, closed or open, publishes that combination, and the closed benchmarks cannot be audited at the intermediate-state level at all.</p>
+</section>
+<section id="sec-related" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Related work</h1>
+<p>Dynamic microsimulation originates with <span class="citation" data-cites="orcutt1961">Orcutt et al. (<a href="#ref-orcutt1961" role="doc-biblioref">1961</a>)</span>; <span class="citation" data-cites="li2013">Li and O’Donoghue (<a href="#ref-li2013" role="doc-biblioref">2013</a>)</span> survey the field’s alignment and calibration practice. DYNASIM <span class="citation" data-cites="favreault2015 urban2024dynasim4">(<a href="#ref-favreault2015" role="doc-biblioref">Favreault et al. 2015</a>; <a href="#ref-urban2024dynasim4" role="doc-biblioref">Urban Institute 2024</a>)</span>, MINT <span class="citation" data-cites="ssa2024mint">(<a href="#ref-ssa2024mint" role="doc-biblioref">Social Security Administration 2024</a>)</span>, and CBOLT <span class="citation" data-cites="cbo2018">(<a href="#ref-cbo2018" role="doc-biblioref">Congressional Budget Office 2018</a>)</span> define the closed state of the art in the United States, and this design borrows their central structural lesson — an annual state engine with family links and external alignment — while departing on openness, trajectory-level weighting, and scoring. The Cato model <span class="citation" data-cites="catossmodel2026">(<a href="#ref-catossmodel2026" role="doc-biblioref">Chanwong 2026</a>)</span> is the nearest open system and demonstrates demand for one. On the measurement side, administrative-data moments of earnings dynamics <span class="citation" data-cites="guvenen2015earningsrisk">(<a href="#ref-guvenen2015earningsrisk" role="doc-biblioref">Guvenen et al. 2015</a>)</span> supply held-out evaluation standards that public survey panels alone cannot, and the assumption-failure record compiled by successive Technical Panels <span class="citation" data-cites="technicalpanel2023">(<a href="#ref-technicalpanel2023" role="doc-biblioref">Technical Panel on Assumptions and Methods 2023</a>)</span> motivates the domains-of-validity framework.</p>
+</section>
+<section id="sec-status" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Status and roadmap</h1>
+<p>The cross-sectional foundation is in production. The longitudinal kernel rules are specified in populace’s charter, and this paper’s companion repository holds the full design book: operational chapters on earnings-history construction, family and auxiliary benefits, disability and claiming, mortality and projection drift, calibration targets, and the Social Security validation program. Development proceeds through stage gates defined as score thresholds — earnings-history credibility first, family and benefit outputs second, forward projection third, productization last — with every gate’s evidence published whether it passes or fails.</p>
+<p>The layer is open source under the MIT license. Corrections are invited, particularly to the benchmark characterizations, and contributions merge on the same standard as the authors’: improve the held-out score.</p>
+</section>
+<section id="references" class="level1 unnumbered">
+<h1 class="unnumbered">References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-ssa2025trustees" class="csl-entry" role="listitem">
+Board of Trustees, Federal Old-Age and Survivors Insurance and Federal Disability Insurance Trust Funds. 2025. <em>The 2025 Annual Report of the Board of Trustees of the Federal Old-Age and Survivors Insurance and Federal Disability Insurance Trust Funds</em>. Social Security Administration. <a href="https://www.ssa.gov/oact/TR/2025/tr2025.pdf">https://www.ssa.gov/oact/TR/2025/tr2025.pdf</a>.
+</div>
+<div id="ref-fiscalsim2026" class="csl-entry" role="listitem">
+Center for Growth and Opportunity at Utah State University. 2026. <em>FiscalSim-US: Microsimulation Model of the US Federal and State Tax and Benefit System</em>. <a href="https://github.com/TheCGO/fiscalsim-us">https://github.com/TheCGO/fiscalsim-us</a>.
+</div>
+<div id="ref-catossmodel2026" class="csl-entry" role="listitem">
+Chanwong, Krit. 2026. <em>Social Security Cato Model</em>. <a href="https://github.com/kchanwong/social_security_cato_model">https://github.com/kchanwong/social_security_cato_model</a>.
+</div>
+<div id="ref-cbo2018" class="csl-entry" role="listitem">
+Congressional Budget Office. 2018. <em>An Overview of CBOLT: The Congressional Budget Office Long-Term Model</em>. Congressional Budget Office. <a href="https://www.cbo.gov/publication/53667">https://www.cbo.gov/publication/53667</a>.
+</div>
+<div id="ref-cbo2024longterm" class="csl-entry" role="listitem">
+Congressional Budget Office. 2024. <em>CBO’s 2024 Long-Term Projections for Social Security</em>. Congressional Budget Office. <a href="https://www.cbo.gov/publication/60392">https://www.cbo.gov/publication/60392</a>.
+</div>
+<div id="ref-favreault2015" class="csl-entry" role="listitem">
+Favreault, Melissa M, Karen E Smith, and Richard W Johnson. 2015. <em>The Dynamic Simulation of Income Model (DYNASIM): An Overview</em>. The Urban Institute. <a href="https://www.urban.org/research/publication/dynamic-simulation-income-model-dynasim">https://www.urban.org/research/publication/dynamic-simulation-income-model-dynasim</a>.
+</div>
+<div id="ref-guvenen2015earningsrisk" class="csl-entry" role="listitem">
+Guvenen, Fatih, Fatih Karahan, Serdar Ozkan, and Jae Song. 2015. <em>What Do Data on Millions of u.s. Workers Reveal about Life-Cycle Earnings Risk?</em> Working Paper 20913. National Bureau of Economic Research. <a href="https://www.nber.org/papers/w20913">https://www.nber.org/papers/w20913</a>.
+</div>
+<div id="ref-itepmodel2025" class="csl-entry" role="listitem">
+Institute on Taxation and Economic Policy. 2025. <em>ITEP Tax Microsimulation Model Overview</em>. <a href="https://itep.org/itep-tax-model">https://itep.org/itep-tax-model</a>.
+</div>
+<div id="ref-li2013" class="csl-entry" role="listitem">
+Li, Jinjing, and Cathal O’Donoghue. 2013. <span>“Alignment and Calibration of a Dynamic Microsimulation Model.”</span> <em>Journal of Artificial Societies and Social Simulation</em> 16 (3): 1–15.
+</div>
+<div id="ref-look2024retirementoutcomes" class="csl-entry" role="listitem">
+Look, Spencer U., and Jack VanDerhei. 2024. <em>Beyond the Retirement Crisis Headlines: Why Employer-Sponsored Plans Are the Key to Retirement Adequacy for Today’s Workers</em>. Morningstar Center for Retirement &amp; Policy Studies. <a href="https://www.morningstar.com/content/cs-assets/v3/assets/blt9415ea4cc4157833/bltd4bb26598046aed4/66a1535de91a178e5c15872a/Introducing_the_Morningstar_Model_of_US_Retirement_Outcomes_-_July_2024_-_final.pdf">https://www.morningstar.com/content/cs-assets/v3/assets/blt9415ea4cc4157833/bltd4bb26598046aed4/66a1535de91a178e5c15872a/Introducing_the_Morningstar_Model_of_US_Retirement_Outcomes_-_July_2024_-_final.pdf</a>.
+</div>
+<div id="ref-meinshausen2006" class="csl-entry" role="listitem">
+Meinshausen, Nicolai. 2006. <span>“Quantile Regression Forests.”</span> <em>Journal of Machine Learning Research</em> 7: 983–99. <a href="https://jmlr.org/papers/v7/meinshausen06a.html">https://jmlr.org/papers/v7/meinshausen06a.html</a>.
+</div>
+<div id="ref-orcutt1961" class="csl-entry" role="listitem">
+Orcutt, Guy H, Martin Greenberger, John Korbel, and Alice M Rivlin. 1961. <span>“Simulation of Economic Systems.”</span> <em>The American Economic Review</em> 51 (5): 893–907.
+</div>
+<div id="ref-pwbm2025" class="csl-entry" role="listitem">
+Penn Wharton Budget Model. 2025. <em>Penn Wharton Budget Model: Microsimulation</em>. <a href="https://budgetmodel.wharton.upenn.edu/model/microsimulation/">https://budgetmodel.wharton.upenn.edu/model/microsimulation/</a>.
+</div>
+<div id="ref-taxcalc2026" class="csl-entry" role="listitem">
+Policy Simulation Library. 2026. <em>Tax-Calculator</em>. <a href="https://taxcalc.pslmodels.org/">https://taxcalc.pslmodels.org/</a>.
+</div>
+<div id="ref-policyengine2026" class="csl-entry" role="listitem">
+PolicyEngine. 2026. <em>PolicyEngine: Open-Source Tax-Benefit Microsimulation</em>. <a href="https://policyengine.org">https://policyengine.org</a>.
+</div>
+<div id="ref-ssa2024mint" class="csl-entry" role="listitem">
+Social Security Administration. 2024. <em>Projection Methodology: Modeling Income in the Near Term, Version 8 (MINT8)</em>. <a href="https://www.ssa.gov/policy/docs/projections/methodology.html">https://www.ssa.gov/policy/docs/projections/methodology.html</a>.
+</div>
+<div id="ref-taxfoundationtag2025" class="csl-entry" role="listitem">
+Tax Foundation. 2025. <em>The Tax Foundation’s Taxes and Growth Model</em>. <a href="https://taxfoundation.org/research/all/federal/overview-tax-foundations-taxes-growth-model/">https://taxfoundation.org/research/all/federal/overview-tax-foundations-taxes-growth-model/</a>.
+</div>
+<div id="ref-tpcmodelfaq2025" class="csl-entry" role="listitem">
+Tax Policy Center. 2025. <em>Microsimulation Model FAQ</em>. <a href="https://taxpolicycenter.org/resources/tax-model-resources/tpcs-microsimulation-model-faq">https://taxpolicycenter.org/resources/tax-model-resources/tpcs-microsimulation-model-faq</a>.
+</div>
+<div id="ref-technicalpanel2023" class="csl-entry" role="listitem">
+Technical Panel on Assumptions and Methods. 2023. <em>2023 Technical Panel on Assumptions and Methods: Report to the Social Security Advisory Board</em>. Social Security Advisory Board. <a href="https://www.ssab.gov">https://www.ssab.gov</a>.
+</div>
+<div id="ref-yaletaxsimulator2026" class="csl-entry" role="listitem">
+The Budget Lab at Yale. 2026. <em>Tax-Simulator: Microsimulation Model of US Federal Tax System</em>. <a href="https://github.com/Budget-Lab-Yale/Tax-Simulator">https://github.com/Budget-Lab-Yale/Tax-Simulator</a>.
+</div>
+<div id="ref-urban2024dynasim4" class="csl-entry" role="listitem">
+Urban Institute. 2024. <em>Urban’s Dynamic Simulation of Income Model 4 (DYNASIM4)</em>. <a href="https://www.urban.org/research/publication/urbans-dynamic-simulation-income-model-4">https://www.urban.org/research/publication/urbans-dynamic-simulation-income-model-4</a>.
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

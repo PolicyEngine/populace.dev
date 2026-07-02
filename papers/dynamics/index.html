@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>populace dynamics paper — populace</title>
+<meta name="description" content="A web version and PDF of PolicyEngine's design paper for populace dynamics: an open, scored longitudinal layer for policy microsimulation." />
+<meta property="og:title" content="populace dynamics: an open, scored longitudinal layer for policy microsimulation" />
+<meta property="og:description" content="A PolicyEngine design paper: trajectory-weighted dynamics, domains of validity, and a scoring protocol — validated first on U.S. Social Security." />
+<meta property="og:type" content="article" />
+<link rel="icon" type="image/svg+xml" href="/assets/policyengine-mark.svg" />
+<meta name="theme-color" content="#FFFFFF" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@policyengine/ui-kit@0.12.1/src/theme/tokens.css" />
+<link rel="stylesheet" href="/style.css" />
+<link rel="stylesheet" href="/papers/dynamics/paper-page.css" />
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<header class="nav">
+  <a class="brand" href="/">
+    <span class="brand-dot" aria-hidden="true"></span>populace
+  </a>
+  <nav class="nav-links">
+    <a href="/#idea">the idea</a>
+    <a href="/#stack">the stack</a>
+    <a href="/#result">evidence</a>
+    <a href="/calibration">calibration</a>
+    <a href="/papers/dynamics/web">web paper</a>
+    <a class="nav-gh" href="https://github.com/PolicyEngine/populace-dynamics" aria-label="GitHub"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"/></svg></a>
+  </nav>
+</header>
+<main class="paper-main">
+  <section class="paper-hero">
+    <p class="eyebrow reveal" style="--d:0">design paper</p>
+    <h1 class="paper-title reveal" style="--d:1">
+      populace dynamics: an open, scored longitudinal layer for policy microsimulation
+    </h1>
+    <p class="paper-lede reveal" style="--d:2">
+      The paper specifies populace's longitudinal Dynamics layer — trajectory-weighted
+      calibration, transitions as conditional models, domains of validity, and a scoring
+      protocol under which every claim resolves, backtests, or computes exactly from
+      statute. First validation domain: U.S. Social Security.
+    </p>
+    <div class="hero-cta reveal" style="--d:3">
+      <a class="btn btn-primary" href="#web">Read online</a>
+      <a class="btn btn-ghost" href="/papers/dynamics/populace-dynamics.pdf">Download PDF</a>
+      <a class="btn btn-ghost" href="https://github.com/PolicyEngine/populace-dynamics">Design book</a>
+    </div>
+    <dl class="paper-facts reveal" style="--d:4">
+      <div>
+        <dt class="mono">foundation</dt>
+        <dd>Builds on populace's certified cross-sectional layer — 0.038 holdout loss vs 0.317 for the enhanced CPS it replaced.</dd>
+      </div>
+      <div>
+        <dt class="mono">method</dt>
+        <dd>One weight per trajectory with entry/exit markers; a Dynamics operator mixing deterministic hazards with machine-learned earnings processes.</dd>
+      </div>
+      <div>
+        <dt class="mono">discipline</dt>
+        <dd>No 75-year point forecasts — sensitivity surfaces instead; forecast cells resolve annually; contributions merge only on held-out score.</dd>
+      </div>
+      <div>
+        <dt class="mono">scope</dt>
+        <dd>U.S. Social Security is the first validation domain; the layer is country-agnostic by construction.</dd>
+      </div>
+    </dl>
+  </section>
+
+  <section id="web" class="paper-viewer" aria-labelledby="web-paper-title">
+    <div class="paper-viewer-head">
+      <div>
+        <span class="kicker mono">paper</span>
+        <h2 id="web-paper-title">Web paper</h2>
+      </div>
+      <a class="btn btn-ghost" href="/papers/dynamics/web">Open full page</a>
+    </div>
+    <iframe class="paper-frame" src="/papers/dynamics/web" title="populace dynamics: an open, scored longitudinal layer for policy microsimulation"></iframe>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-row">
+    <a class="brand" href="/"><span class="brand-dot" aria-hidden="true"></span>populace</a>
+    <a class="foot-pe" href="https://policyengine.org" aria-label="PolicyEngine"><img src="/assets/policyengine.svg" alt="PolicyEngine" /></a>
+  </div>
+  <p class="mono foot-fine">
+    A weighted synthetic population for public policy. Open source · MIT · a PolicyEngine project.
+  </p>
+</footer>
+</body>
+</html>
