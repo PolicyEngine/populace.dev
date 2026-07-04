@@ -88,8 +88,21 @@ Portfolio source of truth: populace#305.
   - /calibration/paper states plan-stage status honestly: methods to be
     compared, blocked-on dependencies (l0-paper#17, popdgp#1), target venue
     (Survey Methodology / JOS), explicit "no manuscript exists" not-yet box.
-- [ ] Build/fix /sparsity + /sparsity/paper — ALREADY EXISTS from predecessor,
-      just need to verify it matches pattern (looked complete on read)
+- [x] Built /sparsity/index.html — DID NOT ALREADY EXIST as predecessor's note
+      assumed (only sparsity/paper.html + sparsity/web/ existed; no bare
+      strategy landing page, so the homepage's strategy-grid card 404'd).
+      Built matching the imputation/calibration/evaluation pattern
+      (strategy-hero/explainer/method/harness/CTA), citing REAL preprint
+      numbers pulled directly from sparsity-paper's abstract + Table 5 (via
+      extracting web/index.html's rendered abstract text): 57,240 of 337,704
+      candidates retained (17.0%), post-L0-refit loss 4.74% vs 5.07% dense
+      no-L0 vs 7.55% random+reweight vs 24.24% dense-random-scaled-no-refit,
+      32,633 targets (24,340 district / 7,815 state / 478 national).
+      Verified via `gh api search/code` that gates.py/solve.py/
+      l0_refit_export.py are genuinely live, tested code in
+      packages/populace-calibrate and packages/populace-build (not just a
+      standalone paper artifact) — homepage's "shipped" tag for sparsity is
+      well-founded, left as-is.
 - [x] Build /evaluation + /evaluation/paper (both currencies) — DONE
   - Confirmed via research subagent + direct verification: popdgp's real
     working harness code + all current numbers live INSIDE imputation-paper
@@ -112,23 +125,43 @@ Portfolio source of truth: populace#305.
     (populace#302, calibration-paper adapter registry, popdgp extraction)
   - Both composition pages state "not yet run" / "planned" explicitly for
     every claim, cite the real blocking issues
-- [ ] Verify /dynamics + /dynamics/paper (should mostly exist) — looked
-      complete on read, will re-verify visually
+- [x] Built /dynamics/index.html — SAME GAP as sparsity: only
+      dynamics/paper.html + dynamics/web/ existed, no bare strategy landing
+      page. Built stating design-stage honestly (populace-dynamics is a
+      design paper, zero backtests run) — matches composition's
+      not-yet-run framing. Extracted the real abstract text from
+      dynamics/web/index.html to source the four specified design elements
+      (trajectory-weighted calibration, transitions as conditional models,
+      domains of validity not point forecasts, scoring protocol before
+      merge) and the 0.038-vs-0.317 foundation number, explicitly labeled as
+      belonging to the cross-sectional layer being extended, NOT a dynamics
+      result.
+- [x] Fixed homepage /dynamics card: was `tag-live "design paper"` (green
+      shipped-style class with contradicting text) — dynamics has zero
+      shipped code, same stage as composition. Changed to matching
+      `tag-wip "design stage"`. Cross-checked sparsity's homepage
+      `tag-live "shipped"` against live code (see above) — that one was
+      already correct, left unchanged.
 - [x] Build /papers thin aggregator — DONE. Lists all 6 papers with honest
       per-paper status tags (preprint/plan-stage/design-doc/harness-proven),
       links into each /paper page, notes country model papers live on
-      policyengine.org research instead.
+      policyengine.org research instead. Cross-checked against new
+      /sparsity and /dynamics pages — /papers' sparsity card numbers
+      (57,240/337,704/4.74%) match exactly; no conflicts found.
 - [x] Verified /papers/dynamics -> /dynamics/paper AND /papers/l0 ->
       /sparsity/paper AND general /papers/:slug -> /:slug/paper all exist in
       vercel.json already, all marked permanent: true
-- [ ] Homepage tells the system story — largely done already (read in full),
-      may need small tweaks once /papers exists to link correctly
+- [x] Homepage tells the system story — reviewed in full, one real fix
+      applied (dynamics tag, above); rest already correct and consistent
+      with all six strategy pages as now built
 - [ ] Run dev server, screenshot every new/changed page at desktop + mobile
+      — IN PROGRESS this push, server started (preview_start, port 4399)
 - [ ] Confirm redirect fires (curl -I or browser network tab, check 301/308)
       — vercel.json redirects only take effect on Vercel, NOT on the local
       python http.server; must verify via Vercel preview deployment, not
       localhost. Note this in final report.
-- [x] Push after this batch (calibration + imputation/paper)
+- [x] Push after every coherent step (f441dd9 sparsity+dynamics pages,
+      1b221fd homepage tag fix)
 - [ ] Open PR via gh pr create --body-file (no @-mentions)
 - [ ] Final report to lead: PR + preview URLs, page-by-page status,
       screenshots taken, open questions
@@ -136,20 +169,20 @@ Portfolio source of truth: populace#305.
 ## Page-by-page status (living table, update every push)
 | Page | Status | Notes |
 |---|---|---|
-| / (home) | mostly done | tells system story; links to /papers, all 6 strategy pages via strategy-grid; may need minor link tweaks |
+| / (home) | done | tells system story; links to /papers + all 6 strategy pages via strategy-grid; dynamics tag fixed (was contradictory tag-live/"design paper", now tag-wip/"design stage") |
 | /imputation | done (predecessor) | correctly has no hero canvas |
-| /imputation/paper | built this session | points to repo PDF, TODO for stable render |
-| /calibration | built this session | live release numbers only, no paper claims |
-| /calibration/paper | built this session | honest plan-stage status |
-| /sparsity | done (predecessor) | needs visual re-verify only |
-| /sparsity/paper | done (predecessor) | needs visual re-verify only |
-| /evaluation | built this session | both currencies covered per spec |
-| /evaluation/paper | built this session | honest "harness proven, methods paper not started" status |
-| /composition | built this session | design-doc stage stated honestly throughout |
-| /composition/paper | built this session | same |
-| /dynamics | done (predecessor) | needs visual re-verify only |
-| /dynamics/paper | done (predecessor) | needs visual re-verify only |
-| /papers (aggregator) | built this session | thin index, all 6 papers, honest status tags |
+| /imputation/paper | built prior session | points to repo PDF, TODO for stable render |
+| /calibration | built prior session | live release numbers only, no paper claims |
+| /calibration/paper | built prior session | honest plan-stage status |
+| /sparsity | **built this session** | did NOT already exist (only paper.html did); real preprint numbers from sparsity-paper abstract/Table 5 |
+| /sparsity/paper | done (predecessor) | verified matches pattern |
+| /evaluation | built prior session | both currencies covered per spec |
+| /evaluation/paper | built prior session | honest "harness proven, methods paper not started" status |
+| /composition | built prior session | design-doc stage stated honestly throughout |
+| /composition/paper | built prior session | same |
+| /dynamics | **built this session** | did NOT already exist (only paper.html did); honest design-stage framing, no run claimed |
+| /dynamics/paper | done (predecessor) | verified matches pattern |
+| /papers (aggregator) | built prior session | thin index, all 6 papers, honest status tags; cross-checked against new pages, no conflicts |
 | redirects (vercel.json) | done (predecessor) | /papers/l0, /papers/dynamics, /papers/:slug generic — all permanent:true |
 
 ## Notes / decisions log
