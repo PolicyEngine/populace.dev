@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Imputation — populace</title>
+<meta name="description" content="How populace fills in variables one survey observes and another doesn't: a regime-gated, chained, weighted-bootstrap quantile-regression-forest estimator that makes an unweighted fit impossible to request by accident." />
+<meta property="og:title" content="Imputation — populace" />
+<meta property="og:description" content="Weight-native fill: regime-gated, chained, weighted-bootstrap quantile-regression forests draw missing variables from the population's conditional distribution, not the sample's." />
+<meta property="og:type" content="article" />
+<link rel="icon" type="image/svg+xml" href="/assets/policyengine-mark.svg" />
+<meta name="theme-color" content="#FFFFFF" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@policyengine/ui-kit@0.12.1/src/theme/tokens.css" />
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="nav">
+  <a class="brand" href="/">
+    <span class="brand-dot" aria-hidden="true"></span>populace
+  </a>
+  <nav class="nav-links">
+    <a href="/#idea">the idea</a>
+    <a href="/#stack">the stack</a>
+    <a href="/#result">evidence</a>
+    <a href="/papers">papers</a>
+    <a href="/imputation/paper">paper</a>
+    <a class="nav-gh" href="https://github.com/PolicyEngine/imputation-paper" aria-label="GitHub"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"/></svg></a>
+  </nav>
+</header>
+
+<main class="strategy-main">
+  <section class="strategy-hero">
+    <div class="strategy-hero-inner">
+      <p class="strategy-crumb reveal" style="--d:0"><a href="/papers">strategies</a> / imputation</p>
+      <p class="eyebrow reveal" style="--d:0">strategy 01 · imputation</p>
+      <h1 class="reveal" style="--d:1">Weight-native fill.</h1>
+      <p class="strategy-lede reveal" style="--d:2">
+        Every population estimate that combines two surveys needs to fill in
+        variables one observes and the other doesn't. Fitting that fill model
+        to survey records while ignoring their design weights biases the
+        result toward the sample, not the population — and plants extreme
+        low-weight donor values that a later reweighting can amplify into
+        landmines.
+      </p>
+      <div class="strategy-status-row reveal" style="--d:3">
+        <span class="tag tag-preprint">paper: preprint</span>
+        <a class="btn btn-primary" href="/imputation/paper">Read the paper</a>
+        <a class="btn btn-ghost" href="https://github.com/PolicyEngine/imputation-paper">Repository</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="explainer" class="band">
+    <div class="band-head">
+      <span class="kicker mono">01 — the 30-second version</span>
+      <h2>Weighting is the whole effect.</h2>
+    </div>
+    <div class="prose">
+      <p>
+        populace's imputation operator is a regime-gated, sequentially-chained,
+        weighted-bootstrap quantile-regression-forest estimator, built so an
+        unweighted fit cannot be requested by accident. Under the harness
+        below, weighting dominates every other design choice measured:
+      </p>
+    </div>
+    <div class="metrics">
+      <div class="metric">
+        <span class="metric-label mono">net-worth fit, unweighted vs weighted</span>
+        <span class="metric-val">6×<span class="metric-vs">worse Wasserstein-1</span></span>
+        <span class="metric-note">within-SCF wealth task</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label mono">population-view tail inflation</span>
+        <span class="metric-val">1.9–2.3×<span class="metric-vs">the holdout's p99</span></span>
+        <span class="metric-note">geometry metrics miss it; the tail block catches it</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label mono">Gaussian-residual fragility</span>
+        <span class="metric-val">7–11×<span class="metric-vs">understated exposure</span></span>
+        <span class="metric-note">closed-form reweighting stress test</span>
+      </div>
+    </div>
+    <p class="caveat">
+      <span class="mono">From the imputation-paper abstract (draft; regenerates from committed run configs).</span>
+      The SCF's list-sample design oversamples wealthy households at low weight;
+      an unweighted fit learns the sample's wealth distribution rather than the
+      population's, and no other design choice in the estimator comes close to
+      that effect size.
+    </p>
+  </section>
+
+  <section id="method" class="band">
+    <div class="band-head">
+      <span class="kicker mono">02 — the method</span>
+      <h2>Three design choices, each measured separately.</h2>
+    </div>
+    <div class="cards">
+      <article class="card">
+        <header><span class="card-id mono">weighting</span><span class="tag tag-live">load-bearing</span></header>
+        <h3>Weighted-bootstrap QRF</h3>
+        <p>
+          Draws training bootstraps proportional to design weight, so the
+          fitted conditional distribution targets the population, not the
+          sample. Cannot be disabled without an explicit <code class="mono">weights="none"</code>
+          override — the interface makes the weight-blind failure mode a
+          deliberate choice, not a silent default.
+        </p>
+      </article>
+      <article class="card">
+        <header><span class="card-id mono">regime gating</span><span class="tag tag-live">shipped</span></header>
+        <h3>Zero-inflated components</h3>
+        <p>
+          A gate model gets the zero/nonzero regime right before the forest
+          fits the nonzero conditional. Holds dividend zero-share error to 0.6
+          points against 4.4 for the same forest ungated, and 25–84 points
+          against linear and Gaussian baselines.
+        </p>
+      </article>
+      <article class="card">
+        <header><span class="card-id mono">chaining</span><span class="tag tag-live">shipped</span></header>
+        <h3>Sequential, not independent</h3>
+        <p>
+          Multi-component targets (a four-part balance sheet) are drawn in
+          sequence, each conditioned on the ones already drawn. Fitting them
+          independently costs 5.8 points of two-sample AUC — a joint property
+          invisible at two targets, binding at four.
+        </p>
+      </article>
+    </div>
+    <p class="stack-note">
+      <span class="mono">benchmarked against unweighted &amp; weighted QRF, OLS, linear quantile regression, and hot-deck matching</span>
+    </p>
+  </section>
+
+  <section id="harness" class="band">
+    <div class="band-head">
+      <span class="kicker mono">03 — how it's scored</span>
+      <h2>The population-view harness.</h2>
+    </div>
+    <div class="prose">
+      <p>
+        Marginal fit metrics have a blind spot: an unconditional weighted draw
+        that ignores every predictor can post the best pinball loss, because
+        with predictors as weak as demographics and income are for wealth,
+        marginal metrics alone cannot tell a method that draws from the
+        correct weighted marginal from one that also gets the conditionals
+        right. That observation motivates scoring the <em>joint</em>, not just
+        the margin — the population-view harness, detailed on the
+        <a href="/evaluation">evaluation strategy page</a>: one latent
+        population observed through survey views, each candidate file
+        projected through a view and scored against that survey's own holdout
+        on four blocks (energy distance, coverage, classifier AUC, an
+        uncapped tail block), anchored by sampling-noise floors.
+      </p>
+      <p>
+        Hot-deck matching is a genuine near-peer under this harness — at
+        populace scale the classifier separates it almost perfectly (AUC 0.97
+        against the candidate's 0.76), a gap invisible to marginal metrics
+        alone.
+      </p>
+    </div>
+  </section>
+
+  <section class="band band-cta">
+    <h2>Installable on its own.</h2>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="https://github.com/PolicyEngine/populace/tree/main/packages/populace-fit">populace-fit on GitHub</a>
+      <a class="btn btn-ghost" href="/imputation/paper">Read the paper</a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-row">
+    <a class="brand" href="/"><span class="brand-dot" aria-hidden="true"></span>populace</a>
+    <a class="foot-pe" href="https://policyengine.org" aria-label="PolicyEngine"><img src="/assets/policyengine.svg" alt="PolicyEngine" /></a>
+  </div>
+  <p class="mono foot-fine">
+    A weighted synthetic population for public policy. Open source · MIT · a PolicyEngine project.
+  </p>
+</footer>
+
+</body>
+</html>
