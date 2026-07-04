@@ -114,8 +114,10 @@ Portfolio source of truth: populace#305.
     every claim, cite the real blocking issues
 - [ ] Verify /dynamics + /dynamics/paper (should mostly exist) — looked
       complete on read, will re-verify visually
-- [ ] Build /papers thin aggregator — directory is EMPTY, nothing built yet,
-      this is a real gap
+- [x] Build /papers thin aggregator — DONE. Lists all 6 papers with honest
+      per-paper status tags (preprint/plan-stage/design-doc/harness-proven),
+      links into each /paper page, notes country model papers live on
+      policyengine.org research instead.
 - [x] Verified /papers/dynamics -> /dynamics/paper AND /papers/l0 ->
       /sparsity/paper AND general /papers/:slug -> /:slug/paper all exist in
       vercel.json already, all marked permanent: true
@@ -147,7 +149,7 @@ Portfolio source of truth: populace#305.
 | /composition/paper | built this session | same |
 | /dynamics | done (predecessor) | needs visual re-verify only |
 | /dynamics/paper | done (predecessor) | needs visual re-verify only |
-| /papers (aggregator) | NOT STARTED | directory is empty |
+| /papers (aggregator) | built this session | thin index, all 6 papers, honest status tags |
 | redirects (vercel.json) | done (predecessor) | /papers/l0, /papers/dynamics, /papers/:slug generic — all permanent:true |
 
 ## Notes / decisions log
