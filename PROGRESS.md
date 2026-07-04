@@ -189,10 +189,21 @@ Portfolio source of truth: populace#305.
       fonts present on ALL 14 pages. Zero hardcoded brand hex in new markup
       (only #FFFFFF theme-color meta, which is correct per design skill).
 - [x] Push after every coherent step (f441dd9 sparsity+dynamics pages,
-      1b221fd homepage tag fix, [this push] = verification complete)
-- [ ] Open PR via gh pr create --body-file (no @-mentions) — NEXT
+      1b221fd homepage tag fix, 10498ab verification complete)
+- [x] Open PR via gh pr create --body-file (no @-mentions) — DONE: PR #18
+      https://github.com/PolicyEngine/populace.dev/pull/18 (base master,
+      MERGEABLE, Vercel check PASS). NOT merged — Max merges after lead review.
+      Preview: https://populace-dev-git-strategy-pages-policy-engine.vercel.app
+- [x] Redirect verified against LIVE preview: preview is SSO-gated (Vercel
+      Deployment Protection), so curl -I sees 302->vercel.com/sso-api on EVERY
+      path incl "/" — the auth gate runs before app routing, so the 308 can't
+      be curl-observed on the gated preview (visible in-browser w/ Vercel auth).
+      Redirect proven server-side by construction (vercel.json permanent:true =
+      308, no client-side redirect). Production populace.dev is NOT gated (curl
+      confirmed 200 today), so 308 will be directly curl-observable there post-
+      merge. Added a PR comment documenting this (issuecomment-4884074020).
 - [ ] Final report to lead: PR + preview URLs, page-by-page status,
-      screenshots taken, open questions
+      screenshots taken, open questions — delivering now
 
 ## Open questions for lead (do not block)
 - imputation/paper.html AUTHORS line reads "Max Ghenis, María Juaristi —
