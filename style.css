@@ -252,6 +252,12 @@ h2 {
 }
 .tag-live { background: color-mix(in srgb, var(--primary) 12%, transparent); color: var(--text-success); }
 .tag-wip { background: var(--ink-2); color: var(--paper-dim); }
+
+/* paper status badges: draft / preprint / submitted / published */
+.tag-draft { background: var(--ink-2); color: var(--paper-dim); }
+.tag-preprint { background: color-mix(in srgb, var(--chart-2) 14%, transparent); color: var(--chart-2); }
+.tag-submitted { background: color-mix(in srgb, var(--text-warning) 16%, transparent); color: var(--text-warning); }
+.tag-published { background: color-mix(in srgb, var(--primary) 12%, transparent); color: var(--text-success); }
 .card h3 {
   font-family: var(--display);
   font-weight: 500;
@@ -414,5 +420,111 @@ h2 {
   color: var(--paper-faint);
   font-size: 13px;
 }
+
+/* ---------- strategy grid (papers aggregator, homepage overview) ---------- */
+.strategy-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+@media (min-width: 640px) { .strategy-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 980px) { .strategy-grid { grid-template-columns: repeat(3, 1fr); } }
+
+.strategy-card {
+  display: block;
+  border: 1px solid var(--line);
+  background: var(--card);
+  padding: 24px 22px 26px;
+  border-radius: 3px;
+  text-decoration: none;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.strategy-card:hover { border-color: var(--primary); transform: translateY(-3px); }
+.strategy-card header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.strategy-card .card-id { font-size: 13px; color: var(--amber); letter-spacing: 0.04em; }
+.strategy-card h3 {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 1.25rem;
+  color: var(--paper);
+  margin-bottom: 10px;
+}
+.strategy-card p { font-size: 15px; line-height: 1.5; color: var(--paper-dim); margin-bottom: 0; }
+.strategy-card .strategy-paper-link {
+  display: block;
+  margin-top: 16px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--amber-soft);
+}
+
+/* ---------- strategy landing pages: depth-gradient sections ---------- */
+.strategy-main { padding-top: 0; }
+
+.strategy-hero {
+  min-height: 72svh;
+  display: flex;
+  align-items: center;
+  padding: 132px clamp(20px, 5vw, 56px) 64px;
+}
+.strategy-hero-inner { max-width: var(--max); margin: 0 auto; width: 100%; }
+
+.strategy-crumb {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--paper-faint);
+  margin-bottom: 22px;
+}
+.strategy-crumb a { color: var(--paper-faint); text-decoration: none; }
+.strategy-crumb a:hover { color: var(--amber-soft); }
+
+.strategy-hero h1 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(2.1rem, 5.4vw, 3.8rem);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  max-width: 22ch;
+  margin-bottom: 24px;
+}
+
+.strategy-lede {
+  font-size: clamp(1.02rem, 2vw, 1.25rem);
+  line-height: 1.55;
+  color: var(--paper);
+  max-width: 60ch;
+  margin-bottom: 30px;
+}
+
+.strategy-status-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.explainer-figure {
+  margin: 40px auto 0;
+  max-width: 880px;
+}
+.explainer-figure figcaption {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--paper-faint);
+  margin-top: 12px;
+  max-width: 70ch;
+}
+
+.not-yet {
+  border: 1px dashed var(--line);
+  border-radius: 3px;
+  padding: 22px 24px;
+  color: var(--paper-dim);
+  font-size: 15px;
+  line-height: 1.55;
+  max-width: 62ch;
+}
+.not-yet .mono { display: block; color: var(--paper-faint); font-size: 12.5px; margin-bottom: 8px; }
 .footer a { color: var(--paper-dim); text-decoration: none; }
 .footer a:hover { color: var(--amber-soft); }
