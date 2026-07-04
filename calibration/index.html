@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Calibration — populace</title>
+<meta name="description" content="How populace reweights a candidate frame against thousands of hierarchical administrative targets by gradient descent on a capped relative-error loss, with hard weight-ratio bounds against landmines." />
+<meta property="og:title" content="Calibration — populace" />
+<meta property="og:description" content="Gradient calibration at scale: capped relative-error loss against thousands of targets, with hard weight-ratio bounds against landmines." />
+<meta property="og:type" content="article" />
+<link rel="icon" type="image/svg+xml" href="/assets/policyengine-mark.svg" />
+<meta name="theme-color" content="#FFFFFF" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@policyengine/ui-kit@0.12.1/src/theme/tokens.css" />
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="nav">
+  <a class="brand" href="/">
+    <span class="brand-dot" aria-hidden="true"></span>populace
+  </a>
+  <nav class="nav-links">
+    <a href="/#idea">the idea</a>
+    <a href="/#stack">the stack</a>
+    <a href="/#result">evidence</a>
+    <a href="/papers">papers</a>
+    <a href="/calibration/paper">paper</a>
+    <a class="nav-gh" href="https://github.com/PolicyEngine/calibration-paper" aria-label="GitHub"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"/></svg></a>
+  </nav>
+</header>
+
+<main class="strategy-main">
+  <section class="strategy-hero">
+    <div class="strategy-hero-inner">
+      <p class="strategy-crumb reveal" style="--d:0"><a href="/papers">strategies</a> / calibration</p>
+      <p class="eyebrow reveal" style="--d:0">strategy 02 · calibration</p>
+      <h1 class="reveal" style="--d:1">Gradient calibration at scale.</h1>
+      <p class="strategy-lede reveal" style="--d:2">
+        A candidate frame — after imputation, before deployment — carries
+        design weights that reflect the survey it came from, not the
+        administrative totals a model needs to match. Calibration reweights
+        it against thousands of hierarchical targets at once, by gradient
+        descent on a capped relative-error loss, with hard bounds on how far
+        any single weight can move.
+      </p>
+      <div class="strategy-status-row reveal" style="--d:3">
+        <span class="tag tag-draft">paper: plan stage</span>
+        <a class="btn btn-primary" href="/calibration/paper">Read the paper</a>
+        <a class="btn btn-ghost" href="https://github.com/PolicyEngine/calibration-paper">Repository</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="explainer" class="band">
+    <div class="band-head">
+      <span class="kicker mono">01 — the 30-second version</span>
+      <h2>One release, read live.</h2>
+    </div>
+    <div class="prose">
+      <p>
+        The numbers below come from the same release registry the homepage
+        reads — populace-us-2024-5da5a95, calibrated against 3,704
+        administrative targets spanning Census, IRS, BEA, and state agencies.
+        Calibration adjusts weights only: no target value is ever written
+        into a record.
+      </p>
+    </div>
+    <div class="metrics">
+      <div class="metric">
+        <span class="metric-label mono">calibration loss</span>
+        <span class="metric-val">0.022<span class="metric-vs">from 1.831 at design weights</span></span>
+        <span class="metric-note">capped relative-error loss, 3,704 targets</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label mono">targets within 10%</span>
+        <span class="metric-val">94.7%<span class="metric-vs">from 22.2% at design weights</span></span>
+        <span class="metric-note">before any reweighting, most targets miss by more than a tenth</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label mono">max weight ratio</span>
+        <span class="metric-val">50×<span class="metric-vs">hard bound, enforced</span></span>
+        <span class="metric-note">the landmine guard: no household's influence can run away</span>
+      </div>
+    </div>
+    <p class="caveat">
+      <span class="mono">populace-us-2024-5da5a95 · calibration.json, generated 2026-06-15.</span>
+      82 of 3,704 targets still miss by more than 50% after calibration —
+      mostly thin families with few observations (rent-and-royalty net losses
+      is the extreme case: 28 targets, 0% within 10%). The per-family
+      breakdown below is the same table the release registry exposes; nothing
+      here is rounded or selected for effect.
+    </p>
+  </section>
+
+  <section id="method" class="band">
+    <div class="band-head">
+      <span class="kicker mono">02 — the method</span>
+      <h2>Bounded gradient descent, not classical calibration.</h2>
+    </div>
+    <div class="cards">
+      <article class="card">
+        <header><span class="card-id mono">loss</span><span class="tag tag-live">shipped</span></header>
+        <h3>Capped relative error</h3>
+        <p>
+          Each target's contribution to the loss is capped, so a handful of
+          targets with poor donor coverage cannot dominate the gradient and
+          starve the rest of the surface of attention. Thousands of targets
+          are fit jointly, not sequentially.
+        </p>
+      </article>
+      <article class="card">
+        <header><span class="card-id mono">weight bounds</span><span class="tag tag-live">shipped</span></header>
+        <h3>Hard ratio bound against landmines</h3>
+        <p>
+          Design weights can move only up to a fixed multiple of their
+          starting value (50× on the current release). Unbounded calibrators
+          — including several classical methods — can send an individual
+          weight arbitrarily high in pursuit of a thin target; the bound
+          trades a small amount of in-fit accuracy for a hard cap on any one
+          household's leverage.
+        </p>
+      </article>
+      <article class="card">
+        <header><span class="card-id mono">hierarchy</span><span class="tag tag-live">shipped</span></header>
+        <h3>National, state, and program targets jointly</h3>
+        <p>
+          The target surface spans Census population counts, IRS SOI income
+          and deduction totals, BEA wages, and state-level adjusted gross
+          income and program administrative totals — fit as one surface, not
+          reconciled in separate passes.
+        </p>
+      </article>
+    </div>
+    <p class="stack-note">
+      <span class="mono">classical-calibration comparison (raking, GREG, entropy balancing, bounded chi-square) is the calibration-paper's plan — not yet run; see the paper page</span>
+    </p>
+  </section>
+
+  <section id="harness" class="band">
+    <div class="band-head">
+      <span class="kicker mono">03 — how it's scored</span>
+      <h2>Two currencies, not one.</h2>
+    </div>
+    <div class="prose">
+      <p>
+        Calibration-target attainment (the numbers above) is one of the two
+        validation currencies detailed on the
+        <a href="/evaluation">evaluation strategy page</a> — administrative
+        targets hit, in-fit and held out. The other currency, support
+        fidelity against survey holdouts under the popdgp harness, is
+        calibration-blind by construction: it scores whether the weighted
+        population still looks like the surveys that observe it, independent
+        of whether calibration ever ran. Reading both pages together is the
+        honest picture; neither one alone is.
+      </p>
+    </div>
+  </section>
+
+  <section class="band band-cta">
+    <h2>Every target, every release.</h2>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="https://huggingface.co/datasets/policyengine/populace-us/tree/main">Releases on Hugging Face</a>
+      <a class="btn btn-ghost" href="/calibration/paper">Read the paper</a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-row">
+    <a class="brand" href="/"><span class="brand-dot" aria-hidden="true"></span>populace</a>
+    <a class="foot-pe" href="https://policyengine.org" aria-label="PolicyEngine"><img src="/assets/policyengine.svg" alt="PolicyEngine" /></a>
+  </div>
+  <p class="mono foot-fine">
+    A weighted synthetic population for public policy. Open source · MIT · a PolicyEngine project.
+  </p>
+</footer>
+
+<script src="/field.js" defer></script>
+</body>
+</html>

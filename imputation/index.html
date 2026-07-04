@@ -159,10 +159,13 @@
         uncapped tail block), anchored by sampling-noise floors.
       </p>
       <p>
-        Hot-deck matching is a genuine near-peer under this harness — at
-        populace scale the classifier separates it almost perfectly (AUC 0.97
-        against the candidate's 0.76), a gap invisible to marginal metrics
-        alone.
+        Hot-deck matching is a genuine near-peer under this harness — its
+        classifier AUC (0.768) sits almost on top of the candidate's (0.761),
+        both close to the indistinguishable floor. The classifier's real
+        power shows up elsewhere: a weighted marginal draw that discards
+        every predictor ties the candidate on energy distance yet gets caught
+        at AUC 0.968 — near-perfectly separable — which is exactly the gap
+        marginal metrics alone cannot see.
       </p>
     </div>
   </section>
