@@ -132,22 +132,8 @@
   });
 
   start();
-
-  // Scroll-reveal for bands.
-  const io = new IntersectionObserver(
-    function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) {
-          e.target.classList.add("in-view");
-          io.unobserve(e.target);
-        }
-      });
-    },
-    { threshold: 0.12 }
-  );
-  document
-    .querySelectorAll(
-      ".band-head, .prose, .cards, .metrics, .caveat, .commons-rails, .stack-note, .band-cta h2, .band-cta .hero-cta"
-    )
-    .forEach(function (el) { io.observe(el); });
 })();
+
+// Scroll-reveal for bands lives in reveal.js (shared across every page,
+// with or without this hero canvas) — see that file for why it was split
+// out.
