@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Composition paper — populace</title>
+<meta name="description" content="Plan for PolicyEngine's composition study: what running survey imputation and weight calibration together does to a file, measured where the single-operator dossiers structurally cannot look." />
+<meta property="og:title" content="Composition: what running imputation and calibration together does" />
+<meta property="og:description" content="A planned PolicyEngine paper on realized landmines, repairability, the target-vs-survey Pareto frontier, and effective-support collapse. No results yet — this page states the plan honestly." />
+<meta property="og:type" content="article" />
+<link rel="icon" type="image/svg+xml" href="/assets/policyengine-mark.svg" />
+<meta name="theme-color" content="#FFFFFF" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@policyengine/ui-kit@0.12.1/src/theme/tokens.css" />
+<link rel="stylesheet" href="/style.css" />
+<link rel="stylesheet" href="/paper-page.css" />
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="nav">
+  <a class="brand" href="/">
+    <span class="brand-dot" aria-hidden="true"></span>populace
+  </a>
+  <nav class="nav-links">
+    <a href="/#idea">the idea</a>
+    <a href="/#stack">the stack</a>
+    <a href="/#result">evidence</a>
+    <a href="/papers">papers</a>
+    <a href="/composition">strategy</a>
+    <a class="nav-gh" href="https://github.com/PolicyEngine/composition-paper" aria-label="GitHub"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"/></svg></a>
+  </nav>
+</header>
+
+<main class="paper-main">
+  <p class="strategy-crumb reveal" style="--d:0"><a href="/papers">papers</a> / <a href="/composition">composition</a> / paper</p>
+  <section class="paper-hero">
+    <p class="eyebrow reveal" style="--d:0">research paper · design doc, pre-experiment</p>
+    <h1 class="paper-title reveal" style="--d:1">
+      Composition: what running imputation and calibration together does
+    </h1>
+    <p class="paper-lede reveal" style="--d:2">
+      The imputation and calibration dossiers each validate one operator
+      with the other held fixed. This paper asks what happens when both run
+      on the same file — measured where neither single-operator study can
+      look: realized landmines, calibration's power to repair a bad
+      imputation, the target-vs-survey trade-off as an unscalarized Pareto
+      frontier, and whether effective support quietly collapses under
+      composition.
+    </p>
+    <div class="hero-cta reveal" style="--d:3">
+      <a class="btn btn-ghost" href="https://github.com/PolicyEngine/composition-paper">Repository</a>
+      <a class="btn btn-ghost" href="/composition">Strategy page</a>
+    </div>
+    <dl class="paper-facts reveal" style="--d:4">
+      <div>
+        <dt class="mono">status</dt>
+        <dd>Design doc only. Zero experiments have run; no results exist. The repository holds a README stating the four questions and nothing else.</dd>
+      </div>
+      <div>
+        <dt class="mono">blocked on</dt>
+        <dd>populace#302 (holdout-masked builds, not yet merged), the calibration-paper method-adapter registry (not yet built), and the popdgp harness extraction (in progress, unmerged).</dd>
+      </div>
+      <div>
+        <dt class="mono">position in the portfolio</dt>
+        <dd>Third leg after the operator dossiers (imputation-paper, calibration-paper, sparsity-paper) and the popdgp referee — composition is what the single-operator papers cannot see.</dd>
+      </div>
+    </dl>
+  </section>
+
+  <section id="web" class="paper-viewer" aria-labelledby="web-paper-title">
+    <div class="paper-viewer-head">
+      <div>
+        <span class="kicker mono">status</span>
+        <h2 id="web-paper-title">No manuscript yet</h2>
+      </div>
+    </div>
+    <div class="not-yet">
+      <span class="mono">composition-paper · repository created 2026-07-04, design-doc stage</span>
+      The repository states four questions (realized landmines,
+      repairability, the target-vs-survey Pareto frontier, effective-support
+      collapse) and nothing further — no code, no data, no manuscript, no
+      PDF. Every term used on the
+      <a href="/composition">composition strategy page</a> describes this
+      paper's <em>plan</em>, not a finding. <strong>TODO:</strong> replace
+      this block with the paper viewer once the blocked-on dependencies land
+      and the first experiment runs.
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-row">
+    <a class="brand" href="/"><span class="brand-dot" aria-hidden="true"></span>populace</a>
+    <a class="foot-pe" href="https://policyengine.org" aria-label="PolicyEngine"><img src="/assets/policyengine.svg" alt="PolicyEngine" /></a>
+  </div>
+  <p class="mono foot-fine">
+    A weighted synthetic population for public policy. Open source · MIT · a PolicyEngine project.
+  </p>
+</footer>
+</body>
+</html>

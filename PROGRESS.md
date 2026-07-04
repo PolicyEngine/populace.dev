@@ -90,9 +90,28 @@ Portfolio source of truth: populace#305.
     (Survey Methodology / JOS), explicit "no manuscript exists" not-yet box.
 - [ ] Build/fix /sparsity + /sparsity/paper — ALREADY EXISTS from predecessor,
       just need to verify it matches pattern (looked complete on read)
-- [ ] Build/fix /evaluation + /evaluation/paper (both currencies) — BLOCKED
-      on composition-paper/popdgp research subagent (in flight)
-- [ ] Build/fix /composition + /composition/paper — BLOCKED on same subagent
+- [x] Build /evaluation + /evaluation/paper (both currencies) — DONE
+  - Confirmed via research subagent + direct verification: popdgp's real
+    working harness code + all current numbers live INSIDE imputation-paper
+    (src/imputation_paper/experiments/); popdgp's own main branch is
+    README-stage only, extraction branch in progress unmerged, methods paper
+    NOT STARTED (verified: popdgp issues #1 extract-to-PyPI, #2 methods
+    paper, both open, neither has a draft)
+  - /evaluation page covers BOTH currencies as the issue spec requires:
+    survey-view fidelity (popdgp harness, described honestly re: where code
+    actually lives) AND administrative target attainment (live in-fit
+    numbers from calibration.json + held-out/fragility as PROPOSED release
+    gates citing populace#302 + populace-benchmarks#6, both verified open
+    and unimplemented)
+  - /evaluation/paper states clearly: harness is proven (cites
+    imputation-paper's harness_scale.tex numbers), standalone popdgp methods
+    paper has NO DRAFT — does not pretend a popdgp paper exists
+- [x] Build /composition + /composition/paper — DONE
+  - Confirmed composition-paper is design-doc-only (README states 4
+    questions, zero code/data/results), blocked on 3 unmet deps
+    (populace#302, calibration-paper adapter registry, popdgp extraction)
+  - Both composition pages state "not yet run" / "planned" explicitly for
+    every claim, cite the real blocking issues
 - [ ] Verify /dynamics + /dynamics/paper (should mostly exist) — looked
       complete on read, will re-verify visually
 - [ ] Build /papers thin aggregator — directory is EMPTY, nothing built yet,
@@ -122,10 +141,10 @@ Portfolio source of truth: populace#305.
 | /calibration/paper | built this session | honest plan-stage status |
 | /sparsity | done (predecessor) | needs visual re-verify only |
 | /sparsity/paper | done (predecessor) | needs visual re-verify only |
-| /evaluation | NOT STARTED | blocked on popdgp research (subagent in flight) |
-| /evaluation/paper | NOT STARTED | same |
-| /composition | NOT STARTED | blocked on composition-paper research (subagent in flight) |
-| /composition/paper | NOT STARTED | same |
+| /evaluation | built this session | both currencies covered per spec |
+| /evaluation/paper | built this session | honest "harness proven, methods paper not started" status |
+| /composition | built this session | design-doc stage stated honestly throughout |
+| /composition/paper | built this session | same |
 | /dynamics | done (predecessor) | needs visual re-verify only |
 | /dynamics/paper | done (predecessor) | needs visual re-verify only |
 | /papers (aggregator) | NOT STARTED | directory is empty |

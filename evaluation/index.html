@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Evaluation — populace</title>
+<meta name="description" content="How populace is validated, in two currencies scored separately: survey-view support fidelity under the population-view harness, and administrative calibration-target attainment, in-fit and held out." />
+<meta property="og:title" content="Evaluation — populace" />
+<meta property="og:description" content="Two currencies, scored separately: survey-view fidelity against holdouts, and administrative target attainment. Neither substitutes for the other." />
+<meta property="og:type" content="article" />
+<link rel="icon" type="image/svg+xml" href="/assets/policyengine-mark.svg" />
+<meta name="theme-color" content="#FFFFFF" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@policyengine/ui-kit@0.12.1/src/theme/tokens.css" />
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="nav">
+  <a class="brand" href="/">
+    <span class="brand-dot" aria-hidden="true"></span>populace
+  </a>
+  <nav class="nav-links">
+    <a href="/#idea">the idea</a>
+    <a href="/#stack">the stack</a>
+    <a href="/#result">evidence</a>
+    <a href="/papers">papers</a>
+    <a href="/evaluation/paper">paper</a>
+    <a class="nav-gh" href="https://github.com/PolicyEngine/popdgp" aria-label="GitHub"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"/></svg></a>
+  </nav>
+</header>
+
+<main class="strategy-main">
+  <section class="strategy-hero">
+    <div class="strategy-hero-inner">
+      <p class="strategy-crumb reveal" style="--d:0"><a href="/papers">strategies</a> / evaluation</p>
+      <p class="eyebrow reveal" style="--d:0">strategy 04 · evaluation</p>
+      <h1 class="reveal" style="--d:1">How populace is validated.</h1>
+      <p class="strategy-lede reveal" style="--d:2">
+        A synthetic population can be checked against two different things,
+        and passing one says nothing about the other: does it still look
+        like the surveys that observe it, and does it hit the administrative
+        totals it was calibrated to. populace scores both, separately,
+        rather than blending them into one number.
+      </p>
+      <div class="strategy-status-row reveal" style="--d:3">
+        <span class="tag tag-live">shipped</span>
+        <a class="btn btn-primary" href="/evaluation/paper">Read the paper</a>
+        <a class="btn btn-ghost" href="https://github.com/PolicyEngine/popdgp">Repository</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="explainer" class="band">
+    <div class="band-head">
+      <span class="kicker mono">01 — the 30-second version</span>
+      <h2>Two currencies, never blended.</h2>
+    </div>
+    <div class="prose">
+      <p>
+        <strong>Survey-view fidelity</strong> asks whether a candidate file,
+        projected through a survey's own variables and sampling design,
+        still resembles that survey's holdout — scored by the popdgp
+        harness, calibration-blind by construction so it cannot be gamed by
+        fitting targets harder. <strong>Calibration-target attainment</strong>
+        asks whether the file hits the administrative totals it was
+        reweighted against — in-fit today, held-out families as a release
+        gate once the masking machinery below ships. Neither currency
+        substitutes for the other: a file can nail every target while its
+        weighted joint drifts from the surveys, or track the surveys closely
+        while missing targets it was never calibrated to.
+      </p>
+    </div>
+    <div class="metrics">
+      <div class="metric">
+        <span class="metric-label mono">survey-view classifier floor</span>
+        <span class="metric-val">0.50<span class="metric-vs">AUC, indistinguishable</span></span>
+        <span class="metric-note">a survey's own holdout split scored as a candidate</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label mono">tail block, weight-blind fit caught</span>
+        <span class="metric-val">1.9–2.3×<span class="metric-vs">the holdout's p99</span></span>
+        <span class="metric-note">energy distance & coverage both tied — only the tail block sees it</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label mono">calibration targets within 10%</span>
+        <span class="metric-val">94.7%<span class="metric-vs">in-fit, current release</span></span>
+        <span class="metric-note">3,704 targets · held-out family gating not yet live</span>
+      </div>
+    </div>
+    <p class="caveat">
+      <span class="mono">Survey-view numbers from imputation-paper's population-view harness (paper/tables/harness_scale.tex); calibration-target numbers from the live release registry (populace-us-2024-5da5a95).</span>
+      Held-out target-family gating and reweight-fragility promotion metrics
+      are proposed release gates (populace#302, populace-benchmarks#6),
+      referenced below — not yet running against certified builds.
+    </p>
+  </section>
+
+  <section id="survey-view" class="band">
+    <div class="band-head">
+      <span class="kicker mono">02 — currency one</span>
+      <h2>Survey-view support fidelity.</h2>
+    </div>
+    <div class="prose">
+      <p>
+        One latent population is observed through each survey's <em>view</em>:
+        its own variable subset, sampling design, and measurement idiom. Any
+        candidate file gets projected through a view and scored against that
+        survey's own holdout — never against the file's own training data.
+      </p>
+    </div>
+    <div class="cards">
+      <article class="card">
+        <header><span class="card-id mono">energy distance</span><span class="tag tag-live">shipped</span></header>
+        <h3>Strictly proper joint score</h3>
+        <p>
+          A weighted energy-distance statistic scores the joint distribution,
+          not just marginals — the block that catches a fit that gets every
+          variable's shape right in isolation but the relationships between
+          them wrong.
+        </p>
+      </article>
+      <article class="card">
+        <header><span class="card-id mono">coverage</span><span class="tag tag-live">shipped</span></header>
+        <h3>Calibration-blind by construction</h3>
+        <p>
+          A weighted PRDC coverage statistic on support geometry, invariant
+          to reweighting of the candidate — deliberately blind to whatever
+          calibration did, so it measures the imputation and synthesis
+          layers, not the reweight.
+        </p>
+      </article>
+      <article class="card">
+        <header><span class="card-id mono">classifier AUC</span><span class="tag tag-live">shipped</span></header>
+        <h3>Two-sample test</h3>
+        <p>
+          A weighted classifier trained to separate candidate from holdout;
+          0.5 AUC means indistinguishable. Catches joint failures that tie
+          the candidate on energy distance — an unconditional weighted draw
+          that discards every predictor still ties on energy distance yet is
+          separated almost perfectly here (AUC 0.968).
+        </p>
+      </article>
+      <article class="card">
+        <header><span class="card-id mono">tail block</span><span class="tag tag-live">shipped</span></header>
+        <h3>Uncapped, added after a near-miss</h3>
+        <p>
+          Per-variable weighted Wasserstein-1/sd and q90/q99 ratios on the
+          full weighted sample, no subsampling cap. Added after energy
+          distance, coverage, and classifier AUC all tied a candidate whose
+          imputed net worth 99th percentile ran 1.9–2.3× the holdout's —
+          capped pairwise geometry under-resolves heavy right tails; this
+          block does not.
+        </p>
+      </article>
+    </div>
+    <p class="stack-note">
+      <span class="mono">every block anchored by a sampling-noise floor — the survey's own complementary split, scored as if it were a candidate</span>
+    </p>
+    <p class="research-link mono" style="margin-top: 24px;">
+      <a href="https://github.com/PolicyEngine/popdgp">popdgp — the harness, as a standalone package (extraction in progress)</a>
+      · working reference implementation and all current results live in
+      <a href="https://github.com/PolicyEngine/imputation-paper">imputation-paper</a>
+    </p>
+  </section>
+
+  <section id="admin-attainment" class="band">
+    <div class="band-head">
+      <span class="kicker mono">03 — currency two</span>
+      <h2>Administrative target attainment.</h2>
+    </div>
+    <div class="prose">
+      <p>
+        The <a href="/calibration">calibration strategy page</a> reports the
+        live in-fit numbers: 3,704 targets, 94.7% within 10% of their
+        administrative value. Two things that page does not yet report are
+        proposed as release gates, reusing the population-view harness's
+        methodology rather than inventing a parallel one:
+      </p>
+    </div>
+    <div class="cards">
+      <article class="card">
+        <header><span class="card-id mono">held-out families</span><span class="tag tag-wip">proposed</span></header>
+        <h3>Holdout-masked builds</h3>
+        <p>
+          Reserve a seeded holdout from each source survey before any
+          support-pool or donor fitting, so certified bundles can be scored
+          non-self-referentially — the same masking discipline the
+          survey-view harness already uses, applied to the target surface.
+          Tracked as <a href="https://github.com/PolicyEngine/populace/issues/302">populace#302</a>,
+          not yet built.
+        </p>
+      </article>
+      <article class="card">
+        <header><span class="card-id mono">reweight fragility</span><span class="tag tag-wip">proposed</span></header>
+        <h3>Worst-case concentration under bounded reweighting</h3>
+        <p>
+          A closed-form stress test — the worst-case share of an aggregate a
+          single record could carry under bounded multiplicative reweighting
+          (κ=5) — compared against the reference file's own fragility.
+          Gaussian-residual imputation understates true exposure by 7–11×
+          under this test. Tracked as
+          <a href="https://github.com/PolicyEngine/populace-benchmarks/issues/6">populace-benchmarks#6</a>,
+          not yet built.
+        </p>
+      </article>
+    </div>
+    <p class="stack-note">
+      <span class="mono">both proposals cite imputation-paper's harness as the reference implementation to promote, not a new method to invent</span>
+    </p>
+  </section>
+
+  <section class="band band-cta">
+    <h2>Read the harness that both currencies share.</h2>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="/evaluation/paper">Read the paper</a>
+      <a class="btn btn-ghost" href="https://github.com/PolicyEngine/popdgp">popdgp on GitHub</a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-row">
+    <a class="brand" href="/"><span class="brand-dot" aria-hidden="true"></span>populace</a>
+    <a class="foot-pe" href="https://policyengine.org" aria-label="PolicyEngine"><img src="/assets/policyengine.svg" alt="PolicyEngine" /></a>
+  </div>
+  <p class="mono foot-fine">
+    A weighted synthetic population for public policy. Open source · MIT · a PolicyEngine project.
+  </p>
+</footer>
+
+<script src="/field.js" defer></script>
+</body>
+</html>
