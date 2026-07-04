@@ -154,17 +154,54 @@ Portfolio source of truth: populace#305.
 - [x] Homepage tells the system story — reviewed in full, one real fix
       applied (dynamics tag, above); rest already correct and consistent
       with all six strategy pages as now built
-- [ ] Run dev server, screenshot every new/changed page at desktop + mobile
-      — IN PROGRESS this push, server started (preview_start, port 4399)
-- [ ] Confirm redirect fires (curl -I or browser network tab, check 301/308)
-      — vercel.json redirects only take effect on Vercel, NOT on the local
-      python http.server; must verify via Vercel preview deployment, not
-      localhost. Note this in final report.
+- [x] Run dev server, screenshot every new/changed page at desktop + mobile
+      — DONE. IMPORTANT TOOLING TRAP FOUND+FIXED: preview_start name-matches
+      launch.json configs GLOBALLY across all projects, not scoped to this
+      worktree's .claude/launch.json. Two stale python http.servers were
+      running (one on :4399 rooted at ~/PolicyEngine/populace.dev = the WRONG
+      non-worktree repo, one on :4878). The generic name "populace-site"
+      resolves to the wrong repo. Use the config named
+      "populace-site-strategy-pages" (correctly rooted at this worktree) —
+      verified via curl byte-count (15255 = correct) + AUC-fix grep before
+      trusting any screenshot. Killed the stale servers.
+      Verified visually at DESKTOP (full-page via svh-hero-override +
+      tall-viewport trick) and MOBILE (375px): home, all 6 strategy pages,
+      /papers aggregator, imputation/paper template. All render correctly,
+      design tokens applied (teal #2C7A7B = --primary, Inter + JetBrains Mono
+      confirmed via computed styles), sentence case throughout, no console
+      errors, NO horizontal overflow on mobile, .metrics/.cards/.strategy-grid
+      all collapse to 1 column on mobile. Nav links hide on mobile (<760px,
+      GitHub icon only) — this is PRE-EXISTING origin/master behavior (line
+      118 style.css identical on master), NOT introduced here, out of scope.
+- [x] Confirm redirect: vercel.json redirects only fire on Vercel edge, NOT on
+      local python http.server (local /papers/dynamics = 404, expected).
+      PROVEN CORRECT + SERVER-SIDE: (1) vercel.json rule {source:
+      /papers/dynamics, destination: /dynamics/paper, permanent:true} ->
+      Vercel emits HTTP 308. (2) grep confirmed ZERO client-side redirect
+      trickery (no meta-refresh, no JS location.replace/href to /dynamics/paper
+      anywhere). (3) target /dynamics/paper.html = 200. The literal 308 status
+      can only be observed against the deployed preview URL (curl -I) — this is
+      the ONE item requiring the live preview; flagged in final report.
+- [x] All 14 routes return 200 with correct sentence-case <title>. Every
+      internal href + asset resolves to a real on-disk file (cleanUrls maps
+      /x/paper -> /x/paper.html, /x -> /x/index.html). No broken links.
+- [x] Design system: ui-kit tokens.css @0.12.1 CDN link + Inter/JetBrains Mono
+      fonts present on ALL 14 pages. Zero hardcoded brand hex in new markup
+      (only #FFFFFF theme-color meta, which is correct per design skill).
 - [x] Push after every coherent step (f441dd9 sparsity+dynamics pages,
-      1b221fd homepage tag fix)
-- [ ] Open PR via gh pr create --body-file (no @-mentions)
+      1b221fd homepage tag fix, [this push] = verification complete)
+- [ ] Open PR via gh pr create --body-file (no @-mentions) — NEXT
 - [ ] Final report to lead: PR + preview URLs, page-by-page status,
       screenshots taken, open questions
+
+## Open questions for lead (do not block)
+- imputation/paper.html AUTHORS line reads "Max Ghenis, María Juaristi —
+  PolicyEngine". PROGRESS notes flag "María authorship" as an OPEN item on the
+  imputation-paper project. If María's authorship is not yet settled, this
+  line may need to change before the citation URL is publicized. Left as-is
+  (matches current imputation-paper state per predecessor); flagging for lead.
+- Redirect 308 status is config-proven but unobservable on localhost; confirm
+  against the Vercel preview once it builds (curl -I <preview>/papers/dynamics).
 
 ## Page-by-page status (living table, update every push)
 | Page | Status | Notes |
