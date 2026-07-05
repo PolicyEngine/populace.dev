@@ -142,6 +142,77 @@
     <p class="stack-note">
       <span class="mono">benchmarked against unweighted &amp; weighted QRF, OLS, linear quantile regression, hot-deck statistical matching, and an unconditional weighted draw</span>
     </p>
+    <figure class="diagram-figure">
+      <svg viewBox="0 0 860 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="support-flow-title support-flow-desc">
+        <title id="support-flow-title">How the support is built</title>
+        <desc id="support-flow-desc">Three observed-survey channels — the CPS ASEC spine, the PUF donor channel, and a planned ACS channel — feed a clone step that preserves each record's source identity, then a sequential zero-inflated quantile-regression-forest completion step draws every variable a record's own survey didn't observe. The output is the support.</desc>
+
+        <!-- source channels -->
+        <rect class="dg-box-accent" x="8" y="18" width="196" height="56" rx="5"/>
+        <text class="dg-kicker" x="24" y="36">spine</text>
+        <text class="dg-title" x="24" y="56">CPS ASEC</text>
+        <text class="dg-label" x="24" y="70">demographics</text>
+
+        <rect class="dg-box" x="8" y="94" width="196" height="56" rx="5"/>
+        <text class="dg-kicker" x="24" y="112">donor channel</text>
+        <text class="dg-title" x="24" y="132">IRS SOI PUF</text>
+        <text class="dg-label" x="24" y="146">tax detail</text>
+
+        <rect class="dg-box-planned" x="8" y="170" width="196" height="56" rx="5"/>
+        <text class="dg-kicker" x="24" y="188">donor channel · planned</text>
+        <text class="dg-title" x="24" y="208">Census ACS</text>
+        <text class="dg-label" x="24" y="222">not yet integrated</text>
+
+        <!-- edges into clone -->
+        <path class="dg-edge" d="M 204 46 C 250 46, 250 100, 300 100"/>
+        <path class="dg-edge" d="M 204 122 L 300 122"/>
+        <path class="dg-edge-planned" d="M 204 198 C 250 198, 250 144, 300 144"/>
+
+        <!-- clone stage -->
+        <rect class="dg-box-accent" x="300" y="76" width="150" height="72" rx="5"/>
+        <text class="dg-kicker" x="375" y="98" text-anchor="middle">clone</text>
+        <text class="dg-title" x="375" y="118" text-anchor="middle">source identity</text>
+        <text class="dg-label" x="375" y="134" text-anchor="middle">kept per record</text>
+
+        <path class="dg-edge" d="M 450 112 L 510 112"/>
+
+        <!-- completion stage -->
+        <rect class="dg-box" x="510" y="20" width="220" height="60" rx="5"/>
+        <text class="dg-kicker" x="526" y="38">completion · gate</text>
+        <text class="dg-title" x="526" y="58">zero / participation regime</text>
+
+        <path class="dg-edge" d="M 620 80 L 620 96"/>
+
+        <rect class="dg-box" x="510" y="96" width="220" height="60" rx="5"/>
+        <text class="dg-kicker" x="526" y="114">completion · draw</text>
+        <text class="dg-title" x="526" y="134">quantile regression forest</text>
+
+        <path class="dg-edge" d="M 620 156 L 620 172"/>
+
+        <rect class="dg-box" x="510" y="172" width="220" height="52" rx="5"/>
+        <text class="dg-kicker" x="526" y="190">sequenced</text>
+        <text class="dg-title" x="526" y="208" style="font-size:12px;">multi-component targets, in order</text>
+
+        <path class="dg-edge" d="M 730 112 L 780 112"/>
+
+        <!-- output: the support -->
+        <rect class="dg-box-accent" x="780" y="70" width="72" height="84" rx="5"/>
+        <text class="dg-kicker" x="816" y="94" text-anchor="middle">output</text>
+        <text class="dg-value" x="816" y="118" text-anchor="middle" style="font-size:13px;">the</text>
+        <text class="dg-value" x="816" y="136" text-anchor="middle" style="font-size:13px;">support</text>
+
+        <!-- weights-by-construction annotation, spanning the completion column -->
+        <rect class="dg-box" x="510" y="248" width="220" height="70" rx="5" stroke-dasharray="2 2"/>
+        <text class="dg-kicker" x="526" y="266">throughout</text>
+        <text class="dg-label" x="526" y="284">design weights enter the</text>
+        <text class="dg-label" x="526" y="298">estimator: weighted bootstraps,</text>
+        <text class="dg-label" x="526" y="312">weighted gate fits</text>
+        <path class="dg-edge" d="M 620 248 L 620 224" stroke-dasharray="2 2"/>
+      </svg>
+      <figcaption>
+        The support's build path: each channel is an <strong>observed</strong> survey record, never a synthesized one. Cloning keeps every record's source identity, so a value can always be traced back to the survey that measured it. Completion runs a gate model (zero/participation regime) then a quantile regression forest (the amount), sequencing multi-component targets so each is conditioned on the ones already drawn.
+      </figcaption>
+    </figure>
   </section>
 
   <section id="results" class="band">
@@ -182,6 +253,44 @@
         same holdouts.
       </p>
     </div>
+    <figure class="diagram-figure">
+      <svg viewBox="0 0 860 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="support-auc-title support-auc-desc">
+        <title id="support-auc-title">Classifier AUC: candidate vs. hot-deck vs. an unconditional weighted draw</title>
+        <desc id="support-auc-desc">Bar chart of classifier two-sample-test AUC, scaled from 0.5 (indistinguishable, marked as the reference floor) to 1.0 (perfectly separable, a failure). The current method scores 0.761 AUC, hot-deck statistical matching scores 0.768 — a near-peer, essentially tied. An unconditional weighted draw that discards every predictor scores 0.968 AUC — caught almost perfectly by the classifier despite competitive marginal-fit numbers.</desc>
+
+        <!-- axis: 0.5 (left, indistinguishable) to 1.0 (right, perfectly separable) -->
+        <!-- plot area x: 190 to 750 (560px span, 0.5 AUC units -> 1120px/unit) -->
+        <line class="dg-gridline" x1="190" y1="16" x2="190" y2="140"/>
+        <line class="dg-gridline" x1="470" y1="16" x2="470" y2="140"/>
+        <line class="dg-gridline" x1="750" y1="16" x2="750" y2="140"/>
+        <text class="dg-label" x="190" y="156" text-anchor="middle">0.5</text>
+        <text class="dg-label" x="470" y="156" text-anchor="middle">0.75</text>
+        <text class="dg-label" x="750" y="156" text-anchor="middle">1.0</text>
+        <text class="dg-label" x="190" y="10" text-anchor="middle">indistinguishable</text>
+        <text class="dg-label" x="750" y="10" text-anchor="middle">perfectly separable</text>
+
+        <!-- bar: candidate, 0.761 AUC -> width = (0.761-0.5)*1120 = 292.3 -->
+        <text class="dg-title" x="0" y="38" style="font-size:12.5px;">candidate</text>
+        <rect class="dg-bar-primary" x="190" y="26" width="292.3" height="20" rx="2"/>
+        <text class="dg-value" x="490" y="41" style="font-size:12.5px;">0.761</text>
+
+        <!-- bar: hot-deck, 0.768 AUC -> width = (0.768-0.5)*1120 = 300.2 -->
+        <text class="dg-title" x="0" y="74" style="font-size:12.5px;">hot-deck matching</text>
+        <rect class="dg-bar-compare" x="190" y="62" width="300.2" height="20" rx="2"/>
+        <text class="dg-value" x="498" y="77" style="font-size:12.5px;">0.768</text>
+
+        <!-- bar: unconditional weighted draw, 0.968 AUC -> width = (0.968-0.5)*1120 = 524.2 -->
+        <text class="dg-title" x="0" y="110" style="font-size:12.5px;">unconditional weighted draw</text>
+        <rect class="dg-bar-worst" x="190" y="98" width="524.2" height="20" rx="2"/>
+        <text class="dg-value" x="722" y="113" style="font-size:12.5px;">0.968</text>
+
+        <line class="dg-refline" x1="190" y1="16" x2="190" y2="140"/>
+        <text class="dg-kicker" x="190" y="176" text-anchor="middle">0.5 = the reference floor</text>
+      </svg>
+      <figcaption>
+        Classifier two-sample-test AUC (lower is better; 0.5 is indistinguishable from the holdout). Hot-deck statistical matching (0.768) is a genuine near-peer to the current method (0.761) — the two sit almost on top of each other. An unconditional weighted draw that discards every predictor (0.968) is caught by the classifier despite tying on energy distance, which is why the harness scores four blocks rather than one.
+      </figcaption>
+    </figure>
   </section>
 
   <section class="band band-cta">
