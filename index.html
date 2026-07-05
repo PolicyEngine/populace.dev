@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>populace — a synthetic population, built in the open</title>
-<meta name="description" content="populace is an open-source stack for building weighted synthetic populations from survey and administrative data. A sampling frame as a first-class datatype, with operators for imputation and calibration." />
+<meta name="description" content="populace is an open-source stack for building weighted synthetic populations from survey and administrative data. A sampling frame as a first-class datatype, with operators for building its support and calibrating its weights." />
 <meta property="og:title" content="populace" />
 <meta property="og:description" content="A weighted synthetic population, built in the open." />
 <meta property="og:type" content="website" />
@@ -99,59 +99,61 @@
       </p>
     </div>
     <div class="strategy-grid">
-      <a class="strategy-card" href="/imputation">
-        <header><span class="card-id mono">imputation</span><span class="tag tag-live">shipped</span></header>
-        <h3>Weight-native fill</h3>
+      <a class="strategy-card" href="/support">
+        <header><span class="card-id mono">support</span><span class="tag tag-live">shipped</span></header>
+        <h3>The support</h3>
         <p>
-          Regime-gated, chained, weighted-bootstrap quantile-regression forests draw
-          missing variables from the population's conditional distribution, not the
-          sample's — no silent unweighted defaults.
+          Which records exist and what they carry: a spine of observed survey
+          records with donor channels, completed by sequential zero-inflated
+          quantile-regression-forest draws from the population's conditional
+          distribution.
         </p>
         <span class="strategy-paper-link mono">read the strategy →</span>
       </a>
       <a class="strategy-card" href="/calibration">
         <header><span class="card-id mono">calibration</span><span class="tag tag-live">shipped</span></header>
-        <h3>Gradient calibration at scale</h3>
+        <h3>The totals</h3>
         <p>
-          Reweighting a candidate frame against thousands of hierarchical
-          administrative targets by gradient descent on a capped relative-error
-          loss, with hard weight-ratio bounds against landmines.
+          Weights that hit administrative facts: gradient descent against
+          thousands of hierarchical targets on a capped relative-error loss,
+          with hard weight-ratio bounds against landmines.
         </p>
         <span class="strategy-paper-link mono">read the strategy →</span>
       </a>
       <a class="strategy-card" href="/sparsity">
         <header><span class="card-id mono">sparsity</span><span class="tag tag-live">shipped</span></header>
-        <h3>L0 record selection</h3>
+        <h3>The economy</h3>
         <p>
-          Hard Concrete gates select which candidate records survive into a
-          deployable file while calibration weights fit the target surface — a
-          large candidate universe compressed without giving up accuracy.
+          The same target surface on a fraction of the records: Hard Concrete
+          gates select which candidate records survive into a deployable file
+          while the weights fit the full surface.
         </p>
         <span class="strategy-paper-link mono">read the strategy →</span>
       </a>
       <a class="strategy-card" href="/evaluation">
         <header><span class="card-id mono">evaluation</span><span class="tag tag-live">shipped</span></header>
-        <h3>How populace is validated</h3>
+        <h3>The referee</h3>
         <p>
-          Two currencies, scored separately: population-view support fidelity
-          against survey holdouts (the popdgp harness) and administrative
-          calibration-target attainment, in-fit and held out.
+          Any candidate population, scored on two currencies: fidelity to
+          held-out survey views (the popdgp harness) and administrative
+          target attainment, in-fit and held out.
         </p>
         <span class="strategy-paper-link mono">read the strategy →</span>
       </a>
       <a class="strategy-card" href="/composition">
         <header><span class="card-id mono">composition</span><span class="tag tag-wip">in progress</span></header>
-        <h3>What combining the operators does</h3>
+        <h3>The interactions</h3>
         <p>
-          Imputation and calibration each pass their own single-operator checks;
-          composition asks what happens when both run on the same file — realized
-          landmines, repairability, and the target-vs-survey trade-off.
+          The support and the weights each pass their own single-operator
+          checks; composition asks what happens when both run on the same
+          file — realized landmines, repairability, and the target-vs-survey
+          trade-off.
         </p>
         <span class="strategy-paper-link mono">read the strategy →</span>
       </a>
       <a class="strategy-card" href="/dynamics">
         <header><span class="card-id mono">dynamics</span><span class="tag tag-wip">design stage</span></header>
-        <h3>The longitudinal layer</h3>
+        <h3>Time</h3>
         <p>
           Trajectory-weighted calibration and transitions as conditional models,
           under a scoring protocol where every claim resolves, backtests, or
@@ -161,7 +163,7 @@
       </a>
     </div>
     <p class="stack-note">
-      <span class="mono">generation owns support · calibration owns representation · evaluation owns the referee</span>
+      <span class="mono">the support · the totals · the economy · the referee · the interactions · time</span>
     </p>
   </section>
 
