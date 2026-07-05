@@ -21,6 +21,16 @@
       "source": "/papers/:slug",
       "destination": "/:slug/paper",
       "permanent": true
+    },
+    {
+      "source": "/imputation",
+      "destination": "/support",
+      "permanent": true
+    },
+    {
+      "source": "/imputation/paper",
+      "destination": "/support/paper",
+      "permanent": true
     }
   ]
 }

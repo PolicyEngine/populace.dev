@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The support — populace</title>
+<meta name="description" content="The support is the set of records a population estimate runs on and the values they carry. populace builds it by composing observed survey records — a spine from one survey, variables from others — completed by drawing from the population's conditional distribution." />
+<meta property="og:title" content="The support — populace" />
+<meta property="og:description" content="Which records exist and what they carry: a spine of observed survey records, donor channels, and sequential zero-inflated quantile regression forests, with every preserved distributional feature measured against the method that drops it." />
+<meta property="og:type" content="article" />
+<link rel="icon" type="image/svg+xml" href="/assets/policyengine-mark.svg" />
+<meta name="theme-color" content="#FFFFFF" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@policyengine/ui-kit@0.12.1/src/theme/tokens.css" />
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="nav">
+  <a class="brand" href="/">
+    <span class="brand-dot" aria-hidden="true"></span>populace
+  </a>
+  <nav class="nav-links">
+    <a href="/#idea">the idea</a>
+    <a href="/#stack">the stack</a>
+    <a href="/#result">evidence</a>
+    <a href="/papers">papers</a>
+    <a href="/support/paper">paper</a>
+    <a class="nav-gh" href="https://github.com/PolicyEngine/imputation-paper" aria-label="GitHub"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"/></svg></a>
+  </nav>
+</header>
+
+<main class="strategy-main">
+  <section class="strategy-hero">
+    <div class="strategy-hero-inner">
+      <p class="strategy-crumb reveal" style="--d:0"><a href="/papers">strategies</a> / support</p>
+      <p class="eyebrow reveal" style="--d:0">strategy 01 · the support</p>
+      <h1 class="reveal" style="--d:1">The support.</h1>
+      <p class="strategy-lede reveal" style="--d:2">
+        A population estimate runs on a set of records: which households exist
+        in the file, and what values each one carries. That set is the support.
+        populace builds it by composing observed survey records — a spine from
+        one survey, variables from all of them — with each record completed by
+        drawing from the population's conditional distribution. Everything
+        downstream can reweight the support; nothing downstream can repair it.
+      </p>
+      <div class="strategy-status-row reveal" style="--d:3">
+        <span class="tag tag-preprint">paper: preprint</span>
+        <a class="btn btn-primary" href="/support/paper">Read the paper</a>
+        <a class="btn btn-ghost" href="https://github.com/PolicyEngine/imputation-paper">Repository</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="commitments" class="band">
+    <div class="band-head">
+      <span class="kicker mono">01 — the commitments</span>
+      <h2>Four distributional features, each measured against the method that drops it.</h2>
+    </div>
+    <div class="prose">
+      <p>
+        Whatever builds the support must hand downstream consumers a file that
+        behaves like a draw from the population's joint distribution. Four
+        features carry that requirement, and each one is measured in the
+        accompanying paper against an otherwise-identical method that drops
+        it:
+      </p>
+    </div>
+    <div class="metrics">
+      <div class="metric">
+        <span class="metric-label mono">the zero mass</span>
+        <span class="metric-val">0.6pp<span class="metric-vs">vs 4.4pp ungated</span></span>
+        <span class="metric-note">dividend zero-share error; 25–84pp for linear and Gaussian baselines</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label mono">dependence between filled variables</span>
+        <span class="metric-val">5.8<span class="metric-vs">AUC points</span></span>
+        <span class="metric-note">cost of independent draws on a four-part balance-sheet identity</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label mono">the survey design</span>
+        <span class="metric-val">6×<span class="metric-vs">worse Wasserstein-1 unweighted</span></span>
+        <span class="metric-note">within-SCF net worth; population-view p99 inflated 1.9–2.3×</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label mono">the extreme tail</span>
+        <span class="metric-val">0.70–0.81<span class="metric-vs">forest p99 ratio; donation ≈1</span></span>
+        <span class="metric-note">the axis where donation methods beat conditional draws — kept on the scoreboard</span>
+      </div>
+    </div>
+    <p class="caveat">
+      <span class="mono">All figures from the imputation paper's committed experiment runs (draft; regenerates from run configs).</span>
+      The fourth row is a limit of the current method, not a win: forest draws
+      do not extrapolate beyond training support, so donation-based methods
+      hold the extreme tail better.
+    </p>
+  </section>
+
+  <section id="method" class="band">
+    <div class="band-head">
+      <span class="kicker mono">02 — the current method</span>
+      <h2>A spine of observed records, completed by sequential zero-inflated QRF.</h2>
+    </div>
+    <div class="cards">
+      <article class="card">
+        <header><span class="card-id mono">composition</span><span class="tag tag-live">shipped</span></header>
+        <h3>Multispine</h3>
+        <p>
+          Every record in the support is an observed survey record, never a
+          synthesized one: a CPS ASEC spine carries the demographics, a PUF
+          support channel carries tax detail, and an ACS channel is planned.
+          Cloned records keep their source identity, so every value traces to
+          the survey that observed it.
+        </p>
+      </article>
+      <article class="card">
+        <header><span class="card-id mono">completion</span><span class="tag tag-live">shipped</span></header>
+        <h3>Sequential zero-inflated QRF</h3>
+        <p>
+          Variables a record's own survey didn't observe are drawn, not
+          predicted: a gate model settles the zero/participation regime, a
+          quantile regression forest draws the amount within it, and
+          multi-component targets are drawn in sequence, each conditioned on
+          the ones already drawn.
+        </p>
+      </article>
+      <article class="card">
+        <header><span class="card-id mono">weights</span><span class="tag tag-live">shipped</span></header>
+        <h3>By construction</h3>
+        <p>
+          Design weights enter the estimator itself — bootstraps drawn
+          proportional to weight, gates fit on weighted samples — and the
+          interface requires an explicit weights decision, so an unweighted
+          fit is a recorded choice rather than a silent default.
+        </p>
+      </article>
+    </div>
+    <p class="stack-note">
+      <span class="mono">benchmarked against unweighted &amp; weighted QRF, OLS, linear quantile regression, hot-deck statistical matching, and an unconditional weighted draw</span>
+    </p>
+  </section>
+
+  <section id="results" class="band">
+    <div class="band-head">
+      <span class="kicker mono">03 — against the alternatives</span>
+      <h2>Scored like any other candidate.</h2>
+    </div>
+    <div class="prose">
+      <p>
+        The support is judged by the <a href="/evaluation">population-view
+        harness</a>: any weighted population file — composed, donated, or
+        generated — is projected through each survey's view and scored against
+        that survey's own holdout, with sampling-noise floors marking what an
+        independent draw from the same population would score. The current
+        method's results against the standard alternatives, from the paper's
+        committed runs:
+      </p>
+      <p>
+        Hot-deck matching is a genuine near-peer — its classifier AUC (0.768)
+        sits almost on top of the candidate's (0.761), and its donated values
+        hold the extreme tail better than any conditional method. Ordinary
+        least squares collapses both failure axes at once: 84 points of
+        dividend zero-share error, and a reweighting stress test shows it
+        understating the truth's tail exposure by factors of 7 to 11 — missing
+        tails, not robustness. An unconditional weighted draw that discards
+        every predictor posts competitive marginal-fit numbers and ties on
+        energy distance, then gets caught by the classifier at AUC 0.968:
+        marginal metrics alone cannot distinguish a method that draws from the
+        correct weighted marginal from one that also gets the conditionals
+        right.
+      </p>
+      <p>
+        A fully generative synthesis is an admissible occupant of this slot —
+        it would replace both the spine and the completion step, producing
+        records outright. The harness exists so that choice stays a measured
+        one: the scoreboard above is method-agnostic, and a generated
+        candidate would be scored on exactly the same axes against exactly the
+        same holdouts.
+      </p>
+    </div>
+  </section>
+
+  <section class="band band-cta">
+    <h2>Installable on its own.</h2>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="https://github.com/PolicyEngine/populace/tree/main/packages/populace-fit">populace-fit on GitHub</a>
+      <a class="btn btn-ghost" href="/support/paper">Read the paper</a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-row">
+    <a class="brand" href="/"><span class="brand-dot" aria-hidden="true"></span>populace</a>
+    <a class="foot-pe" href="https://policyengine.org" aria-label="PolicyEngine"><img src="/assets/policyengine.svg" alt="PolicyEngine" /></a>
+  </div>
+  <p class="mono foot-fine">
+    A weighted synthetic population for public policy. Open source · MIT · a PolicyEngine project.
+  </p>
+</footer>
+
+</body>
+</html>

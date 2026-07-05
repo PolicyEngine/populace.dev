@@ -6,7 +6,7 @@
 <title>Composition — populace</title>
 <meta name="description" content="What happens when survey imputation and weight calibration run on the same file: realized landmines, how much calibration can repair, and the target-vs-survey trade-off as a Pareto frontier." />
 <meta property="og:title" content="Composition — populace" />
-<meta property="og:description" content="Imputation and calibration each pass their own single-operator checks. Composition asks what happens when both run on the same file." />
+<meta property="og:description" content="The support and the weights each pass their own single-operator checks. Composition asks what happens when both run on the same file." />
 <meta property="og:type" content="article" />
 <link rel="icon" type="image/svg+xml" href="/assets/policyengine-mark.svg" />
 <meta name="theme-color" content="#FFFFFF" />
@@ -39,9 +39,9 @@
     <div class="strategy-hero-inner">
       <p class="strategy-crumb reveal" style="--d:0"><a href="/papers">strategies</a> / composition</p>
       <p class="eyebrow reveal" style="--d:0">strategy 05 · composition</p>
-      <h1 class="reveal" style="--d:1">What combining the operators does.</h1>
+      <h1 class="reveal" style="--d:1">The interactions.</h1>
       <p class="strategy-lede reveal" style="--d:2">
-        Imputation and calibration each pass their own single-operator
+        The support and the weights each pass their own single-operator
         checks in isolation. A real release runs both on the same file —
         imputed values get reweighted, and a distortion invisible to either
         operator's own validation can appear only in that combination.
@@ -122,7 +122,7 @@
     </div>
     <div class="prose">
       <p>
-        The <a href="/imputation">imputation paper</a> scores the fill
+        The <a href="/support">support paper</a> scores the fill
         operator against survey holdouts before any calibration runs. The
         <a href="/calibration">calibration paper</a> plans to score the
         reweight operator with imputation held fixed. Both designs are
