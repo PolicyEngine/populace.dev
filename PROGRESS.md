@@ -12,7 +12,7 @@ The preview_screenshot tool always captures the TOP of the page regardless of sc
 1. [x] Shared diagram/SVG CSS in style.css (.diagram-figure, .dg-* classes) — committed 221a162
 2. [x] /support — composition diagram + AUC bar comparison — committed 221a162, VERIFIED desktop+375px
 3. [x] /calibration — target hierarchy (national→state→program) → gradient-descent box + before→after (1.831→0.022, 22.2%→94.7%, 50×). VERIFIED desktop+375px
-4. [ ] /sparsity — records-vs-accuracy chart
+4. [x] /sparsity — records×loss scatter (L0 57,240@4.74%, dense 337,704@5.07%, random+reweight@7.55%, raw-gated@9.86%, random-scaled-no-refit 24.24% as top reference line). VERIFIED desktop+375px
 5. [ ] /evaluation — harness diagram (one population → views → scoring)
 6. [ ] /composition — operator pipeline + landmine illustration
 7. [ ] /dynamics — trajectory diagram (one weight per trajectory)
