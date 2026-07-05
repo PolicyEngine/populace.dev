@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Anywhere — populace</title>
+<meta name="description" content="Most countries' household microdata is restricted. populace's open US support recalibrated to a new geography's published totals — validated in the UK against held-out survey microdata, deployed in Belgium where none exists." />
+<meta property="og:title" content="Anywhere — populace" />
+<meta property="og:description" content="One operation, three domain distances: a congressional district, the UK, and Belgium. Rules engines are no longer the bottleneck. Data access is." />
+<meta property="og:type" content="article" />
+<link rel="icon" type="image/svg+xml" href="/assets/policyengine-mark.svg" />
+<meta name="theme-color" content="#FFFFFF" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@policyengine/ui-kit@0.12.1/src/theme/tokens.css" />
+<link rel="stylesheet" href="/style.css" />
+<style>
+  /* Application-strip register: same tokens, a distinct accent role so this
+     page reads as "built on the stack" rather than a seventh aspect card.
+     No new hex — --chart-2 is already in the shared palette (used by
+     tag-preprint) and every other value below inherits from style.css. */
+  .anywhere-accent { color: var(--chart-2); }
+  .anywhere-hero .eyebrow { color: var(--chart-2); }
+  .anywhere-hero .btn-primary { background: var(--chart-2); }
+  .anywhere-hero .btn-primary:hover { background: color-mix(in srgb, var(--chart-2) 82%, var(--paper)); }
+  .distance-rail {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-top: 40px;
+  }
+  @media (min-width: 720px) { .distance-rail { grid-template-columns: repeat(3, 1fr); } }
+  .distance-stop {
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 22px 22px 24px;
+    background: var(--card);
+  }
+  .distance-stop h4 {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: 1.1rem;
+    color: var(--paper);
+    margin-bottom: 8px;
+  }
+  .distance-stop p { font-size: 14.5px; line-height: 1.5; color: var(--paper-dim); }
+  .distance-stop .card-id { font-size: 12.5px; color: var(--chart-2); letter-spacing: 0.04em; font-family: var(--mono); }
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="nav">
+  <a class="brand" href="/">
+    <span class="brand-dot" aria-hidden="true"></span>populace
+  </a>
+  <nav class="nav-links">
+    <a href="/#idea">the idea</a>
+    <a href="/#stack">the stack</a>
+    <a href="/#result">evidence</a>
+    <a href="/papers">papers</a>
+    <a class="nav-gh" href="https://github.com/PolicyEngine/populace" aria-label="GitHub"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"/></svg></a>
+  </nav>
+</header>
+
+<main class="strategy-main">
+  <section class="strategy-hero anywhere-hero">
+    <div class="strategy-hero-inner">
+      <p class="strategy-crumb reveal" style="--d:0"><a href="/">populace</a> / an application, not a strategy</p>
+      <p class="eyebrow reveal" style="--d:0">applied · open microsimulation anywhere</p>
+      <h1 class="reveal" style="--d:1">Anywhere.</h1>
+      <p class="strategy-lede reveal" style="--d:2">
+        Most countries' household microdata is restricted. Rules engines are
+        no longer the bottleneck to modeling their tax and benefit systems —
+        data access is. This page is one application built on populace's six
+        strategies: recalibrating populace's openly redistributable US
+        support to another geography's published totals, producing
+        microsimulation inputs there — validated where ground truth exists,
+        deployed where it doesn't.
+      </p>
+      <div class="strategy-status-row reveal" style="--d:3">
+        <span class="tag tag-wip">paper: in progress</span>
+        <a class="btn btn-ghost" href="/papers">Read the six strategies</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="idea" class="band">
+    <div class="band-head">
+      <span class="kicker mono anywhere-accent">01 — the reframe</span>
+      <h2>Reweighting a fixed sample is adaptation with zero new parameters.</h2>
+    </div>
+    <div class="prose">
+      <p>
+        Treat the support — the record set — as a frozen representation, and
+        the weights as a task head fit on top of it. Recalibrating that
+        frozen support to a new geography's published totals is head-only
+        adaptation: every household stays exactly as observed; only its
+        influence on the aggregate changes. Importance weighting of a fixed
+        sample is the zero-parameter-update case of adapting a generative
+        model — the same operation populace already runs to hit a
+        congressional district's targets, run again at a larger domain
+        distance.
+      </p>
+      <p>
+        A capacity ladder sits above that zero-parameter case: frozen support
+        plus new weights, then frozen support plus imputed extensions for
+        variables the target geography needs and the US support doesn't
+        carry, then a fully adapted generative model that replaces the
+        support itself. Higher rungs spend more capacity and can close gaps
+        reweighting cannot. The mechanism at each rung is swappable — the
+        question this page and its paper ask is whether the adaptation
+        framing survives the climb, not which rung is correct.
+      </p>
+    </div>
+  </section>
+
+  <section id="distance" class="band">
+    <div class="band-head">
+      <span class="kicker mono anywhere-accent">02 — one operation, three distances</span>
+      <h2>Reweighting a congressional district, the UK, and Belgium is the same operator.</h2>
+    </div>
+    <div class="prose">
+      <p>
+        populace's local-area method already reweights one national file to a
+        US congressional district's published totals — same country, same
+        institutions, the smallest domain shift the operator runs on. Moving
+        the same operator to the UK and to Belgium does not change what it
+        does; it changes how far the source domain sits from the target. The
+        diagram below places three actual runs on that axis.
+      </p>
+    </div>
+    <figure class="diagram-figure">
+      <svg viewBox="0 0 860 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="anywhere-distance-title anywhere-distance-desc">
+        <title id="anywhere-distance-title">One reweighting operator at three domain distances</title>
+        <desc id="anywhere-distance-desc">A horizontal domain-distance axis from small to large. Three stops sit on it. The first, a US congressional district, reweights one national file to a sub-national geography inside the same institutions — the smallest shift, an established and shipped populace method. The second, the United Kingdom, reweights the US support to UK published totals and is the held-out validation leg: it is scored against native UK survey microdata (the Family Resources Survey). Its first, version-one, evaluation has run, and three of four survey views are clearly distinct from the native file; a repaired version-1.1 rerun is in production. The third, Belgium, reweights the same US support to Belgian published totals with no comparable native microdata to validate against; it is the zero-shot deployment leg, cross-checked instead against an independent tax-benefit engine, EUROMOD, on an identical population. All three stops are the same operator — reweighting a frozen support to a new geography's totals — differing only in how far the target sits from the source.</desc>
+
+        <!-- axis -->
+        <line class="dg-gridline" x1="60" y1="200" x2="800" y2="200"/>
+        <path class="dg-edge" d="M 800 200 L 788 195 M 800 200 L 788 205" stroke="var(--paper-faint)"/>
+        <text class="dg-kicker" x="60" y="222">small domain distance</text>
+        <text class="dg-kicker" x="800" y="222" text-anchor="end">large domain distance</text>
+        <text class="dg-label" x="60" y="238" style="font-size:10.5px;">same institutions, sub-national shift</text>
+        <text class="dg-label" x="800" y="238" text-anchor="end" style="font-size:10.5px;">different institutions, national shift</text>
+
+        <!-- stop 1: congressional district -->
+        <circle cx="140" cy="200" r="7" class="dg-box-accent" fill="var(--ink-2)"/>
+        <rect class="dg-box" x="60" y="30" width="160" height="90" rx="5"/>
+        <text class="dg-kicker" x="76" y="50">stop 1 · shipped</text>
+        <text class="dg-title" x="76" y="72">US congressional</text>
+        <text class="dg-title" x="76" y="88">district</text>
+        <text class="dg-label" x="76" y="106">local-area method</text>
+        <path class="dg-edge" d="M 140 120 L 140 193"/>
+
+        <!-- stop 2: UK -->
+        <circle cx="430" cy="200" r="7" class="dg-box-accent" fill="var(--ink-2)"/>
+        <rect class="dg-box-accent" x="350" y="30" width="160" height="104" rx="5"/>
+        <text class="dg-kicker" x="366" y="50">stop 2 · v1 measured</text>
+        <text class="dg-title" x="366" y="72">United Kingdom</text>
+        <text class="dg-label" x="366" y="90">held-out validation leg</text>
+        <text class="dg-label-accent" x="366" y="106">3/4 views clearly distinct</text>
+        <text class="dg-label" x="366" y="122" style="font-size:9.5px;">scored vs. FRS · v1.1 pending</text>
+        <path class="dg-edge" d="M 430 134 L 430 193"/>
+
+        <!-- stop 3: Belgium -->
+        <circle cx="720" cy="200" r="7" class="dg-box-accent" fill="var(--ink-2)"/>
+        <rect class="dg-box-accent" x="640" y="30" width="160" height="104" rx="5"/>
+        <text class="dg-kicker" x="656" y="50">stop 3 · measured</text>
+        <text class="dg-title" x="656" y="72">Belgium</text>
+        <text class="dg-label" x="656" y="90">zero-shot deployment leg</text>
+        <text class="dg-label-accent" x="656" y="106">21/21 targets within 1.8%</text>
+        <text class="dg-label" x="656" y="122" style="font-size:9.5px;">no native microdata to score against</text>
+        <path class="dg-edge" d="M 720 134 L 720 193"/>
+
+        <!-- shared operator caption, below axis -->
+        <rect class="dg-box" x="230" y="256" width="400" height="60" rx="5"/>
+        <text class="dg-kicker" x="430" y="278" text-anchor="middle">the operator, unchanged at every stop</text>
+        <text class="dg-title" x="430" y="300" text-anchor="middle" style="font-size:12.5px;">reweight a frozen support to published totals</text>
+        <path class="dg-edge" d="M 140 207 C 140 240, 400 240, 400 256"/>
+        <path class="dg-edge" d="M 430 207 L 430 256"/>
+        <path class="dg-edge" d="M 720 207 C 720 240, 460 240, 460 256"/>
+      </svg>
+      <figcaption>
+        Three actual runs of the same reweighting operator, placed by domain distance. The congressional-district leg (populace's local-area method), the UK leg (v1 measured against the held-out FRS, below), and the Belgium leg (measured below) all sit on solid ground. The UK leg's held-out verdict — three of four survey views clearly distinct from native microdata — is the paper's thesis made quantitative; a repaired v1.1 rerun is in production. <strong>Same operator, increasing distance</strong> — small and same-institutions at the congressional-district end, large and different-institutions at the Belgium end.
+      </figcaption>
+    </figure>
+    <div class="distance-rail">
+      <div class="distance-stop">
+        <span class="card-id">stop 1</span>
+        <h4>Congressional district</h4>
+        <p>
+          Described on the <a href="/sparsity">sparsity strategy page</a> and
+          used throughout populace's US releases: one national file reweighted
+          to sub-national published totals. Same country, same tax-benefit
+          institutions, the smallest domain shift this page discusses —
+          referenced here descriptively, not re-validated on this page.
+        </p>
+      </div>
+      <div class="distance-stop">
+        <span class="card-id">stop 2</span>
+        <h4>United Kingdom</h4>
+        <p>
+          The held-out ground-truth leg. Its first evaluation has run,
+          scoring the recalibrated US support against the Family Resources
+          Survey — native UK household microdata withheld from the adaptation
+          step — with three of four survey views clearly distinct from
+          native. It also caught a concrete feed defect; a repaired v1.1 is
+          <code class="mono">[PENDING: uk-transfer v1.1]</code>. Verdict and
+          defect below.
+        </p>
+      </div>
+      <div class="distance-stop">
+        <span class="card-id">stop 3</span>
+        <h4>Belgium</h4>
+        <p>
+          The zero-shot deployment leg, where no comparable native microdata
+          exists to score against. Validated instead by an
+          identical-population cross-engine check: the Axiom Belgian engine
+          against EUROMOD, isolating engine agreement from data quality.
+          Numbers below.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="protocol" class="band">
+    <div class="band-head">
+      <span class="kicker mono anywhere-accent">03 — the validation protocol</span>
+      <h2>Validate where truth exists. Deploy where it doesn't.</h2>
+    </div>
+    <div class="prose">
+      <p>
+        The protocol borrows directly from held-out benchmark practice:
+        adapt to a target domain without touching its held-out ground truth,
+        then score against that ground truth once. The UK supplies the
+        ground-truth leg because native survey microdata — the Family
+        Resources Survey — exists to hold out and score against. Belgium
+        supplies the deployment leg precisely because that check is
+        unavailable: no comparably granular Belgian household microdata sits
+        behind the recalibration, so deployment is checked the only way
+        available, cross-engine agreement on an identical population, rather
+        than against native microdata.
+      </p>
+      <p>
+        <strong>Calibration forces target-geography totals to match by
+        construction.</strong> Reweighting is fit to hit published aggregates,
+        so once it runs, the aggregates match almost by definition. Every
+        residual gap that remains against the FRS microdata — not the totals,
+        the joint distribution underneath them — measures something
+        reweighting cannot touch: the joint structure the recalibrated file
+        inherited from the US support it started from. That gap is the
+        quantitative test of the populace thesis stated on the
+        <a href="/support">support strategy page</a>: everything downstream
+        can reweight the support; nothing downstream can repair it. The UK
+        benchmark turns that sentence into a number.
+      </p>
+    </div>
+    <div class="cards">
+      <article class="card">
+        <header><span class="card-id mono">adapt</span><span class="tag tag-live">shipped</span></header>
+        <h3>Head-only, ground truth untouched</h3>
+        <p>
+          The US support is recalibrated to the target geography's published
+          totals without ever consulting that geography's held-out microdata
+          — the adaptation step and the scoring step use disjoint
+          information, exactly as a transfer-learning benchmark requires.
+        </p>
+      </article>
+      <article class="card">
+        <header><span class="card-id mono">score once</span><span class="tag tag-live">v1 done</span></header>
+        <h3>Held-out FRS, scored after adaptation</h3>
+        <p>
+          The UK leg scores the adapted file against native Family Resources
+          Survey microdata it never saw. Its first run is complete — three of
+          four survey views clearly distinct from native (section 07) — so
+          this is the leg that already measures what reweighting alone can
+          and cannot fix.
+        </p>
+      </article>
+      <article class="card">
+        <header><span class="card-id mono">deploy anyway</span><span class="tag tag-live">shipped</span></header>
+        <h3>No native microdata, cross-engine check instead</h3>
+        <p>
+          Belgium has no held-out survey microdata to score against, so
+          deployment is checked the way that is actually available: an
+          independent tax-benefit engine, EUROMOD, computing the same
+          quantities on the identical recalibrated population.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <section id="custodian" class="band">
+    <div class="band-head">
+      <span class="kicker mono anywhere-accent">04 — beyond the UK and Belgium</span>
+      <h2>Open microsimulation anywhere does not require open microdata anywhere.</h2>
+    </div>
+    <div class="prose">
+      <p>
+        The UK leg works because native household microdata exists and can
+        be held out. Most geographies fail that condition — not because no
+        one holds the data, but because the data cannot leave the building
+        it lives in. National statistical institutes and research centres
+        routinely hold exactly the restricted microdata this page has no
+        access to. The protocol above does not need that data to travel;
+        it needs a referee that can.
+      </p>
+      <p>
+        <strong>It requires an open referee. The referee travels even where
+        the data cannot.</strong> Instead of asking a data custodian for
+        microdata, ship the custodian a sealed, pre-registered evaluation
+        procedure: the recalibrated support, the population-view harness,
+        and a frozen scoring configuration. The custodian runs it locally,
+        against their own restricted ground truth, inside their own
+        environment. Nothing sensitive leaves the building — only a
+        low-dimensional scorecard comes back: energy distance, coverage,
+        classifier AUC, and the tail block, the same four numbers this
+        page already reports for the UK leg. A scorecard contains no micro
+        records, so publishing it is safe by construction, not by review.
+      </p>
+    </div>
+    <figure class="diagram-figure">
+      <svg viewBox="0 0 860 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="anywhere-custodian-title anywhere-custodian-desc">
+        <title id="anywhere-custodian-title">A pre-registered evaluation pack, run inside a data custodian's own environment</title>
+        <desc id="anywhere-custodian-desc">A protocol-stage schematic, dashed because no custodian run has happened yet. An evaluation pack — the recalibrated support, the population-view harness at a pinned version, a frozen scoring configuration, and input manifests — is pre-registered before any run: its contents are fixed and committed first. The pack then crosses a boundary into a data custodian's own environment, drawn as a barrier neither side crosses, where it runs against restricted ground truth that never leaves that environment. Only a low-dimensional scorecard — energy distance, coverage, classifier AUC, and the tail block — returns across the boundary and is published. No microdata crosses in either direction.</desc>
+
+        <text class="dg-kicker" x="8" y="16">protocol stage · not yet run · dashed = not implemented</text>
+
+        <!-- the eval pack, pre-registered -->
+        <rect class="dg-box-planned" x="8" y="40" width="230" height="140" rx="5"/>
+        <text class="dg-kicker" x="24" y="60">pre-registered · frozen before any run</text>
+        <text class="dg-title" x="24" y="82" style="font-size:12.5px;">the evaluation pack</text>
+        <text class="dg-label" x="24" y="102">recalibrated support</text>
+        <text class="dg-label" x="24" y="116">population-view harness, pinned sha</text>
+        <text class="dg-label" x="24" y="130">frozen scoring config + thresholds</text>
+        <text class="dg-label" x="24" y="144">input manifests + entry-point script</text>
+        <text class="dg-label-accent" x="24" y="164" style="font-size:9.5px;">committed before any run — no result exists yet to steer it</text>
+
+        <path class="dg-edge-planned" d="M 238 110 L 300 110" marker-end="url(#custodian-arrow)"/>
+
+        <!-- the boundary neither side crosses -->
+        <line x1="330" y1="20" x2="330" y2="240" stroke="var(--paper-faint)" stroke-width="2" stroke-dasharray="6 4"/>
+        <text class="dg-kicker" x="330" y="252" text-anchor="middle" style="font-size:9px;">boundary neither side crosses</text>
+
+        <!-- inside the custodian's own environment -->
+        <rect class="dg-box-planned" x="360" y="40" width="260" height="140" rx="5"/>
+        <text class="dg-kicker" x="376" y="60">inside a data custodian's own environment</text>
+        <text class="dg-title" x="376" y="82" style="font-size:12.5px;">the pack, run locally</text>
+        <text class="dg-label" x="376" y="102">scored against restricted ground truth</text>
+        <text class="dg-label" x="376" y="116">the custodian holds — generic: a national</text>
+        <text class="dg-label" x="376" y="130">statistical institute, a research centre</text>
+        <text class="dg-label-accent" x="376" y="150" style="font-size:9.5px;">no microdata crosses the boundary, either direction</text>
+
+        <path class="dg-edge-planned" d="M 620 110 L 682 110" marker-end="url(#custodian-arrow)"/>
+
+        <!-- the scorecard, published -->
+        <rect class="dg-box-accent" x="682" y="60" width="170" height="100" rx="5"/>
+        <text class="dg-kicker" x="767" y="82" text-anchor="middle">published</text>
+        <text class="dg-title" x="767" y="102" text-anchor="middle" style="font-size:12px;">the scorecard</text>
+        <text class="dg-label" x="767" y="120" text-anchor="middle">energy · coverage ·</text>
+        <text class="dg-label" x="767" y="133" text-anchor="middle">classifier AUC · tail</text>
+        <text class="dg-label-accent" x="767" y="150" text-anchor="middle" style="font-size:9px;">no micro records</text>
+
+        <defs>
+          <marker id="custodian-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="var(--paper-faint)" stroke-width="1.5"/>
+          </marker>
+        </defs>
+      </svg>
+      <figcaption>
+        A protocol-stage schematic (dashed = specified, not run). The evaluation pack — recalibrated support, harness at a pinned version, frozen scoring configuration, input manifests — is <strong>pre-registered</strong> before any run, so neither side can select thresholds or blocks after seeing a result. It crosses into the custodian's own environment, runs there against restricted ground truth that never leaves, and only the low-dimensional scorecard returns. No custodian run has happened yet; the UK leg above is this pack's dress rehearsal, proving it runs correctly before any third party runs it.
+      </figcaption>
+    </figure>
+    <div class="cards">
+      <article class="card">
+        <header><span class="card-id mono">pre-registration</span><span class="tag tag-wip">protocol stage</span></header>
+        <h3>Frozen before results exist</h3>
+        <p>
+          The harness version, the four scoring blocks, and their thresholds
+          are committed before any custodian run — the same discipline that
+          gives a held-out machine-learning test set its credibility.
+          Freezing first is what stops either side from selecting the
+          comparison after seeing how it turns out.
+        </p>
+      </article>
+      <article class="card">
+        <header><span class="card-id mono">the eval pack</span><span class="tag tag-wip">protocol stage</span></header>
+        <h3>A pinned, portable bundle</h3>
+        <p>
+          Harness commit, frozen configuration, input manifests, and an
+          entry-point script travel together as one pinned artifact — built
+          to run unattended inside an environment its authors never enter,
+          producing a fixed output schema every time.
+        </p>
+      </article>
+      <article class="card">
+        <header><span class="card-id mono">what it buys</span><span class="tag tag-wip">protocol stage</span></header>
+        <h3>Ground-truth checks without data access</h3>
+        <p>
+          Micro-level validation becomes available in every geography with
+          a willing custodian, not only the geographies whose microdata is
+          already open. The UK leg is this pack's dress rehearsal: proof it
+          runs correctly end to end before any third party is asked to run
+          it against data this page will never see.
+        </p>
+      </article>
+    </div>
+    <div class="prose" style="margin-top: 40px;">
+      <p>
+        <strong>The dress rehearsal already earned its keep.</strong> Run
+        against the UK's own held-out file — the one geography where this
+        page can score against native microdata — the pack did not just
+        confirm it executes. It caught a concrete, mechanical defect in the
+        transferred file: a missing income stream that zeroed out state
+        pensions and cascaded into the means-tested benefits that depend on
+        them (section 07). A referee that surfaces a specific data error on
+        its first real run is a referee worth shipping to a custodian who
+        holds data this page will never see. The pre-registered pack, run as
+        a custodian would run it, did exactly the job it exists to do.
+      </p>
+    </div>
+    <p class="research-link mono">
+      <a href="#uk">See the UK leg for the verdict and the defect the referee caught →</a>
+    </p>
+  </section>
+
+  <section id="failure-mode" class="band">
+    <div class="band-head">
+      <span class="kicker mono anywhere-accent">05 — what this cannot fix</span>
+      <h2>Bounded by what the frozen support contains.</h2>
+    </div>
+    <div class="prose">
+      <p>
+        Reweighting can only redistribute mass across the households already
+        in the support; it cannot manufacture a joint structure the US
+        population never exhibits. If the target geography has a
+        household-composition pattern, an income-tax-and-benefit
+        interaction, or a demographic combination absent from the source
+        support, no amount of reweighting recovers it — that is a limit of
+        this rung of the capacity ladder, not a bug in the reweighting
+        method. Higher rungs (imputed extensions, or a fully adapted
+        generative model) exist precisely to spend more capacity against
+        this limit. This page and its paper report where that limit binds,
+        not just where the operator succeeds.
+      </p>
+    </div>
+  </section>
+
+  <section id="belgium" class="band">
+    <div class="band-head">
+      <span class="kicker mono anywhere-accent">06 — measured now</span>
+      <h2>Belgium: 21 of 21 targets, one engine cross-check.</h2>
+    </div>
+    <div class="prose">
+      <p>
+        The US support, recalibrated to Belgian published totals, is the
+        first deployment-leg result this page can report in full. Both
+        numbers below come from a completed populace-be run, not a
+        benchmark still executing.
+      </p>
+    </div>
+    <div class="metrics">
+      <div class="metric">
+        <span class="metric-label mono">calibration targets within 1.8%</span>
+        <span class="metric-val">21/21<span class="metric-vs">every target hit</span></span>
+        <span class="metric-note">Statbel age×sex×NUTS1, SPF fiscal income, ONSS worker SSC, ONEM unemployment</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label mono">Axiom vs. EUROMOD, worker SSC</span>
+        <span class="metric-val">€643<span class="metric-vs">apart on €20.9B</span></span>
+        <span class="metric-note">identical recalibrated population, independent engines</span>
+      </div>
+    </div>
+    <p class="caveat">
+      <span class="mono">[SOURCE: populace-be run &lt;sha/date&gt;] — pending pin.</span>
+      The identical-population design is what makes the €643 figure a
+      statement about engine agreement, not data quality: both the Axiom
+      Belgian engine and EUROMOD compute worker social security
+      contributions on the exact same recalibrated households, so the
+      €643 gap on €20.9 billion isolates disagreement between the two
+      engines' rules from any disagreement about who is in the population.
+      This is the deployment leg described above — no native Belgian
+      microdata sits behind either number, so cross-engine agreement is the
+      check available, not a substitute for the FRS-style holdout the UK
+      leg runs.
+    </p>
+    <p class="research-link mono">
+      <a href="/support">A foreign support is an admissible occupant of this slot — the referee prices what it costs.</a>
+    </p>
+  </section>
+
+  <section id="uk" class="band">
+    <div class="band-head">
+      <span class="kicker mono anywhere-accent">07 — the held-out leg, v1 as-found</span>
+      <h2>United Kingdom: the referee ran, and diagnosed.</h2>
+    </div>
+    <div class="prose">
+      <p>
+        The UK leg has run once. Its subject was the as-found prior US-to-UK
+        transfer: an existing recalibrated file built from open US microdata,
+        reweighted to UK national, regional, and country targets — the same
+        target set the native Family Resources Survey file calibrates to. The
+        pre-registered pack scored it against the held-out native FRS file
+        before that file was touched, exactly as section 03 requires. The
+        first-run verdict, and the defect it surfaced, are reported below.
+        The result is a diagnostic pass, not a finished benchmark: it caught
+        a concrete feed defect, and a repaired v1.1 is in production.
+      </p>
+    </div>
+    <div class="metrics">
+      <div class="metric">
+        <span class="metric-label mono">held-out verdict, four survey views</span>
+        <span class="metric-val">3 / 4<span class="metric-vs">clearly distinct; 0/4 indistinguishable</span></span>
+        <span class="metric-note">income view intermediate; tax_benefit, net_income, full clearly distinct from native</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label mono">sampling-noise floor, classifier AUC</span>
+        <span class="metric-val">0.49–0.52<span class="metric-vs">at chance, all four views</span></span>
+        <span class="metric-note">the native file's own split scored as a candidate — machinery validated</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label mono">determinism, two independent runs</span>
+        <span class="metric-val">byte-identical<span class="metric-vs">canonical subset</span></span>
+        <span class="metric-note">scores, verdict, and config fingerprint reproduce exactly; only the timestamp differs</span>
+      </div>
+    </div>
+    <p class="caveat">
+      <span class="mono">[SOURCE: transfer-paper/experiments/uk-transfer/artifacts/scorecard.json — popdgp 402fb235, period 2025, candidate n=28,532 households vs native FRS n=53,508; verdict bands pre-registered in eval-pack/PREREGISTRATION.md].</span>
+      This is the quantitative test the framing promised: calibration forced
+      the marginal targets to move (transferred mean absolute relative error
+      0.309 versus 0.438 before), yet three of four held-out survey views
+      remain clearly distinct from the native file. Every one of those
+      residual gaps is inherited joint structure that reweighting to
+      marginal totals could not repair — the populace thesis, measured. The
+      failure concentrates in the tax-and-benefit view, whose classifier
+      separates candidate from native at 0.998 AUC. One caveat runs the
+      other way: the transferred file's 99th-percentile income ratios sit
+      near twice the native file's, which reflects known top-income
+      under-coverage in the FRS holdout, so the ruler is biased at the
+      extreme tail; it is presented, not hidden.
+    </p>
+    <div class="prose" style="margin-top: 40px;">
+      <p>
+        <strong>The defect the referee caught.</strong> Running the pack as a
+        custodian would surfaced a specific, mechanical data error, not a
+        vague quality complaint. The transferred file's state-pension total
+        came out at zero against a native total of 112 billion pounds — the
+        feed carried survivor, dependant, and disability social-security
+        streams but no retirement stream at all, so every household's state
+        pension defaulted to nothing. The cascade is fully traced: no state
+        pension raised means-tested pension-credit entitlement nearly
+        tenfold, which in turn drove reported household benefits far below
+        the native file. A repaired feed and rerun — with the pre-registered
+        scoring configuration left unchanged — is in production as v1.1.
+      </p>
+    </div>
+    <div class="cards" style="margin-top: 28px;">
+      <article class="card">
+        <header><span class="card-id mono">calibration targets</span><span class="tag tag-live">v1 measured</span></header>
+        <h3>Transferred MARE 0.309</h3>
+        <p>
+          Against 568 finite UK targets, the recalibrated transfer reaches
+          mean absolute relative error 0.309 (versus 0.438 for the raw file),
+          but the native FRS holds a tighter central fit — 43.8% of targets
+          within 10% against the transfer's 29.9%. Marginal attainment
+          improves; it does not certify the joint.
+          <span class="mono" style="display:block; margin-top:8px; font-size:11px; color:var(--paper-faint);">[SOURCE: artifacts/calibration_summary.json]</span>
+        </p>
+      </article>
+      <article class="card">
+        <header><span class="card-id mono">held-out FRS score</span><span class="tag tag-live">v1 measured</span></header>
+        <h3>3 of 4 views clearly distinct</h3>
+        <p>
+          Scored on the population-view harness against the untouched native
+          FRS file: income intermediate, tax-and-benefit, net-income, and the
+          omnibus view all clearly distinct. The residual is the inherited
+          joint structure reweighting cannot repair.
+          <span class="mono" style="display:block; margin-top:8px; font-size:11px; color:var(--paper-faint);">[SOURCE: artifacts/scorecard.json verdict]</span>
+        </p>
+      </article>
+      <article class="card">
+        <header><span class="card-id mono">repaired rerun</span><span class="tag tag-wip">v1.1 pending</span></header>
+        <h3>[PENDING: uk-transfer v1.1]</h3>
+        <p>
+          The rerun on the repaired feed — retirement stream restored, the
+          frozen scoring configuration unchanged so the comparison stays
+          pre-registered — is in production by a parallel run. Its scorecard
+          is not yet pinned, so no v1.1 number appears here.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <section class="band band-cta">
+    <h2>The paper working out the framing.</h2>
+    <div class="hero-cta">
+      <a class="btn btn-ghost" href="/support">Read the support strategy page</a>
+      <a class="btn btn-ghost" href="/papers">Browse every paper</a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-row">
+    <a class="brand" href="/"><span class="brand-dot" aria-hidden="true"></span>populace</a>
+    <a class="foot-pe" href="https://policyengine.org" aria-label="PolicyEngine"><img src="/assets/policyengine.svg" alt="PolicyEngine" /></a>
+  </div>
+  <p class="mono foot-fine">
+    A weighted synthetic population for public policy. Open source · MIT · a PolicyEngine project.
+  </p>
+</footer>
+
+<script src="/reveal.js" defer></script>
+</body>
+</html>
