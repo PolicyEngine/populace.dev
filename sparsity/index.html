@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sparsity — populace</title>
+<meta name="description" content="How populace prunes a build-big candidate frame to a deployable file: L0 regularization with Hard Concrete gates selects which records survive, then an ordinary calibration refit sets their weights." />
+<meta property="og:title" content="Sparsity — populace" />
+<meta property="og:description" content="Target-informed record selection: Hard Concrete gates choose a sparse support, calibration refit fits its weights, both scored against dense and random baselines on the full target surface." />
+<meta property="og:type" content="article" />
+<link rel="icon" type="image/svg+xml" href="/assets/policyengine-mark.svg" />
+<meta name="theme-color" content="#FFFFFF" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@policyengine/ui-kit@0.12.1/src/theme/tokens.css" />
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="nav">
+  <a class="brand" href="/">
+    <span class="brand-dot" aria-hidden="true"></span>populace
+  </a>
+  <nav class="nav-links">
+    <a href="/#idea">the idea</a>
+    <a href="/#stack">the stack</a>
+    <a href="/#result">evidence</a>
+    <a href="/papers">papers</a>
+    <a href="/sparsity/paper">paper</a>
+    <a class="nav-gh" href="https://github.com/PolicyEngine/sparsity-paper" aria-label="GitHub"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"/></svg></a>
+  </nav>
+</header>
+
+<main class="strategy-main">
+  <section class="strategy-hero">
+    <div class="strategy-hero-inner">
+      <p class="strategy-crumb reveal" style="--d:0"><a href="/papers">strategies</a> / sparsity</p>
+      <p class="eyebrow reveal" style="--d:0">strategy 03 · sparsity</p>
+      <h1 class="reveal" style="--d:1">Pruning the build-big candidate frame.</h1>
+      <p class="strategy-lede reveal" style="--d:2">
+        Populace deliberately assembles a candidate frame larger than any
+        deployable file needs, so it can cover state and congressional-district
+        targets at once. That candidate frame then has to be reduced to a
+        record count that ships and simulates — and which records survive the
+        cut changes how well the final file matches its targets.
+      </p>
+      <div class="strategy-status-row reveal" style="--d:3">
+        <span class="tag tag-preprint">paper: preprint</span>
+        <a class="btn btn-primary" href="/sparsity/paper">Read the paper</a>
+        <a class="btn btn-ghost" href="https://github.com/PolicyEngine/sparsity-paper">Repository</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="explainer" class="band">
+    <div class="band-head">
+      <span class="kicker mono">01 — the 30-second version</span>
+      <h2>Selection beats random thinning; refit beats the raw gates.</h2>
+    </div>
+    <div class="prose">
+      <p>
+        L<sub>0</sub> regularization with Hard Concrete gates (Louizos et al.
+        2018) attaches a gate to every candidate record and lets the optimizer
+        drive it toward zero or one, so the retained-record count becomes an
+        explicit optimization variable rather than a fixed draw. Scored on the
+        full Populace US target surface, target-informed selection beats
+        matched random-sampling baselines at the same record budget:
+      </p>
+    </div>
+    <div class="metrics">
+      <div class="metric">
+        <span class="metric-label mono">records retained</span>
+        <span class="metric-val">57,240<span class="metric-vs">of 337,704 candidates (17.0%)</span></span>
+        <span class="metric-note">normalized L0 penalty share 0.8</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label mono">post-L0 refit loss</span>
+        <span class="metric-val">4.74%<span class="metric-vs">vs 5.07% dense, 7.55% random+reweight</span></span>
+        <span class="metric-note">capped weighted calibration loss, 32,633 targets</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label mono">random support, scaled, no refit</span>
+        <span class="metric-val">24.24%<span class="metric-vs">worst of the five compared arms</span></span>
+        <span class="metric-note">a sparse file still needs a reweighting step</span>
+      </div>
+    </div>
+    <p class="caveat">
+      <span class="mono">sparsity-paper abstract and Table 5 (Populace commit 558e46c1; three-year pooled ASEC support file, period 2024).</span>
+      The dense no-L0 run was still declining at its 1,500-epoch budget, so
+      the comparison is a finite-optimization result at a matched compute
+      budget, not a claim that dense calibration could not converge lower
+      given more epochs.
+    </p>
+  </section>
+
+  <section id="method" class="band">
+    <div class="band-head">
+      <span class="kicker mono">02 — the method</span>
+      <h2>Selection and weighting as one optimization.</h2>
+    </div>
+    <div class="cards">
+      <article class="card">
+        <header><span class="card-id mono">gates</span><span class="tag tag-live">shipped</span></header>
+        <h3>Hard Concrete gates</h3>
+        <p>
+          Each candidate record carries a stochastic gate that the optimizer
+          can drive to an exact zero or one while staying differentiable in
+          between, making the expected retained-record count a term the
+          optimizer minimizes alongside calibration error, not a separate
+          thresholding step applied afterward.
+        </p>
+      </article>
+      <article class="card">
+        <header><span class="card-id mono">refit</span><span class="tag tag-live">shipped</span></header>
+        <h3>Ordinary calibration after selection</h3>
+        <p>
+          The raw gated weights score a 9.86% loss on their own — not good
+          enough to publish. Removing the gates and refitting ordinary
+          calibration weights on exactly the selected 57,240 records lowers
+          that to 4.74%: the gates are valuable as a support selector, and the
+          publication weights should be refit after selection.
+        </p>
+      </article>
+      <article class="card">
+        <header><span class="card-id mono">concentration</span><span class="tag tag-live">shipped</span></header>
+        <h3>Soft and hard weight bounds</h3>
+        <p>
+          A soft L2 penalty and a hard per-record weight-ratio cap bound how
+          concentrated the fitted weights can become, so matching the target
+          surface with fewer records cannot be bought by placing arbitrarily
+          large weight on a handful of survivors.
+        </p>
+      </article>
+    </div>
+    <p class="stack-note">
+      <span class="mono">compared against dense no-L0 calibration, random sampling + reweight, and a dense-random scaled sample, all on the same 32,633-target surface and calibration loss</span>
+    </p>
+  </section>
+
+  <section id="harness" class="band">
+    <div class="band-head">
+      <span class="kicker mono">03 — scope and what's next</span>
+      <h2>A proof of concept, not a released frontier.</h2>
+    </div>
+    <div class="prose">
+      <p>
+        The reported comparison is a single fixed-penalty, single-seed probe
+        on Populace's current full target surface — a proof of concept that
+        informed selection earns its complexity, not a release-ready budget
+        frontier. Sweeping the normalized penalty across multiple retained
+        counts and concentration settings, and a family-level (not row-level)
+        holdout, are named as next work in the paper rather than run here.
+        Target attainment for the file Populace actually ships is tracked
+        separately on the
+        <a href="/evaluation">evaluation strategy page</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="band band-cta">
+    <h2>Read the full comparison.</h2>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="https://github.com/PolicyEngine/sparsity-paper">sparsity-paper on GitHub</a>
+      <a class="btn btn-ghost" href="/sparsity/paper">Read the paper</a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-row">
+    <a class="brand" href="/"><span class="brand-dot" aria-hidden="true"></span>populace</a>
+    <a class="foot-pe" href="https://policyengine.org" aria-label="PolicyEngine"><img src="/assets/policyengine.svg" alt="PolicyEngine" /></a>
+  </div>
+  <p class="mono foot-fine">
+    A weighted synthetic population for public policy. Open source · MIT · a PolicyEngine project.
+  </p>
+</footer>
+
+</body>
+</html>

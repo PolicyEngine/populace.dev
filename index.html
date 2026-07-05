@@ -32,8 +32,7 @@
     <a href="#releases">releases</a>
     <a href="#result">evidence</a>
     <a href="#commons">the commons</a>
-    <a href="/papers/l0">paper</a>
-    <a href="/calibration">calibration</a>
+    <a href="/papers">papers</a>
     <a class="nav-gh" href="https://github.com/PolicyEngine/populace" aria-label="GitHub"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"/></svg></a>
   </nav>
 </header>
@@ -55,7 +54,7 @@
       <div class="hero-cta reveal" style="--d:3">
         <a class="btn btn-primary" href="#idea">How it works</a>
         <a class="btn btn-ghost" href="https://github.com/PolicyEngine/populace">Read the code</a>
-        <a class="btn btn-ghost" href="/papers/l0">Read the paper</a>
+        <a class="btn btn-ghost" href="/papers">Read the papers</a>
       </div>
       <p class="hero-foot reveal" style="--d:4">
         <span class="mono">every point above is a synthetic household · brightness ∝ survey weight</span>
@@ -89,40 +88,80 @@
   <section id="stack" class="band band-stack">
     <div class="band-head">
       <span class="kicker mono">02 — the stack</span>
-      <h2>Three operators on one frame.</h2>
+      <h2>Six strategies, one frame.</h2>
     </div>
-    <div class="cards">
-      <article class="card">
-        <header><span class="card-id mono">frame</span><span class="tag tag-live">shipped</span></header>
-        <h3>The kernel</h3>
+    <div class="prose" style="margin-bottom: 36px;">
+      <p>
+        Every strategy is an operator on the same weighted sampling frame, or a way
+        of scoring what the operators did to it. Each has its own page — a 30-second
+        explainer, the method, and a nested <code class="mono">/paper</code> as the
+        stable citation target.
+      </p>
+    </div>
+    <div class="strategy-grid">
+      <a class="strategy-card" href="/imputation">
+        <header><span class="card-id mono">imputation</span><span class="tag tag-live">shipped</span></header>
+        <h3>Weight-native fill</h3>
         <p>
-          The weighted sampling frame: typed weights with conservation invariants,
-          strata for provenance, weighted accounting, entity structure, and a
-          rules-engine adapter protocol so the tax-benefit model is swappable.
+          Regime-gated, chained, weighted-bootstrap quantile-regression forests draw
+          missing variables from the population's conditional distribution, not the
+          sample's — no silent unweighted defaults.
         </p>
-      </article>
-      <article class="card">
-        <header><span class="card-id mono">fit</span><span class="tag tag-live">shipped</span></header>
-        <h3>Conditional models</h3>
+        <span class="strategy-paper-link mono">read the strategy →</span>
+      </a>
+      <a class="strategy-card" href="/calibration">
+        <header><span class="card-id mono">calibration</span><span class="tag tag-live">shipped</span></header>
+        <h3>Gradient calibration at scale</h3>
         <p>
-          Weight-aware imputation by construction. Regime-gated, chained quantile
-          forests draw missing variables from the <em>weighted</em> conditional
-          distribution — no silent unweighted defaults, the bug class that has
-          quietly distorted survey data for years.
+          Reweighting a candidate frame against thousands of hierarchical
+          administrative targets by gradient descent on a capped relative-error
+          loss, with hard weight-ratio bounds against landmines.
         </p>
-      </article>
-      <article class="card">
-        <header><span class="card-id mono">calibrate</span><span class="tag tag-live">shipped</span></header>
-        <h3>Representation</h3>
+        <span class="strategy-paper-link mono">read the strategy →</span>
+      </a>
+      <a class="strategy-card" href="/sparsity">
+        <header><span class="card-id mono">sparsity</span><span class="tag tag-live">shipped</span></header>
+        <h3>L0 record selection</h3>
         <p>
-          The one place weights become representative. Sparse calibration with L0
-          pruning turns a large, diverse pool of candidate records into a
-          population that hits thousands of administrative targets at once.
+          Hard Concrete gates select which candidate records survive into a
+          deployable file while calibration weights fit the target surface — a
+          large candidate universe compressed without giving up accuracy.
         </p>
-      </article>
+        <span class="strategy-paper-link mono">read the strategy →</span>
+      </a>
+      <a class="strategy-card" href="/evaluation">
+        <header><span class="card-id mono">evaluation</span><span class="tag tag-live">shipped</span></header>
+        <h3>How populace is validated</h3>
+        <p>
+          Two currencies, scored separately: population-view support fidelity
+          against survey holdouts (the popdgp harness) and administrative
+          calibration-target attainment, in-fit and held out.
+        </p>
+        <span class="strategy-paper-link mono">read the strategy →</span>
+      </a>
+      <a class="strategy-card" href="/composition">
+        <header><span class="card-id mono">composition</span><span class="tag tag-wip">in progress</span></header>
+        <h3>What combining the operators does</h3>
+        <p>
+          Imputation and calibration each pass their own single-operator checks;
+          composition asks what happens when both run on the same file — realized
+          landmines, repairability, and the target-vs-survey trade-off.
+        </p>
+        <span class="strategy-paper-link mono">read the strategy →</span>
+      </a>
+      <a class="strategy-card" href="/dynamics">
+        <header><span class="card-id mono">dynamics</span><span class="tag tag-wip">design stage</span></header>
+        <h3>The longitudinal layer</h3>
+        <p>
+          Trajectory-weighted calibration and transitions as conditional models,
+          under a scoring protocol where every claim resolves, backtests, or
+          computes exactly from statute. First domain: U.S. Social Security.
+        </p>
+        <span class="strategy-paper-link mono">read the strategy →</span>
+      </a>
     </div>
     <p class="stack-note">
-      <span class="mono">generation owns support · calibration owns representation</span>
+      <span class="mono">generation owns support · calibration owns representation · evaluation owns the referee</span>
     </p>
   </section>
 
@@ -162,7 +201,7 @@
       </div>
     </div>
     <p class="research-link mono">
-      <a href="/calibration">Browse every target on the calibration dashboard</a>
+      <a href="/calibration">Browse every target on the calibration strategy page</a>
       · <a href="https://huggingface.co/datasets/policyengine/populace-us/tree/main">releases on Hugging Face</a>
     </p>
   </section>
@@ -205,15 +244,17 @@
       to our 1,127) — we win big where we win and lose narrowly where we lose.
       Net short-term capital gains land on the signed PUF-anchored target
       (−$77.4B), and every donor is a primary survey; every remaining gap is
-      itemized on the <a href="/calibration">calibration dashboard</a>. The two
+      itemized on the <a href="/calibration">calibration strategy page</a>. The two
       populations share an open-source unit-construction engine, so this measures
       synthesis quality on a partly shared scaffold. We report the gaps, not just
       the wins.
     </p>
     <p class="research-link mono">
-      <a href="/papers/l0">Read the L0 calibration paper</a>
+      <a href="/sparsity/paper">Read the sparsity (L0) paper</a>
       &nbsp;·&nbsp;
-      <a href="/papers/dynamics">Read the dynamics design paper</a>
+      <a href="/dynamics/paper">Read the dynamics design paper</a>
+      &nbsp;·&nbsp;
+      <a href="/papers">Browse every paper</a>
     </p>
   </section>
 

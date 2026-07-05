@@ -3,14 +3,24 @@
   "trailingSlash": false,
   "redirects": [
     {
-      "source": "/calibration",
+      "source": "/dashboard",
       "destination": "https://calibration-diagnostics.vercel.app/populace",
       "permanent": false
     },
     {
-      "source": "/dashboard",
-      "destination": "https://calibration-diagnostics.vercel.app/populace",
-      "permanent": false
+      "source": "/papers/l0",
+      "destination": "/sparsity/paper",
+      "permanent": true
+    },
+    {
+      "source": "/papers/dynamics",
+      "destination": "/dynamics/paper",
+      "permanent": true
+    },
+    {
+      "source": "/papers/:slug",
+      "destination": "/:slug/paper",
+      "permanent": true
     }
   ]
 }

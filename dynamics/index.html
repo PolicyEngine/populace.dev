@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dynamics — populace</title>
+<meta name="description" content="How populace extends its cross-sectional layer longitudinally: trajectory-weighted calibration, transitions as conditional models, and a scoring protocol that refuses point forecasts where parameter uncertainty dominates." />
+<meta property="og:title" content="Dynamics — populace" />
+<meta property="og:description" content="The longitudinal layer: one weight per trajectory, transitions as conditional models, domains of validity instead of point forecasts. First validation domain: U.S. Social Security." />
+<meta property="og:type" content="article" />
+<link rel="icon" type="image/svg+xml" href="/assets/policyengine-mark.svg" />
+<meta name="theme-color" content="#FFFFFF" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@policyengine/ui-kit@0.12.1/src/theme/tokens.css" />
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="nav">
+  <a class="brand" href="/">
+    <span class="brand-dot" aria-hidden="true"></span>populace
+  </a>
+  <nav class="nav-links">
+    <a href="/#idea">the idea</a>
+    <a href="/#stack">the stack</a>
+    <a href="/#result">evidence</a>
+    <a href="/papers">papers</a>
+    <a href="/dynamics/paper">paper</a>
+    <a class="nav-gh" href="https://github.com/PolicyEngine/populace-dynamics" aria-label="GitHub"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"/></svg></a>
+  </nav>
+</header>
+
+<main class="strategy-main">
+  <section class="strategy-hero">
+    <div class="strategy-hero-inner">
+      <p class="strategy-crumb reveal" style="--d:0"><a href="/papers">strategies</a> / dynamics</p>
+      <p class="eyebrow reveal" style="--d:0">strategy 06 · dynamics</p>
+      <h1 class="reveal" style="--d:1">The longitudinal layer.</h1>
+      <p class="strategy-lede reveal" style="--d:2">
+        Populace's certified layer is cross-sectional: one snapshot,
+        calibrated to one year of administrative targets. Retirement and
+        social-insurance policy analysis needs a person aged forward through
+        earnings, family structure, disability, and mortality — the
+        benchmark U.S. models that do this (DYNASIM, MINT, CBOLT) are closed:
+        internal to government, tied to restricted administrative records,
+        or reachable only through institutional relationships. Dynamics
+        specifies an open alternative, built as an extension of the
+        certified cross-sectional layer rather than a replacement for it.
+      </p>
+      <div class="strategy-status-row reveal" style="--d:3">
+        <span class="tag tag-wip">design stage</span>
+        <span class="tag tag-draft">paper: design paper, preprint</span>
+        <a class="btn btn-primary" href="/dynamics/paper">Read the paper</a>
+        <a class="btn btn-ghost" href="https://github.com/PolicyEngine/populace-dynamics">Repository</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="explainer" class="band">
+    <div class="band-head">
+      <span class="kicker mono">01 — the 30-second version</span>
+      <h2>A design paper, not a validated run.</h2>
+    </div>
+    <div class="prose">
+      <p>
+        This page describes what the dynamics design paper specifies, not a
+        completed backtest — no trajectory has been scored against
+        administrative outcomes yet. The design commits to four elements
+        before any implementation ships:
+      </p>
+    </div>
+    <div class="cards">
+      <article class="card">
+        <header><span class="card-id mono">01</span><span class="tag tag-wip">specified</span></header>
+        <h3>Trajectory-weighted calibration</h3>
+        <p>
+          One weight per full trajectory, with entry and exit markers, so
+          multi-period calibration cannot silently destroy the panel
+          structure a cross-sectional reweight would ignore.
+        </p>
+      </article>
+      <article class="card">
+        <header><span class="card-id mono">02</span><span class="tag tag-wip">specified</span></header>
+        <h3>Transitions as conditional models</h3>
+        <p>
+          A Dynamics operator treats state transitions — earnings, family
+          structure, disability, mortality, program participation — as
+          conditional models, mixing deterministic demographic hazards with
+          machine-learned earnings processes rather than a single monolithic
+          projection.
+        </p>
+      </article>
+      <article class="card">
+        <header><span class="card-id mono">03</span><span class="tag tag-wip">specified</span></header>
+        <h3>Domains of validity, not point forecasts</h3>
+        <p>
+          Where parameter uncertainty dominates — including the 75-year
+          actuarial balance — the design refuses a single point estimate and
+          publishes sensitivity surfaces instead.
+        </p>
+      </article>
+      <article class="card">
+        <header><span class="card-id mono">04</span><span class="tag tag-wip">specified</span></header>
+        <h3>A scoring protocol before merge</h3>
+        <p>
+          Every claim is required to resolve against administrative
+          publications, backtest with leakage control, or compute exactly
+          from statute — and a contribution merges only when it improves a
+          held-out score, not on review judgment alone.
+        </p>
+      </article>
+    </div>
+    <p class="caveat">
+      <span class="mono">From the populace-dynamics design paper abstract (preprint).</span>
+      The layer builds on Populace's certified cross-sectional foundation —
+      0.038 holdout loss against 0.317 for the enhanced CPS it replaced — but
+      that number describes the cross-sectional layer being extended, not a
+      result the dynamics layer has produced.
+    </p>
+  </section>
+
+  <section id="method" class="band">
+    <div class="band-head">
+      <span class="kicker mono">02 — scope</span>
+      <h2>One validation domain first, country-agnostic by construction.</h2>
+    </div>
+    <div class="prose">
+      <p>
+        U.S. Social Security is the first validation domain the design
+        targets — a single program with published long-range projections to
+        score against. The layer itself is specified to be country-agnostic:
+        nothing in the trajectory-weighting or transition-model design is
+        U.S.-specific, but no other country's implementation has started.
+      </p>
+    </div>
+  </section>
+
+  <section class="band band-cta">
+    <h2>Read the design paper.</h2>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="https://github.com/PolicyEngine/populace-dynamics">populace-dynamics on GitHub</a>
+      <a class="btn btn-ghost" href="/dynamics/paper">Read the paper</a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-row">
+    <a class="brand" href="/"><span class="brand-dot" aria-hidden="true"></span>populace</a>
+    <a class="foot-pe" href="https://policyengine.org" aria-label="PolicyEngine"><img src="/assets/policyengine.svg" alt="PolicyEngine" /></a>
+  </div>
+  <p class="mono foot-fine">
+    A weighted synthetic population for public policy. Open source · MIT · a PolicyEngine project.
+  </p>
+</footer>
+
+</body>
+</html>
