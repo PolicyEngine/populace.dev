@@ -3,12 +3,15 @@
 Branch: `subpage-visuals` (from `origin/master`)
 Scope: six strategy `index.html` pages + `style.css` only. NOT touching `paper.html` or `web/` dirs (another agent owns those).
 
-Dev server: `populace-subpage-visuals` config in `.claude/launch.json`, port 4329, directory `/Users/maxghenis/PolicyEngine/populace.dev` (the existing `populace-site` config pointed at a stale worktree — added a new worktree-unique name instead of reusing it).
+Dev server: global `~/.claude/launch.json` `populace-site` config, port 4399, already points at `/Users/maxghenis/PolicyEngine/populace.dev` (this exact checkout — verified byte-for-byte). The repo-local `.claude/launch.json` is NOT read by preview_start (it reads the global registry only), so leave it alone. A separate global entry `populace-site-strategy-pages` (port 4401) points at a stale worktree — do not use it.
+
+## Verification technique (screenshot tool resets scroll to top!)
+The preview_screenshot tool always captures the TOP of the page regardless of scroll position. To screenshot a mid-page diagram: clone the `.diagram-figure` into a fixed full-screen overlay div (`#__shot`, `background:var(--ink)`) at the top, screenshot, then remove the overlay. For property/color verification use `preview_inspect` (reliable, resolves CSS vars to rgb). For no-horizontal-scroll at 375px: `preview_resize` mobile then check `document.documentElement.scrollWidth === clientWidth` via preview_eval.
 
 ## Plan
-1. [ ] Shared diagram/SVG CSS in style.css
-2. [ ] /support — composition diagram + AUC bar comparison
-3. [ ] /calibration — target hierarchy → gradient descent box
+1. [x] Shared diagram/SVG CSS in style.css (.diagram-figure, .dg-* classes) — committed 221a162
+2. [x] /support — composition diagram + AUC bar comparison — committed 221a162, VERIFIED desktop+375px
+3. [x] /calibration — target hierarchy (national→state→program) → gradient-descent box + before→after (1.831→0.022, 22.2%→94.7%, 50×). VERIFIED desktop+375px
 4. [ ] /sparsity — records-vs-accuracy chart
 5. [ ] /evaluation — harness diagram (one population → views → scoring)
 6. [ ] /composition — operator pipeline + landmine illustration
@@ -58,4 +61,5 @@ Dev server: `populace-subpage-visuals` config in `.claude/launch.json`, port 432
 - first domain: U.S. Social Security
 
 ## Open questions / decisions log
-(filled in as they arise)
+
+- **[calibration hierarchy — DECISION]** Task brief asked for "national → state → congressional district" but the live calibration release (populace-us-2024-5da5a95, the exact build the page cites) has ONLY two geographic levels in data/calibration.json: `national` (1,222 targets, 1 geography) and `state` (2,482 targets, 52 geographies). NO congressional-district level exists in the data, and the calibration page never claims one — its method card says "National, state, and program targets jointly". Congressional district appears ONLY on the sparsity page, and only as motivation for a large *candidate frame* ("cover state and congressional-district targets at once"), not as a calibration-release fact. Per the verbatim-numbers rule I built the hierarchy as **national → state → program/agency** (matching both the page copy and the live data), NOT national→state→CD. Flagging for lead: if you want CD shown, it needs a real source on the calibration page first.

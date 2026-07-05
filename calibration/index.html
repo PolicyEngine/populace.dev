@@ -139,6 +139,72 @@
     <p class="stack-note">
       <span class="mono">classical-calibration comparison (raking, GREG, entropy balancing, bounded chi-square) is the calibration-paper's plan — not yet run; see the paper page</span>
     </p>
+    <figure class="diagram-figure">
+      <svg viewBox="0 0 860 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="calib-hier-title calib-hier-desc">
+        <title id="calib-hier-title">The target surface feeds one bounded gradient-descent reweighting</title>
+        <desc id="calib-hier-desc">A hierarchical target surface — national totals from Census, IRS SOI, and BEA; state adjusted gross income and program administrative totals; program targets — is fit jointly as one surface by gradient descent on a capped relative-error loss with a hard 50-times weight-ratio bound. On the current release the loss drops from 1.831 at design weights to 0.022, and targets within 10 percent rise from 22.2 percent to 94.7 percent, across 3,704 targets.</desc>
+
+        <!-- left: the hierarchical target surface -->
+        <text class="dg-kicker" x="8" y="16">the target surface · 3,704 targets, one joint fit</text>
+
+        <rect class="dg-box" x="8" y="28" width="300" height="58" rx="5"/>
+        <text class="dg-title" x="24" y="50">National totals</text>
+        <text class="dg-label" x="24" y="68">Census population · IRS SOI income</text>
+        <text class="dg-label" x="24" y="80">&amp; deductions · BEA wages</text>
+
+        <rect class="dg-box" x="8" y="98" width="300" height="58" rx="5"/>
+        <text class="dg-title" x="24" y="120">State totals</text>
+        <text class="dg-label" x="24" y="138">adjusted gross income ·</text>
+        <text class="dg-label" x="24" y="150">program administrative totals</text>
+
+        <rect class="dg-box" x="8" y="168" width="300" height="50" rx="5"/>
+        <text class="dg-title" x="24" y="190">Program targets</text>
+        <text class="dg-label" x="24" y="207">agency administrative totals</text>
+
+        <!-- braces / edges gathering into the optimizer -->
+        <path class="dg-edge" d="M 308 57 C 360 57, 360 168, 408 168"/>
+        <path class="dg-edge" d="M 308 127 L 408 178"/>
+        <path class="dg-edge" d="M 308 193 C 360 193, 360 188, 408 188"/>
+
+        <!-- center: the optimizer -->
+        <rect class="dg-box-accent" x="408" y="120" width="204" height="112" rx="5"/>
+        <text class="dg-kicker" x="510" y="144" text-anchor="middle">the operator</text>
+        <text class="dg-title" x="510" y="166" text-anchor="middle">gradient descent</text>
+        <text class="dg-label" x="510" y="186" text-anchor="middle">capped relative-error loss</text>
+        <text class="dg-label-accent" x="510" y="206" text-anchor="middle">hard 50× weight-ratio bound</text>
+        <text class="dg-label" x="510" y="222" text-anchor="middle">adjusts weights only</text>
+
+        <!-- output: calibrated frame -->
+        <path class="dg-edge" d="M 612 176 L 664 176"/>
+        <rect class="dg-box-accent" x="664" y="146" width="188" height="60" rx="5"/>
+        <text class="dg-kicker" x="758" y="168" text-anchor="middle">output</text>
+        <text class="dg-title" x="758" y="190" text-anchor="middle">calibrated weights</text>
+
+        <!-- before -> after annotations, bottom band -->
+        <line class="dg-gridline" x1="8" y1="262" x2="852" y2="262"/>
+        <text class="dg-kicker" x="8" y="284">at design weights</text>
+        <text class="dg-kicker" x="470" y="284" fill="var(--amber-soft)">after calibration</text>
+
+        <text class="dg-label" x="8" y="308">loss</text>
+        <text class="dg-value" x="120" y="312" style="font-size:20px;" fill="var(--paper-dim)">1.831</text>
+        <path class="dg-edge" d="M 250 306 L 300 306" marker-end="url(#calib-arrow)"/>
+        <text class="dg-value" x="470" y="312" style="font-size:20px;">0.022</text>
+
+        <text class="dg-label" x="8" y="340">within 10%</text>
+        <text class="dg-value" x="120" y="344" style="font-size:20px;" fill="var(--paper-dim)">22.2%</text>
+        <path class="dg-edge" d="M 250 338 L 300 338" marker-end="url(#calib-arrow)"/>
+        <text class="dg-value" x="470" y="344" style="font-size:20px;">94.7%</text>
+
+        <defs>
+          <marker id="calib-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="var(--paper-faint)" stroke-width="1.5"/>
+          </marker>
+        </defs>
+      </svg>
+      <figcaption>
+        The hierarchy — national, state, and program targets — is fit as <strong>one</strong> joint surface, not reconciled in separate passes. Gradient descent on a capped relative-error loss moves weights (never target values written into records) under a hard 50× ratio bound: the landmine guard that stops any one household's influence running away. On the current release, loss falls from 1.831 to 0.022 and targets within 10% rise from 22.2% to 94.7%.
+      </figcaption>
+    </figure>
   </section>
 
   <section id="harness" class="band">
