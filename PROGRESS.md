@@ -12,10 +12,17 @@ Branch: `paper-webviews` (from `origin/master`). Isolated worktree: `/Users/maxg
 Saved to scratchpad `paper-inline-css.css`. Reused for both new web renders.
 
 ## Tasks
-1. [ ] Support paper = imputation-paper (Quarto → self-contained HTML). Vendor to `support/web/`. Update `support/paper.html`: "Read on the web" primary → /support/web; keep PDF + repo links.
+1. [x] Support paper = imputation-paper. DONE. Vendored `support/web/index.html`; updated `support/paper.html` ("Read on the web" primary → #web/iframe /support/web; PDF + repo retained).
 2. [ ] Evaluation paper = popdgp JOSS paper (paper.md + paper.bib → HTML via pandoc+citeproc, styled like sparsity). Vendor to `evaluation/web/`. Update `evaluation/paper.html` same way. Author line = Max Ghenis; ensure `<!-- TODO(authorship) -->` HTML comment does NOT leak as visible text.
 3. [ ] Calibration + composition: NO papers — leave paper.html untouched.
 4. [ ] Verify each: local http.server + curl status/markers; check a math expr, a figure, a citation render in HTML source; check every changed link resolves.
+
+## Task 1 render notes (imputation → support/web)
+- **Problem**: `index.qmd` is LaTeX-first — body is `\input{sections/*.tex}` (9 sections) + `\input{tables/*.tex}` (7 tables). `quarto render --to html` DROPS all `\input{}` content (produced a 1.18 MB file with an empty body). Confirmed.
+- **Fix**: assembler `scratchpad/build_imputation_standalone.py` expands `\input{}` recursively, strips PDF-only `\resizebox{A}{B}{BODY}`→BODY (brace-matched), prepends `macros.tex` so pandoc expands custom `\newcommand`s. Abstract split out to land in the pandoc title block (like sparsity `.abstract`), converted `-t markdown` for the metadata block scalar (raw HTML in metadata gets escaped; markdown does not).
+- **pandoc**: `-f latex -t html5 --standalone --toc --toc-depth=2 --metadata-file=meta.yaml --citeproc --bibliography=paper/bibliography/references.bib --mathjax --section-divs --include-in-header=header_include.html`. `--metadata-file` MUST be a flag; positional YAML leaks as body + wrong `<title>`.
+- **Embedded**: same CDN triad as sparsity (Google Fonts + ui-kit tokens + MathJax 3) via the verbatim `paper-inline-css` block + MathJax `<script>` in a header-include. NO figures in this paper — nothing to vendor.
+- **Verified**: 0 pandoc warnings; 7 tables, 43 math spans, 49 citations, 38–41 bib entries, 41 internal `#sec/#tab` links; macros expanded; index.qmd authorship HTML comment did NOT leak (assembled from sections/, not index.qmd); funding `[TODO: Funding statement.]` renders loudly as the paper's own `\todo{}` intends — preserved honestly. http.server: all 200; iframe + "Read on the web" primary confirmed.
 
 ## Source repo state (verified)
 - imputation-paper @ main: Quarto project, source `paper/index.qmd` (+ index.tex, macros.tex, preamble.tex). CI renders HTML-only; TinyTeX local.
