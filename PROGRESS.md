@@ -14,7 +14,7 @@ The preview_screenshot tool always captures the TOP of the page regardless of sc
 3. [x] /calibration — target hierarchy (national→state→program) → gradient-descent box + before→after (1.831→0.022, 22.2%→94.7%, 50×). VERIFIED desktop+375px
 4. [x] /sparsity — records×loss scatter (L0 57,240@4.74%, dense 337,704@5.07%, random+reweight@7.55%, raw-gated@9.86%, random-scaled-no-refit 24.24% as top reference line). VERIFIED desktop+375px
 5. [x] /evaluation — population-view harness: one latent population → survey views (each w/ own holdout) → any candidate projected through, scored on 4 blocks (energy/coverage/classifier/tail) → sampling-noise floor anchor. VERIFIED desktop+375px
-6. [ ] /composition — operator pipeline + landmine illustration
+6. [x] /composition — operator pipeline (imputed→reweighted→shipped file) w/ red "?" interaction marker between operators + landmine mechanism (low-weight extreme record × inflated weight ≤50× → aggregate blows up), labeled "illustrative — not yet measured". VERIFIED desktop+375px
 7. [ ] /dynamics — trajectory diagram (one weight per trajectory)
 8. [ ] Verify all six at desktop + 375px mobile (no horizontal scroll)
 9. [ ] Commit+push per page
