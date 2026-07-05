@@ -13,9 +13,17 @@ Saved to scratchpad `paper-inline-css.css`. Reused for both new web renders.
 
 ## Tasks
 1. [x] Support paper = imputation-paper. DONE. Vendored `support/web/index.html`; updated `support/paper.html` ("Read on the web" primary → #web/iframe /support/web; PDF + repo retained).
-2. [ ] Evaluation paper = popdgp JOSS paper (paper.md + paper.bib → HTML via pandoc+citeproc, styled like sparsity). Vendor to `evaluation/web/`. Update `evaluation/paper.html` same way. Author line = Max Ghenis; ensure `<!-- TODO(authorship) -->` HTML comment does NOT leak as visible text.
-3. [ ] Calibration + composition: NO papers — leave paper.html untouched.
-4. [ ] Verify each: local http.server + curl status/markers; check a math expr, a figure, a citation render in HTML source; check every changed link resolves.
+2. [x] Evaluation paper = popdgp JOSS paper. DONE. Vendored `evaluation/web/index.html`; updated `evaluation/paper.html` ("Read on the web" primary; repo + imputation-paper reference retained). Author = Max Ghenis + PolicyEngine affiliation (from JOSS meta). TODO(authorship) comment verified INVISIBLE (0 visible, 1 well-formed HTML comment).
+3. [x] Calibration + composition: untouched (git diff = 0). Confirmed.
+4. [x] Verified both: http.server all 200; math/citation/table markers present; TODO non-leak proven; ALL internal links resolve under cleanUrls; external links (popdgp, imputation-paper, raw PDF) HEAD 200.
+
+## Task 2 render notes (popdgp → evaluation/web)
+- **Input**: `paper.md` (JOSS software paper) + `paper.bib`, markdown — much simpler than task 1.
+- **pandoc**: `-f markdown -t html5 --standalone --toc --toc-depth=1 --metadata-file=popdgp_meta.yaml --citeproc --bibliography=paper.bib --mathjax --section-divs --include-in-header=header_include.html`. Metadata override supplies pandoc-template title/author/date (JOSS `authors:`/`affiliations:` structure isn't consumed by the default template); author rendered honestly as "Max Ghenis" + "PolicyEngine, Washington, DC, United States", sole author, no invented co-authors.
+- **THE comment bug (the class I was told to check)**: markdown `<!-- TODO(authorship) ... -->` in Acknowledgements → pandoc passes it through as a real, well-formed HTML comment (`<!-- ... -->`, closed). Proof: strip all comments from the rendered HTML → 0 occurrences of "TODO"/"authorship"; the raw file still contains exactly 1 `<!-- TODO(authorship)` (invisible). The YAML frontmatter `#` comments (the seeded-authorship block) are stripped by the YAML parser: 0 visible. No leak of either class.
+- **Embedded**: same CDN triad (fonts + ui-kit tokens + MathJax 3). No figures — text + 4 math spans only.
+- **Verified**: 0 pandoc warnings; 4 math spans (energy-distance D², k, reweighting bounds), 10 citations, 5 bib entries, 8 section headings.
+- **Honesty edit to paper.html**: the page previously said "methods paper NOT started / no manuscript to embed"; that's now stale because paper.md exists. Reframed as the JOSS *software* paper (real, draft) while keeping honest that the broader methods study (power analysis, multi-view generalization) is still future work. Updated eyebrow, lede, one fact card, viewer, and head meta/og tags accordingly.
 
 ## Task 1 render notes (imputation → support/web)
 - **Problem**: `index.qmd` is LaTeX-first — body is `\input{sections/*.tex}` (9 sections) + `\input{tables/*.tex}` (7 tables). `quarto render --to html` DROPS all `\input{}` content (produced a 1.18 MB file with an empty body). Confirmed.

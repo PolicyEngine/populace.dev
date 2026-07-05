@@ -4,9 +4,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Evaluation paper — populace</title>
-<meta name="description" content="Status of the popdgp methods paper: the population-view harness that scores synthetic populations against the surveys observing them. The harness is proven inside imputation-paper; the standalone methods paper has not been started." />
-<meta property="og:title" content="The population-view harness: a methods paper, not yet started" />
-<meta property="og:description" content="popdgp formalizes the population-view harness as a standalone referee. The harness itself is proven and shipped inside imputation-paper; this page states the methods paper's real status." />
+<meta name="description" content="popdgp's JOSS software paper: the population-view harness that scores candidate synthetic populations against the surveys observing them — energy distance, calibration-blind coverage, classifier two-sample AUC, and an uncapped tail block, each anchored by a sampling-noise floor. Extracted behavior-preserving from imputation-paper." />
+<meta property="og:title" content="popdgp: A referee for candidate synthetic populations under survey weights" />
+<meta property="og:description" content="The JOSS software paper for popdgp — the population-view harness, formalized as an eval-only package. Proven and shipping inside imputation-paper; author list carries a pre-submission note." />
 <meta property="og:type" content="article" />
 <link rel="icon" type="image/svg+xml" href="/assets/policyengine-mark.svg" />
 <meta name="theme-color" content="#FFFFFF" />
@@ -38,7 +38,7 @@
 <main class="paper-main">
   <p class="strategy-crumb reveal" style="--d:0"><a href="/papers">papers</a> / <a href="/evaluation">evaluation</a> / paper</p>
   <section class="paper-hero">
-    <p class="eyebrow reveal" style="--d:0">research paper · harness proven, methods paper not started</p>
+    <p class="eyebrow reveal" style="--d:0">software paper · JOSS draft · author list pre-submission</p>
     <h1 class="paper-title reveal" style="--d:1">
       The population-view harness, as a standalone referee
     </h1>
@@ -46,14 +46,16 @@
       popdgp formalizes the population-view harness — energy distance,
       calibration-blind coverage, classifier two-sample AUC, and an uncapped
       tail block, each anchored by a sampling-noise floor — as an eval-only
-      package any candidate synthetic population can be scored against. The
-      harness itself is real, proven, and shipping inside imputation-paper;
-      the standalone popdgp methods paper formalizing it has not been
-      started.
+      package any candidate synthetic population can be scored against. This
+      is the package's JOSS software paper, extracted behavior-preserving
+      from imputation-paper, where the harness is proven and shipping. The
+      author list carries a pre-submission TODO(authorship) note, kept
+      honestly on the draft below.
     </p>
     <div class="hero-cta reveal" style="--d:3">
+      <a class="btn btn-primary" href="#web">Read on the web</a>
       <a class="btn btn-ghost" href="https://github.com/PolicyEngine/popdgp">popdgp repository</a>
-      <a class="btn btn-ghost" href="https://raw.githubusercontent.com/PolicyEngine/imputation-paper/main/paper/main.pdf">Read the harness in imputation-paper</a>
+      <a class="btn btn-ghost" href="https://raw.githubusercontent.com/PolicyEngine/imputation-paper/main/paper/main.pdf">The harness in imputation-paper</a>
       <a class="btn btn-ghost" href="/evaluation">Strategy page</a>
     </div>
     <dl class="paper-facts reveal" style="--d:4">
@@ -66,8 +68,8 @@
         <dd>Floors behave correctly (energy 0.009–0.012, AUC ~0.50 on a survey's own holdout split); the block decomposition localizes failures a single metric misses (a weight-blind fit ties on energy distance and coverage while its tail runs 1.9–2.3× the holdout's).</dd>
       </div>
       <div>
-        <dt class="mono">what's not started</dt>
-        <dd>The standalone popdgp methods paper — formalization, a metric-blind-spot power study, and multi-view generalization — has no draft. Tracked as an open issue in the popdgp repository.</dd>
+        <dt class="mono">what this paper is, and isn't</dt>
+        <dd>This is the JOSS software paper: a citable reference for the package and its scoring blocks. The broader methods study — a metric-blind-spot power analysis and multi-view generalization — remains future work, tracked as an open issue in the popdgp repository.</dd>
       </div>
     </dl>
   </section>
@@ -75,24 +77,12 @@
   <section id="web" class="paper-viewer" aria-labelledby="web-paper-title">
     <div class="paper-viewer-head">
       <div>
-        <span class="kicker mono">status</span>
-        <h2 id="web-paper-title">No standalone manuscript yet</h2>
+        <span class="kicker mono">paper</span>
+        <h2 id="web-paper-title">Web paper</h2>
       </div>
+      <a class="btn btn-ghost" href="/evaluation/web">Open full page</a>
     </div>
-    <div class="not-yet">
-      <span class="mono">popdgp · main branch is README + CONTRIBUTING only; harness-extraction branch in progress, unmerged</span>
-      There is no popdgp methods paper to embed here. The harness's proof of
-      concept, all current results, and the built PDF live in
-      <a href="https://github.com/PolicyEngine/imputation-paper">imputation-paper</a>
-      — see its harness sections and
-      <code class="mono">paper/tables/harness_scale.tex</code> for the
-      scoring-block numbers cited on the
-      <a href="/evaluation">evaluation</a> and
-      <a href="/support">support</a> strategy pages.
-      <strong>TODO:</strong> once popdgp is extracted as a standalone package
-      (PyPI release, JOSS-style note) and the methods paper has a draft,
-      replace this block with the paper viewer.
-    </div>
+    <iframe class="paper-frame" src="/evaluation/web" title="popdgp: A referee for candidate synthetic populations under survey weights"></iframe>
   </section>
 </main>
 
