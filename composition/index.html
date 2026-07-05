@@ -72,6 +72,78 @@
         experiments that would answer it.
       </p>
     </div>
+    <figure class="diagram-figure">
+      <svg viewBox="0 0 860 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="comp-pipe-title comp-pipe-desc">
+        <title id="comp-pipe-title">The interaction neither operator's validation can see</title>
+        <desc id="comp-pipe-desc">The support operator and the weight operator each pass their own single-operator checks in isolation. A real release runs both on the same file, and a distortion invisible to either operator's own validation can appear only in that combination. The illustrated mechanism: a low-weight extreme record — a heavy tail value the imputation step drew, harmless at its design weight — has its weight multiplied up when the calibrator leans on it to hit a target, and the extreme value times the inflated weight blows up an aggregate. This realized landmine is the interaction blamed for a prior incident in the enhanced CPS pipeline; composition has not yet run the experiments to measure it.</desc>
+
+        <!-- the operator pipeline -->
+        <rect class="dg-box" x="8" y="40" width="200" height="72" rx="5"/>
+        <text class="dg-kicker" x="24" y="62">operator · support</text>
+        <text class="dg-title" x="24" y="84">imputed file</text>
+        <text class="dg-label" x="24" y="100">passes its own checks</text>
+
+        <path class="dg-edge" d="M 208 76 L 320 76"/>
+
+        <rect class="dg-box" x="320" y="40" width="200" height="72" rx="5"/>
+        <text class="dg-kicker" x="336" y="62">operator · weights</text>
+        <text class="dg-title" x="336" y="84">reweighted file</text>
+        <text class="dg-label" x="336" y="100">passes its own checks</text>
+
+        <path class="dg-edge" d="M 520 76 L 632 76"/>
+
+        <rect class="dg-box-accent" x="632" y="40" width="200" height="72" rx="5"/>
+        <text class="dg-kicker" x="648" y="62">the composition</text>
+        <text class="dg-title" x="648" y="84">shipped file</text>
+        <text class="dg-label" x="648" y="100">checked by neither alone</text>
+
+        <!-- the interaction question, marked between the two operators -->
+        <circle cx="264" cy="150" r="17" class="dg-box-warn"/>
+        <text x="264" y="157" text-anchor="middle" fill="var(--destructive)" font-family="var(--display)" font-size="20" font-weight="600">?</text>
+        <path class="dg-edge-planned" d="M 264 112 L 264 133"/>
+        <text class="dg-label" x="290" y="148">the interaction — invisible to either</text>
+        <text class="dg-label" x="290" y="162">operator's single-operator validation</text>
+
+        <!-- the landmine mechanism: low-weight extreme record inflating under reweighting -->
+        <line class="dg-gridline" x1="8" y1="196" x2="852" y2="196"/>
+        <text class="dg-kicker" x="8" y="218">the landmine mechanism (illustrative — not yet measured)</text>
+
+        <!-- before: extreme record at design weight -->
+        <text class="dg-label" x="8" y="244">before reweight</text>
+        <rect class="dg-box" x="8" y="252" width="140" height="60" rx="5"/>
+        <text class="dg-label" x="22" y="272">extreme tail value</text>
+        <text class="dg-label" x="22" y="288">× small design weight</text>
+        <text class="dg-label-accent" x="22" y="304">→ harmless</text>
+
+        <!-- calibrator leans on it -->
+        <path class="dg-edge" d="M 148 282 L 214 282" marker-end="url(#comp-arrow)"/>
+        <text class="dg-label" x="152" y="274">calibrator</text>
+        <text class="dg-label" x="152" y="300">leans on it</text>
+
+        <!-- after: weight multiplied up, aggregate blows up -->
+        <rect class="dg-box-warn" x="222" y="252" width="180" height="60" rx="5"/>
+        <text class="dg-label" x="238" y="272" fill="var(--destructive)">same extreme value</text>
+        <text class="dg-label" x="238" y="288" fill="var(--destructive)">× inflated weight (≤50×)</text>
+        <text class="dg-title" x="238" y="304" fill="var(--destructive)" style="font-size:12px;">→ aggregate blows up</text>
+
+        <!-- weight-bars: growing weight -->
+        <text class="dg-kicker" x="450" y="238">one record's weight, reweighted</text>
+        <rect class="dg-bar-compare" x="450" y="252" width="24" height="16" rx="2"/>
+        <text class="dg-label" x="482" y="264">design weight</text>
+        <rect class="dg-bar-worst" x="450" y="278" width="300" height="16" rx="2" fill="var(--destructive)" fill-opacity="0.5"/>
+        <text class="dg-label" x="450" y="308">inflated up to 50× to hit a thin target —</text>
+        <text class="dg-label" x="450" y="322">the bound is the guard; composition asks if it holds</text>
+
+        <defs>
+          <marker id="comp-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="var(--paper-faint)" stroke-width="1.5"/>
+          </marker>
+        </defs>
+      </svg>
+      <figcaption>
+        Each operator passes its own checks; the <strong>shipped file</strong> is the composition of both, and a distortion can hide in that combination alone. The mechanism the first experiment targets: a heavy tail value the imputation step drew sits harmless at its small design weight, until the calibrator multiplies that weight up to hit a thin target — and the extreme value times the inflated weight blows up an aggregate. This realized landmine is the interaction blamed for a prior incident in the enhanced CPS pipeline. It is drawn here as the question composition exists to answer, not a measured result.
+      </figcaption>
+    </figure>
     <div class="cards">
       <article class="card">
         <header><span class="card-id mono">01</span><span class="tag tag-wip">planned</span></header>

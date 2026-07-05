@@ -94,6 +94,65 @@
       budget, not a claim that dense calibration could not converge lower
       given more epochs.
     </p>
+    <figure class="diagram-figure">
+      <svg viewBox="0 0 860 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="sparsity-scatter-title sparsity-scatter-desc">
+        <title id="sparsity-scatter-title">Records retained versus calibration loss</title>
+        <desc id="sparsity-scatter-desc">A plot of records retained (horizontal) against capped weighted calibration loss on 32,633 targets (vertical). L0 selection then refit keeps 57,240 records at 4.74 percent loss — fewer records and lower loss than dense no-L0 calibration, which keeps all 337,704 records at 5.07 percent. At the same 57,240-record budget, random sampling then reweight scores 7.55 percent and the raw gated weights before refit score 9.86 percent. A random support that is scaled without a reweighting step scores 24.24 percent, the worst of the five compared arms.</desc>
+
+        <!-- axes -->
+        <!-- plot area: x 120..800 (records 0..340k), y 60..320 (loss 0..25%) -->
+        <line class="dg-gridline" x1="120" y1="320" x2="800" y2="320"/>
+        <line class="dg-gridline" x1="120" y1="60" x2="120" y2="320"/>
+
+        <!-- y gridlines + labels: 0,5,10,15,20,25% -->
+        <line class="dg-gridline" x1="120" y1="268" x2="800" y2="268" stroke-opacity="0.4"/>
+        <line class="dg-gridline" x1="120" y1="216" x2="800" y2="216" stroke-opacity="0.4"/>
+        <line class="dg-gridline" x1="120" y1="164" x2="800" y2="164" stroke-opacity="0.4"/>
+        <line class="dg-gridline" x1="120" y1="112" x2="800" y2="112" stroke-opacity="0.4"/>
+        <text class="dg-label" x="112" y="324" text-anchor="end">0%</text>
+        <text class="dg-label" x="112" y="272" text-anchor="end">5%</text>
+        <text class="dg-label" x="112" y="220" text-anchor="end">10%</text>
+        <text class="dg-label" x="112" y="168" text-anchor="end">15%</text>
+        <text class="dg-label" x="112" y="116" text-anchor="end">20%</text>
+        <text class="dg-label" x="112" y="64" text-anchor="end">25%</text>
+        <text class="dg-kicker" x="60" y="44">calibration loss</text>
+
+        <!-- x labels -->
+        <text class="dg-label" x="234" y="340" text-anchor="middle">57,240</text>
+        <text class="dg-label" x="795" y="340" text-anchor="middle">337,704</text>
+        <text class="dg-kicker" x="800" y="360" text-anchor="end">records retained →</text>
+
+        <!-- the budget guide line at 57,240 records -->
+        <line class="dg-refline" x1="234" y1="94" x2="234" y2="320"/>
+        <text class="dg-label" x="240" y="108">same record budget</text>
+
+        <!-- worst arm: random scaled no refit, 24.24% (record count not stated -> shown as a level, not a point) -->
+        <line class="dg-refline" x1="120" y1="68" x2="800" y2="68" stroke="var(--paper-faint)"/>
+        <text class="dg-label" x="800" y="62" text-anchor="end">random, scaled, no refit — 24.24% (worst of five)</text>
+
+        <!-- points (y = 320 - loss/25*260) -->
+        <!-- raw gated no refit: 57,240, 9.86% -> y = 320 - 9.86/25*260 = 217.5 -->
+        <circle class="dg-bar-worst" cx="234" cy="217.5" r="6" fill-opacity="0.6"/>
+        <text class="dg-label" x="248" y="215">raw gated weights, no refit · 9.86%</text>
+
+        <!-- random + reweight: 57,240, 7.55% -> y = 320 - 7.55/25*260 = 241.5 -->
+        <circle class="dg-bar-compare" cx="234" cy="241.5" r="6"/>
+        <text class="dg-label" x="248" y="239">random + reweight · 7.55%</text>
+
+        <!-- dense no-L0: 337,704, 5.07% -> y = 320 - 5.07/25*260 = 267.3 -->
+        <circle class="dg-bar-compare" cx="795" cy="267.3" r="7"/>
+        <text class="dg-title" x="783" y="258" text-anchor="end" style="font-size:12px;">dense, no L0</text>
+        <text class="dg-label" x="783" y="272" text-anchor="end">all records · 5.07%</text>
+
+        <!-- L0 + refit (the winner): 57,240, 4.74% -> y = 320 - 4.74/25*260 = 270.7 -->
+        <circle class="dg-bar-primary" cx="234" cy="270.7" r="8"/>
+        <text class="dg-value" x="248" y="284" style="font-size:13px;">L0 + refit · 4.74%</text>
+        <text class="dg-label-accent" x="248" y="298">fewer records, lower loss</text>
+      </svg>
+      <figcaption>
+        Records retained against calibration loss (32,633 targets). Target-informed <strong>L0 selection then refit</strong> lands down and to the left of dense calibration — 57,240 records at 4.74% versus all 337,704 at 5.07% — so it wins on both axes at once. At the same record budget, random sampling + reweight scores 7.55% and the raw gated weights (before the refit step) 9.86%; a random support scaled without any reweighting scores 24.24%, the worst of the five arms.
+      </figcaption>
+    </figure>
   </section>
 
   <section id="method" class="band">

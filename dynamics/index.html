@@ -73,6 +73,72 @@
         before any implementation ships:
       </p>
     </div>
+    <figure class="diagram-figure">
+      <svg viewBox="0 0 860 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="dyn-traj-title dyn-traj-desc">
+        <title id="dyn-traj-title">One person aged forward as a single weighted trajectory</title>
+        <desc id="dyn-traj-desc">A design-stage schematic. One person is aged forward across periods from an entry marker to an exit at mortality. Between periods, state transitions — earnings, family structure, disability, mortality, and program participation — are drawn as conditional models. A single weight attaches to the whole trajectory, not to each period's cross-section, so multi-period calibration cannot silently destroy the panel structure. Everything shown is specified in the design paper, not yet built.</desc>
+
+        <text class="dg-kicker" x="8" y="16">design stage · specified, not yet built · dashed = not implemented</text>
+
+        <!-- entry marker -->
+        <circle cx="40" cy="120" r="14" class="dg-box-planned"/>
+        <text class="dg-label" x="40" y="124" text-anchor="middle" style="font-size:9px;">entry</text>
+
+        <!-- period states -->
+        <rect class="dg-box-planned" x="88" y="88" width="128" height="64" rx="5"/>
+        <text class="dg-title" x="98" y="108" style="font-size:12px;">period t</text>
+        <text class="dg-label" x="98" y="124">earnings · family</text>
+        <text class="dg-label" x="98" y="138">disability · program</text>
+
+        <rect class="dg-box-planned" x="316" y="88" width="128" height="64" rx="5"/>
+        <text class="dg-title" x="326" y="108" style="font-size:12px;">period t+1</text>
+        <text class="dg-label" x="326" y="124">earnings · family</text>
+        <text class="dg-label" x="326" y="138">disability · program</text>
+
+        <rect class="dg-box-planned" x="544" y="88" width="128" height="64" rx="5"/>
+        <text class="dg-title" x="554" y="108" style="font-size:12px;">period t+2</text>
+        <text class="dg-label" x="554" y="124">earnings · family</text>
+        <text class="dg-label" x="554" y="138">disability · program</text>
+
+        <!-- exit marker -->
+        <text class="dg-label" x="760" y="112" style="font-size:11px;">…</text>
+        <circle cx="812" cy="120" r="16" class="dg-box-planned"/>
+        <text class="dg-label" x="812" y="117" text-anchor="middle" style="font-size:9px;">exit</text>
+        <text class="dg-label" x="812" y="128" text-anchor="middle" style="font-size:8px;">mortality</text>
+
+        <!-- transitions between periods: conditional models (arrows stop short of the boxes) -->
+        <path class="dg-edge-planned" d="M 56 120 L 84 120" marker-end="url(#dyn-arrow)"/>
+
+        <path class="dg-edge-planned" d="M 220 120 L 312 120" marker-end="url(#dyn-arrow)"/>
+        <text class="dg-label-accent" x="266" y="110" text-anchor="middle">transition</text>
+        <text class="dg-label" x="266" y="144" text-anchor="middle" style="font-size:9px;">conditional model</text>
+
+        <path class="dg-edge-planned" d="M 448 120 L 540 120" marker-end="url(#dyn-arrow)"/>
+        <text class="dg-label-accent" x="494" y="110" text-anchor="middle">transition</text>
+        <text class="dg-label" x="494" y="144" text-anchor="middle" style="font-size:9px;">conditional model</text>
+
+        <path class="dg-edge-planned" d="M 676 120 L 790 120" marker-end="url(#dyn-arrow)"/>
+
+        <!-- one weight per trajectory: a single bracket spanning the whole thing -->
+        <path class="dg-edge" d="M 40 176 L 40 190 L 812 190 L 812 176" stroke="var(--amber-soft)"/>
+        <text class="dg-value" x="426" y="214" text-anchor="middle" style="font-size:14px;">one weight per trajectory</text>
+        <text class="dg-label" x="426" y="232" text-anchor="middle">entry and exit markers · the whole panel scaled together</text>
+
+        <!-- contrast: NOT per-period -->
+        <line class="dg-gridline" x1="8" y1="256" x2="852" y2="256"/>
+        <text class="dg-label" x="8" y="280" style="font-size:11px;">the design choice: <tspan fill="var(--amber-soft)">one weight for the full trajectory</tspan>, not a separate weight per period —</text>
+        <text class="dg-label" x="8" y="296" style="font-size:11px;">so a cross-sectional reweight cannot silently break the panel structure that longitudinal policy analysis needs.</text>
+
+        <defs>
+          <marker id="dyn-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="var(--paper-faint)" stroke-width="1.5"/>
+          </marker>
+        </defs>
+      </svg>
+      <figcaption>
+        A design-stage schematic (dashed = specified, not built). One person is aged forward across periods, entry marker to exit at mortality; each transition — earnings, family structure, disability, mortality, program participation — is a <strong>conditional model</strong>, not one monolithic projection. A single weight attaches to the <strong>whole trajectory</strong>, not to each period's cross-section, so multi-period calibration cannot silently destroy the panel structure. No trajectory has been scored against administrative outcomes yet.
+      </figcaption>
+    </figure>
     <div class="cards">
       <article class="card">
         <header><span class="card-id mono">01</span><span class="tag tag-wip">specified</span></header>

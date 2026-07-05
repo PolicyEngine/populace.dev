@@ -516,6 +516,124 @@ h2 {
   max-width: 70ch;
 }
 
+/* ---------- diagrams (strategy-page SVGs) ---------- */
+/* Shared vocabulary for the inline SVG diagrams on the six strategy pages.
+   Every diagram is self-contained (no external assets), sized by viewBox so
+   it scales to any container, and colored entirely from CSS variables so it
+   tracks the design system (including dark mode) automatically. */
+.diagram-figure {
+  margin: 44px auto 0;
+  max-width: 880px;
+}
+.diagram-figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.diagram-figure figcaption {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--paper-faint);
+  margin-top: 14px;
+  max-width: 72ch;
+  line-height: 1.5;
+}
+
+/* box = a stage/node in a pipeline or hierarchy diagram */
+.dg-box {
+  fill: var(--ink-2);
+  stroke: var(--line);
+  stroke-width: 1;
+}
+.dg-box-accent {
+  fill: var(--ink-2);
+  stroke: var(--amber-soft);
+  stroke-width: 1.25;
+}
+.dg-box-planned {
+  fill: var(--ink-2);
+  stroke: var(--line);
+  stroke-width: 1;
+  stroke-dasharray: 4 3;
+}
+.dg-box-warn {
+  fill: color-mix(in srgb, var(--destructive) 10%, var(--ink-2));
+  stroke: var(--destructive);
+  stroke-width: 1.25;
+}
+
+/* text roles inside a diagram */
+.dg-title {
+  fill: var(--paper);
+  font-family: var(--body);
+  font-size: 13.5px;
+  font-weight: 500;
+}
+.dg-label {
+  fill: var(--paper-faint);
+  font-family: var(--mono);
+  font-size: 10.5px;
+}
+.dg-label-accent {
+  fill: var(--amber-soft);
+  font-family: var(--mono);
+  font-size: 10.5px;
+}
+.dg-kicker {
+  fill: var(--paper-faint);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.dg-value {
+  fill: var(--amber-soft);
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+/* edges: flows between stages */
+.dg-edge {
+  fill: none;
+  stroke: var(--paper-faint);
+  stroke-opacity: 0.55;
+  stroke-width: 1.25;
+}
+.dg-edge-planned {
+  fill: none;
+  stroke: var(--paper-faint);
+  stroke-opacity: 0.4;
+  stroke-width: 1.25;
+  stroke-dasharray: 3 3;
+}
+.dg-edge-arrow {
+  fill: var(--paper-faint);
+  fill-opacity: 0.7;
+}
+
+/* reference / floor lines on bar charts */
+.dg-refline {
+  stroke: var(--paper-faint);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+  stroke-opacity: 0.7;
+}
+.dg-gridline {
+  stroke: var(--line-soft);
+  stroke-width: 1;
+}
+
+/* bar-chart bars: primary result vs. comparison arms */
+.dg-bar-primary { fill: var(--amber-soft); }
+.dg-bar-compare { fill: var(--chart-5); }
+.dg-bar-worst { fill: var(--paper-faint); fill-opacity: 0.5; }
+
+.dg-legend-swatch {
+  rx: 2;
+}
+
 .not-yet {
   border: 1px dashed var(--line);
   border-radius: 3px;

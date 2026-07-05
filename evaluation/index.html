@@ -113,6 +113,78 @@
         survey's own holdout — never against the file's own training data.
       </p>
     </div>
+    <figure class="diagram-figure">
+      <svg viewBox="0 0 860 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="eval-harness-title eval-harness-desc">
+        <title id="eval-harness-title">The population-view harness</title>
+        <desc id="eval-harness-desc">One latent population is observed through several survey views, each with its own variable subset, sampling design, and measurement idiom. Any candidate file is projected through each view and scored against that survey's own holdout on four blocks — energy distance, coverage, classifier AUC, and a tail block. Every block is anchored by a sampling-noise floor: the survey's own complementary split, scored as if it were a candidate.</desc>
+
+        <!-- one latent population -->
+        <rect class="dg-box-accent" x="8" y="150" width="150" height="80" rx="5"/>
+        <text class="dg-kicker" x="83" y="180" text-anchor="middle">one latent</text>
+        <text class="dg-title" x="83" y="200" text-anchor="middle">population</text>
+        <text class="dg-label" x="83" y="218" text-anchor="middle">the ground truth</text>
+
+        <!-- observed through survey views -->
+        <text class="dg-kicker" x="232" y="26">① observed through each view</text>
+        <path class="dg-edge" d="M 158 180 C 195 180, 195 70, 232 70"/>
+        <path class="dg-edge" d="M 158 190 L 232 190"/>
+        <path class="dg-edge" d="M 158 200 C 195 200, 195 310, 232 310"/>
+
+        <rect class="dg-box" x="232" y="42" width="196" height="56" rx="5"/>
+        <text class="dg-title" x="248" y="64" style="font-size:12.5px;">survey A view</text>
+        <text class="dg-label" x="248" y="80">variables · design · idiom</text>
+        <text class="dg-label" x="248" y="92">＋ its own holdout split</text>
+
+        <rect class="dg-box" x="232" y="162" width="196" height="56" rx="5"/>
+        <text class="dg-title" x="248" y="184" style="font-size:12.5px;">survey B view</text>
+        <text class="dg-label" x="248" y="200">variables · design · idiom</text>
+        <text class="dg-label" x="248" y="212">＋ its own holdout split</text>
+
+        <rect class="dg-box" x="232" y="282" width="196" height="56" rx="5"/>
+        <text class="dg-title" x="248" y="304" style="font-size:12.5px;">survey C view …</text>
+        <text class="dg-label" x="248" y="320">variables · design · idiom</text>
+        <text class="dg-label" x="248" y="332">＋ its own holdout split</text>
+
+        <!-- the candidate, projected through each view -->
+        <rect class="dg-box-accent" x="232" y="372" width="196" height="52" rx="5" stroke-dasharray="0"/>
+        <text class="dg-kicker" x="330" y="394" text-anchor="middle">any candidate file</text>
+        <text class="dg-label-accent" x="330" y="412" text-anchor="middle">projected through every view ↑</text>
+        <path class="dg-edge-planned" d="M 330 372 L 330 350 M 330 358 L 330 218 M 330 226 L 330 98" stroke-dasharray="2 3"/>
+
+        <!-- scored vs holdout on four blocks: each view's projected candidate-vs-holdout gathers into the four blocks -->
+        <text class="dg-kicker" x="558" y="26">② scored vs holdout</text>
+        <path class="dg-edge" d="M 428 70 C 448 70, 450 144, 470 144"/>
+        <path class="dg-edge" d="M 428 190 C 450 190, 452 144, 470 144"/>
+        <path class="dg-edge" d="M 428 310 C 452 310, 454 144, 470 144"/>
+
+        <rect class="dg-box" x="470" y="52" width="180" height="40" rx="5"/>
+        <text class="dg-title" x="480" y="77" style="font-size:12.5px;">energy distance</text>
+        <rect class="dg-box" x="470" y="100" width="180" height="40" rx="5"/>
+        <text class="dg-title" x="480" y="125" style="font-size:12.5px;">coverage (PRDC)</text>
+        <rect class="dg-box" x="470" y="148" width="180" height="40" rx="5"/>
+        <text class="dg-title" x="480" y="173" style="font-size:12.5px;">classifier AUC</text>
+        <rect class="dg-box" x="470" y="196" width="180" height="40" rx="5"/>
+        <text class="dg-title" x="480" y="221" style="font-size:12.5px;">tail block</text>
+
+        <text class="dg-kicker" x="470" y="256">four blocks · joint, not marginal</text>
+
+        <!-- sampling-noise floor -->
+        <path class="dg-edge" d="M 650 72 C 690 72, 690 330, 730 330"/>
+        <path class="dg-edge" d="M 650 120 C 695 120, 695 335, 730 335"/>
+        <path class="dg-edge" d="M 650 168 C 700 168, 700 340, 730 340"/>
+        <path class="dg-edge" d="M 650 216 C 705 216, 705 345, 730 345"/>
+
+        <rect class="dg-box" x="730" y="300" width="122" height="88" rx="5" stroke-dasharray="4 3"/>
+        <text class="dg-kicker" x="791" y="322" text-anchor="middle">anchored by</text>
+        <text class="dg-title" x="791" y="342" text-anchor="middle" style="font-size:12px;">sampling-noise</text>
+        <text class="dg-title" x="791" y="357" text-anchor="middle" style="font-size:12px;">floor</text>
+        <text class="dg-label" x="791" y="374" text-anchor="middle">survey's own split,</text>
+        <text class="dg-label" x="791" y="386" text-anchor="middle">scored as a candidate</text>
+      </svg>
+      <figcaption>
+        The population-view harness. One latent population is observed through each survey's own view; <strong>any</strong> candidate file — composed, donated, or generated — is projected through every view and scored against that survey's holdout, never its own training data. Four blocks catch different failures: energy distance (the joint), coverage (geometry, reweight-blind), classifier AUC (a two-sample test), and the tail block (heavy right tails the others under-resolve). Every block is read against a sampling-noise floor — the survey's own complementary split, scored as if it were a candidate.
+      </figcaption>
+    </figure>
     <div class="cards">
       <article class="card">
         <header><span class="card-id mono">energy distance</span><span class="tag tag-live">shipped</span></header>
