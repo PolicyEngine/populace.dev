@@ -530,16 +530,17 @@
       <span class="mono">[SOURCE: transfer-paper/experiments/uk-transfer/artifacts/scorecard.json — popdgp 402fb235, period 2025, candidate n=28,532 households vs native FRS n=53,508; verdict bands pre-registered in eval-pack/PREREGISTRATION.md].</span>
       This is the quantitative test the framing promised: calibration forced
       the marginal targets to move (transferred mean absolute relative error
-      0.309 versus 0.438 before), yet three of four held-out survey views
+      0.309 against the full 568-target registry), yet three of four held-out survey views
       remain clearly distinct from the native file. Every one of those
       residual gaps is inherited joint structure that reweighting to
       marginal totals could not repair — the populace thesis, measured. The
       failure concentrates in the tax-and-benefit view, whose classifier
-      separates candidate from native at 0.998 AUC. One caveat runs the
-      other way: the transferred file's 99th-percentile income ratios sit
-      near twice the native file's, which reflects known top-income
-      under-coverage in the FRS holdout, so the ruler is biased at the
-      extreme tail; it is presented, not hidden.
+      separates candidate from native at 0.998 AUC. One finding cuts at the
+      mapping itself: the transferred file's 99th-percentile income ratios
+      sit near twice the native file's, traced to a concept mismatch in
+      directly mapped capital gains — US realised gains are structurally
+      larger than UK CGT-liable gains — with known FRS top-income
+      under-coverage a secondary factor. It is presented, not hidden.
     </p>
     <div class="prose" style="margin-top: 40px;">
       <p>
@@ -561,11 +562,13 @@
         <header><span class="card-id mono">calibration targets</span><span class="tag tag-live">v1 measured</span></header>
         <h3>Transferred MARE 0.309</h3>
         <p>
-          Against 568 finite UK targets, the recalibrated transfer reaches
-          mean absolute relative error 0.309 (versus 0.438 for the raw file),
-          but the native FRS holds a tighter central fit — 43.8% of targets
-          within 10% against the transfer's 29.9%. Marginal attainment
-          improves; it does not certify the joint.
+          Against the same 568 finite UK targets, the recalibrated transfer
+          reaches mean absolute relative error 0.309 to the native file's
+          0.438 — a mean dragged by a small set of outlier band-level
+          targets (medians: 0.180 versus 0.178) — while the native FRS
+          holds the tighter central fit: 43.8% of targets within 10%
+          against the transfer's 29.9%. Marginal attainment
+          does not certify the joint.
           <span class="mono" style="display:block; margin-top:8px; font-size:11px; color:var(--paper-faint);">[SOURCE: artifacts/calibration_summary.json]</span>
         </p>
       </article>
