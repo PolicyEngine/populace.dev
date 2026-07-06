@@ -6,6 +6,12 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "4321", "--directory", "/Users/maxghenis/PolicyEngine/_worktrees/populace-site-strategies"],
       "port": 4321
+    },
+    {
+      "name": "populace-anywhere-v12",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4329", "--directory", "/Users/maxghenis/PolicyEngine/populace.dev"],
+      "port": 4329
     }
   ]
 }
