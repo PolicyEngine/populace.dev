@@ -135,7 +135,7 @@
     <figure class="diagram-figure">
       <svg viewBox="0 0 860 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="anywhere-distance-title anywhere-distance-desc">
         <title id="anywhere-distance-title">One reweighting operator at three domain distances</title>
-        <desc id="anywhere-distance-desc">A horizontal domain-distance axis from small to large. Three stops sit on it. The first, a US congressional district, reweights one national file to a sub-national geography inside the same institutions — the smallest shift, an established and shipped populace method. The second, the United Kingdom, reweights the US support to UK published totals and is the held-out validation leg: it is scored against native UK survey microdata (the Family Resources Survey). Its first, version-one, evaluation ran three of four survey views clearly distinct from the native file; a repaired version-1.1 rerun has since completed on the unchanged scoring configuration and moved in two directions at once — the pre-registered headline improved to two of four views clearly distinct, while the same feed upgrade nearly doubled one view's continuous energy-distance gap to its floor. The third, Belgium, reweights the same US support to Belgian published totals with no comparable native microdata to validate against; it is the zero-shot deployment leg, cross-checked instead against an independent tax-benefit engine, EUROMOD, on an identical population. All three stops are the same operator — reweighting a frozen support to a new geography's totals — differing only in how far the target sits from the source.</desc>
+        <desc id="anywhere-distance-desc">A horizontal domain-distance axis from small to large. Three stops sit on it. The first, a US congressional district, reweights one national file to a sub-national geography inside the same institutions — the smallest shift, an established and shipped populace method. The second, the United Kingdom, reweights the US support to UK published totals and is the held-out validation leg: it is scored against native UK survey microdata (the Family Resources Survey). Its first, version-one, evaluation ran three of four survey views clearly distinct from the native file; a repaired version-1.1 rerun moved in two directions at once — the pre-registered headline improved to two of four views clearly distinct, while the same feed upgrade nearly doubled one view's continuous energy-distance gap to its floor; a version-1.2 rerun then applied a single declared mapping fix on top of that repair and closed almost all of that same gap, from twelve and a half times the sampling-noise floor to one and a half times it, while the pre-registered headline held exactly where it was. The third, Belgium, reweights the same US support to Belgian published totals with no comparable native microdata to validate against; it is the zero-shot deployment leg, cross-checked instead against an independent tax-benefit engine, EUROMOD, on an identical population. All three stops are the same operator — reweighting a frozen support to a new geography's totals — differing only in how far the target sits from the source.</desc>
 
         <!-- axis -->
         <line class="dg-gridline" x1="60" y1="200" x2="800" y2="200"/>
@@ -157,11 +157,11 @@
         <!-- stop 2: UK -->
         <circle cx="430" cy="200" r="7" class="dg-box-accent" fill="var(--ink-2)"/>
         <rect class="dg-box-accent" x="350" y="30" width="160" height="104" rx="5"/>
-        <text class="dg-kicker" x="366" y="50">stop 2 · v1.1 measured</text>
+        <text class="dg-kicker" x="366" y="50">stop 2 · v1.2 measured</text>
         <text class="dg-title" x="366" y="72">United Kingdom</text>
         <text class="dg-label" x="366" y="90">held-out validation leg</text>
         <text class="dg-label-accent" x="366" y="106">2/4 views clearly distinct</text>
-        <text class="dg-label" x="366" y="122" style="font-size:9.5px;">scored vs. FRS · one energy ratio 2x</text>
+        <text class="dg-label" x="366" y="122" style="font-size:9.5px;">scored vs. FRS · energy ratio 12.5x → 1.5x</text>
         <path class="dg-edge" d="M 430 134 L 430 193"/>
 
         <!-- stop 3: Belgium -->
@@ -183,7 +183,7 @@
         <path class="dg-edge" d="M 720 207 C 720 240, 460 240, 460 256"/>
       </svg>
       <figcaption>
-        Three actual runs of the same reweighting operator, placed by domain distance. The congressional-district leg (populace's local-area method), the UK leg (v1.1 measured against the held-out FRS, below), and the Belgium leg (measured below) all sit on solid ground. The UK leg's held-out verdict — two of four survey views clearly distinct from native microdata on the repaired feed, down from three of four on the as-found file — is the paper's thesis made quantitative; the same repair nearly doubled a different view's continuous energy-distance gap to its floor, a result reported alongside the improved headline rather than in its place. <strong>Same operator, increasing distance</strong> — small and same-institutions at the congressional-district end, large and different-institutions at the Belgium end.
+        Three actual runs of the same reweighting operator, placed by domain distance. The congressional-district leg (populace's local-area method), the UK leg (v1.2 measured against the held-out FRS, below), and the Belgium leg (measured below) all sit on solid ground. The UK leg's held-out verdict — two of four survey views clearly distinct from native microdata, down from three of four on the as-found file and unchanged since the repaired feed — is the paper's thesis made quantitative; the same repair nearly doubled a different view's continuous energy-distance gap to its floor, and a further declared mapping fix then closed nearly all of that gap while the verdict itself never moved — results reported alongside each other, not one in place of the last. <strong>Same operator, increasing distance</strong> — small and same-institutions at the congressional-district end, large and different-institutions at the Belgium end.
       </figcaption>
     </figure>
     <div class="distance-rail">
@@ -206,11 +206,12 @@
           recalibrated US support against the Family Resources Survey —
           native UK household microdata withheld from the adaptation step —
           with three of four survey views clearly distinct from native, and
-          caught a concrete feed defect. A repaired v1.1 rerun has since
-          completed on the unchanged scoring configuration: the headline
-          improved to two of four views clearly distinct, while the same
-          feed upgrade nearly doubled a different view's energy-distance gap
-          to its floor. Verdict and both defects below.
+          caught a concrete feed defect. A repaired v1.1 rerun moved the
+          headline to two of four views clearly distinct while nearly
+          doubling a different view's energy-distance gap to its floor; a
+          further v1.2 rerun then applied a single declared mapping fix and
+          closed nearly all of that same gap, on the unchanged scoring
+          configuration throughout. Verdict and all three runs below.
         </p>
       </div>
       <div class="distance-stop">
@@ -271,14 +272,15 @@
         </p>
       </article>
       <article class="card">
-        <header><span class="card-id mono">score once</span><span class="tag tag-live">v1 done</span></header>
-        <h3>Held-out FRS, scored after adaptation</h3>
+        <header><span class="card-id mono">score once</span><span class="tag tag-live">v1.2 done</span></header>
+        <h3>Held-out FRS, scored after each adaptation</h3>
         <p>
           The UK leg scores the adapted file against native Family Resources
-          Survey microdata it never saw. Its first run is complete — three of
-          four survey views clearly distinct from native (section 07) — so
-          this is the leg that already measures what reweighting alone can
-          and cannot fix.
+          Survey microdata it never saw. Three runs are complete — two of
+          four survey views clearly distinct from native as of the latest,
+          down from three of four on the as-found file (section 07) — so
+          this is the leg that already measures what reweighting alone, and
+          one declared mapping fix on top of it, can and cannot repair.
         </p>
       </article>
       <article class="card">
@@ -488,6 +490,24 @@
       check available, not a substitute for the FRS-style holdout the UK
       leg runs.
     </p>
+    <p class="caveat">
+      <strong>A proportionality caveat this figure needs every time it's cited.</strong>
+      Belgian employee social security contributions are levied at a rate
+      that's largely proportional to gross pay, so agreement this close on
+      an identical population is close to what rate-times-base arithmetic on
+      the same inputs would already deliver. €643 on €20.9 billion certifies
+      concept-base alignment — the two engines agree on what counts as
+      contributable pay — and rules out implementation drift between them,
+      but it's a weak discriminator: a proportional levy has little
+      nonlinearity (thresholds, bands, means tests, caps) for two engines to
+      disagree about. A sharper validation ladder is planned, not yet run:
+      per-record agreement rather than the aggregate alone, extension to
+      genuinely nonlinear programs, and agreement on reform-induced deltas
+      rather than baseline levels — tracked at
+      <span class="mono">axiom-rules-engine#77</span>. Until that ladder
+      runs, read this figure as a necessary but weak check, not as evidence
+      the two engines agree on the rules generally.
+    </p>
     <p class="research-link mono">
       <a href="/support">A foreign support is an admissible occupant of this slot — the referee prices what it costs.</a>
     </p>
@@ -495,54 +515,57 @@
 
   <section id="uk" class="band">
     <div class="band-head">
-      <span class="kicker mono anywhere-accent">07 — the held-out leg, v1.1 measured</span>
-      <h2>United Kingdom: the referee ran, diagnosed, and reran.</h2>
+      <span class="kicker mono anywhere-accent">07 — the held-out leg, v1.2 measured</span>
+      <h2>United Kingdom: the referee ran, diagnosed, reran, and priced a declared fix.</h2>
     </div>
     <div class="prose">
       <p>
-        The UK leg has now run twice. Its subject is the prior US-to-UK
+        The UK leg has now run three times. Its subject is the prior US-to-UK
         transfer: an existing recalibrated file built from open US microdata,
         reweighted to UK national, regional, and country targets — the same
         target set the native Family Resources Survey file calibrates to. The
         pre-registered pack scored the as-found v1 file against the held-out
         native FRS file before that file was touched, exactly as section 03
-        requires, then scored a repaired-feed v1.1 rebuild under the identical
-        frozen scoring configuration. Both runs are diagnostic passes, not a
-        finished benchmark: v1 caught a concrete feed defect, and the v1.1
-        repair moved the headline verdict and a continuous proper score in
-        opposite directions on the same view — reported together below,
-        not as a single improved number.
+        requires; scored a repaired-feed v1.1 rebuild under the identical
+        frozen scoring configuration; then scored a v1.2 rebuild applying one
+        declared mapping transform on top of that repair, isolated against
+        four hypotheses committed to the record before the run. All three are
+        diagnostic passes, not a finished benchmark: v1 caught a concrete feed
+        defect, the v1.1 repair moved the headline verdict and a continuous
+        proper score in opposite directions on the same view, and v1.2 closed
+        that same view's gap to its floor — reported together below, not as a
+        single improved number.
       </p>
     </div>
     <div class="metrics">
       <div class="metric">
         <span class="metric-label mono">held-out verdict, four survey views</span>
-        <span class="metric-val">2 / 4<span class="metric-vs">clearly distinct; 0/4 indistinguishable — down from 3/4 on v1</span></span>
-        <span class="metric-note">income intermediate; tax_benefit and full clearly distinct; net_income moved from clearly distinct (v1) to intermediate (v1.1)</span>
+        <span class="metric-val">2 / 4<span class="metric-vs">clearly distinct; 0/4 indistinguishable — down from 3/4 on v1, unchanged v1.1 to v1.2</span></span>
+        <span class="metric-note">income intermediate; tax_benefit and full clearly distinct (unchanged since v1.1); net_income moved from clearly distinct (v1) to intermediate (v1.1, v1.2)</span>
       </div>
       <div class="metric">
         <span class="metric-label mono">net_income energy ratio to floor</span>
-        <span class="metric-val">6.3× → 12.5×<span class="metric-vs">nearly doubled, v1 to v1.1</span></span>
-        <span class="metric-note">the same view whose band verdict improved — the proper score says the opposite</span>
+        <span class="metric-val">6.3× → 12.5× → 1.5×<span class="metric-vs">doubled, then fell within reach of the floor</span></span>
+        <span class="metric-note">the same view whose band verdict never moves off intermediate at v1.1/v1.2 — a declared mapping fix on top of the feed repair closed almost the entire remaining gap</span>
       </div>
       <div class="metric">
         <span class="metric-label mono">sampling-noise floor, classifier AUC</span>
-        <span class="metric-val">0.49–0.52<span class="metric-vs">at chance, all four views, both runs</span></span>
+        <span class="metric-val">0.49–0.52<span class="metric-vs">at chance, all four views, all three runs</span></span>
         <span class="metric-note">the native file's own split scored as a candidate — machinery validated</span>
       </div>
       <div class="metric">
         <span class="metric-label mono">determinism, two independent runs each</span>
-        <span class="metric-val">byte-identical<span class="metric-vs">canonical subset, v1 and v1.1</span></span>
-        <span class="metric-note">scores, verdict, and config fingerprint reproduce exactly; only the timestamp differs — eval_config hash unchanged across v1 and v1.1</span>
+        <span class="metric-val">byte-identical<span class="metric-vs">canonical subset, v1, v1.1, and v1.2</span></span>
+        <span class="metric-note">scores, verdict, and config fingerprint reproduce exactly; only the timestamp differs — eval_config hash unchanged across all three versions</span>
       </div>
     </div>
     <p class="caveat">
-      <span class="mono">[SOURCE: transfer-paper/experiments/uk-transfer/artifacts/scorecard.json, scorecard_v1_1.json, scorecard_v1_vs_v1_1.json — popdgp 402fb235, period 2025, v1 candidate n=28,532 vs v1.1 candidate n=63,128, both vs native FRS n=53,508; verdict bands pre-registered in eval-pack/PREREGISTRATION.md].</span>
-      This is the quantitative test the framing promised, run twice: calibration
+      <span class="mono">[SOURCE: transfer-paper/experiments/uk-transfer/artifacts/scorecard.json, scorecard_v1_1.json, scorecard_v1_2.json, scorecard_three_way.json, decomp_three_way.json — popdgp 402fb235, period 2025, v1 candidate n=28,532 vs v1.1/v1.2 candidate n=63,128, all vs native FRS n=53,508; verdict bands pre-registered in eval-pack/PREREGISTRATION.md].</span>
+      This is the quantitative test the framing promised, run three times: calibration
       forced the marginal targets to move (transferred mean absolute relative
       error 0.309 against the full 568-target registry, native 0.438), yet the
       transfer remains clearly distinct from native on most held-out survey
-      views in both runs. The mean-error comparison itself is symmetric, not a
+      views across all three runs. The mean-error comparison itself is symmetric, not a
       transfer advantage: native's higher mean comes from 26 small upper-tail
       and composition-band targets it overshoots — excluding them drops its
       mean to 0.310, matching the transfer's 0.309 — while the transfer has
@@ -553,21 +576,30 @@
       one of these two floors is inherited joint structure that reweighting to
       marginal totals could not repair — the populace thesis, measured. The
       failure concentrates in the tax-and-benefit view, whose classifier
-      separates candidate from native at 0.996–0.998 AUC in both runs. One
-      finding cuts at the mapping itself and widened under the v1.1 repair:
-      the transferred file's 99th-percentile income ratios, near twice
-      native's at v1, reached 59–78× native at v1.1, traced to a concept
-      mismatch in directly mapped capital gains that a larger, more realistic
-      US gains distribution makes worse, not better — US realised gains are
-      structurally larger than UK CGT-liable gains — with known FRS
-      top-income under-coverage a separate, secondary factor. It is presented,
-      not hidden.
+      separates candidate from native at 0.996–0.998 AUC across all three runs, unchanged
+      since v1.1. One finding cut at the mapping itself, widened under the v1.1 repair,
+      and was then closed by a declared fix: the transferred file's 99th-percentile
+      income ratios, near twice native's at v1, reached 59–78× native at v1.1 —
+      a concept mismatch in directly mapped capital gains that a larger, more
+      realistic US gains distribution made worse, not better, because US realised
+      gains are structurally larger than UK CGT-liable gains. Rather than wait
+      for better source data to fix a mapping problem it cannot fix, v1.2
+      declares the fix directly: US realised capital gains are excluded from the
+      transferred file entirely, an explicit, documented mapping decision, not a
+      second feed repair. Scored against four hypotheses committed to the record
+      before the run, the same 99th-percentile ratios return to near native
+      (0.75× and 0.84×) and the net-income view's energy ratio to its floor falls
+      to 1.5×, while the tax-and-benefit view — never touched by a capital-gains
+      fix, because capital gains isn't one of its columns — stays exactly where
+      it was. One of the four hypotheses was refuted outright, not confirmed: a
+      working theory about why income tax ran high turned out to be wrong, and
+      that refutation is reported as a finding, not corrected away.
     </p>
     <div class="prose" style="margin-top: 40px;">
       <p>
-        <strong>The defect the referee caught, and what repairing it revealed.</strong>
-        Running the pack as a custodian would surfaced a specific, mechanical
-        data error, not a vague quality complaint. The v1 transferred file's
+        <strong>Two defects the referee caught, one repaired feed, one declared fix.</strong>
+        Running the pack as a custodian surfaced specific, mechanical data
+        errors, not vague quality complaints, twice over. The v1 transferred file's
         state-pension total came out at zero against a native total of 112.5
         billion pounds — the feed carried survivor, dependant, and disability
         social-security streams but no retirement stream at all, so every
@@ -586,6 +618,32 @@
         above native (was 156% above at v1). A repaired feed cannot repair a
         wrong mapping; it can only show more clearly what the mapping gets
         wrong.
+      </p>
+      <p style="margin-top: 20px;">
+        The mapping needed a mapping decision, not another feed repair, so v1.2
+        declares one: US realised capital gains are excluded from the
+        transferred UK file entirely — an explicit, documented reclassification,
+        not a silent patch. Four hypotheses about what that exclusion would do
+        were committed to the record before the run. Three were confirmed:
+        household market income flipped sign, landing 31.6% <em>below</em>
+        native rather than 872% above it — the transfer now understates market
+        income once the phantom gains are gone, which is itself informative
+        about what the transfer is still missing. The net-income view's energy
+        ratio to its sampling-noise floor fell from 12.5× to 1.5×, essentially
+        closing that view's gap. And the tax-and-benefit view, whose failure
+        was never about capital gains, stayed exactly where it was: 90.1× its
+        floor, clearly distinct, because the reported-benefit surface it needs
+        was never written to the transfer and this fix doesn't touch it. The
+        fourth hypothesis was refuted: income tax's 34.2% overshoot, which the
+        v1.1 repair blamed on phantom gains entering taxable income, did not
+        move at all — UK income tax doesn't tax chargeable gains, and gains
+        entered no calibration target, so removing them changed nothing on this
+        aggregate. That refutation opens a new, still-open question: what
+        actually explains the income-tax gap, if not capital gains. A repaired
+        feed cannot repair a wrong mapping, and a repaired mapping doesn't
+        explain every remaining gap — but naming which mechanism did and didn't
+        move each number, and testing that in the open before looking at the
+        result, is what a referee is for.
       </p>
     </div>
     <div class="cards" style="margin-top: 28px;">
@@ -628,8 +686,29 @@
           continuous energy-distance ratio to the sampling-noise floor did the
           opposite, rising from 6.3× to 12.5×. Both numbers are real and both
           are reported — a band verdict crossing a line is not the same claim
-          as a continuous score narrowing, and here they disagree.
+          as a continuous score narrowing, and here they disagree. The next
+          card closes this exact gap with a declared fix.
           <span class="mono" style="display:block; margin-top:8px; font-size:11px; color:var(--paper-faint);">[SOURCE: artifacts/scorecard_v1_1.json verdict; scorecard_v1_vs_v1_1.json per_view net_income]</span>
+        </p>
+      </article>
+      <article class="card">
+        <header><span class="card-id mono">declared transform</span><span class="tag tag-live">v1.2 measured</span></header>
+        <h3>Energy ratio 12.5× → 1.5× — the band verdict never moved</h3>
+        <p>
+          One further rerun, isolating a single change against v1.1: US
+          realised capital gains, previously mapped one-to-one into a UK
+          income surface that admits almost none of them, are now excluded
+          from the transferred file entirely — a declared, documented mapping
+          decision, tested against four hypotheses fixed before the run. Three
+          were confirmed, one was refuted. net_income's classifier AUC barely
+          moved (0.770 → 0.772, still intermediate — the pre-registered
+          headline holds at 2 of 4 throughout), but its continuous
+          energy-distance ratio to the sampling-noise floor fell from 12.5× to
+          1.5×, within reach of the floor itself. Read alongside, never apart:
+          tax_benefit — the view this fix was never going to touch — stays
+          clearly distinct at 90.1×, unchanged since v1.1, because the absent
+          reported-benefit surface it needs was never written to the transfer.
+          <span class="mono" style="display:block; margin-top:8px; font-size:11px; color:var(--paper-faint);">[SOURCE: artifacts/scorecard_v1_2.json verdict; scorecard_three_way.json per_view net_income, tax_benefit; policy_outputs_v1_2.json aggregates_bn_gbp]</span>
         </p>
       </article>
     </div>
