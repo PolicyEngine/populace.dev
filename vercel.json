@@ -4,7 +4,12 @@
   "redirects": [
     {
       "source": "/dashboard",
-      "destination": "https://calibration-diagnostics.vercel.app/populace",
+      "destination": "/calibration/dashboard/populace",
+      "permanent": false
+    },
+    {
+      "source": "/calibration/dashboard",
+      "destination": "/calibration/dashboard/populace",
       "permanent": false
     },
     {
@@ -31,6 +36,12 @@
       "source": "/imputation/paper",
       "destination": "/support/paper",
       "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/calibration/dashboard/:path*",
+      "destination": "https://calibration-diagnostics.vercel.app/calibration/dashboard/:path*"
     }
   ]
 }
