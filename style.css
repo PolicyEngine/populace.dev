@@ -767,3 +767,8 @@ h2 {
 .foot-links { margin-top: 8px; }
 .foot-links a { color: var(--paper-dim); text-decoration: none; }
 .foot-links a:hover { color: var(--amber-soft); }
+
+/* ---------- the pipeline (03): stage DAG ---------- */
+.pipeline-figure { max-width: 1028px; }
+.pipeline-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.pipeline-scroll svg { min-width: 900px; }
