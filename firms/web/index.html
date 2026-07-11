@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Vahid Ahmadi">
+
+<title>An Open Firm-Level Microsimulation of the UK VAT Registration Threshold</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="web_files/libs/clipboard/clipboard.min.js"></script>
+<script src="web_files/libs/quarto-html/tabby.min.js"></script>
+<script src="web_files/libs/quarto-html/popper.min.js"></script>
+<script src="web_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="web_files/libs/quarto-html/anchor.min.js"></script>
+<link href="web_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="web_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="web_files/libs/quarto-html/quarto-html-640605f58ae58ee79329c070719e555b.min.css" rel="stylesheet" append-hash="true" data-mode="light">
+<link href="web_files/libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="pe-tokens.css">
+<link rel="stylesheet" href="firm-microsim-theme.css">
+</head>
+
+<body>
+
+
+<header id="title-block-header">
+<h1 class="title">An Open Firm-Level Microsimulation of the UK VAT Registration Threshold</h1>
+<p class="subtitle">An open firm-level model for UK VAT threshold reform</p>
+<p class="author">Vahid Ahmadi</p>
+
+</header>
+
+<nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec:intro" id="toc-sec:intro">Introduction</a>
+  <ul>
+  <li><a href="#related-literature" id="toc-related-literature">Related literature</a></li>
+  </ul></li>
+  <li><a href="#sec:background" id="toc-sec:background">Institutional background</a></li>
+  <li><a href="#sec:data" id="toc-sec:data">Data</a></li>
+  <li><a href="#sec:static" id="toc-sec:static">Static costing of threshold reforms</a>
+  <ul>
+  <li><a href="#ssec:schedule_costs" id="toc-ssec:schedule_costs">Costing schedule reforms</a></li>
+  </ul></li>
+  <li><a href="#sec:bunching" id="toc-sec:bunching">Bunching and the limits of band-calibrated synthetic data</a>
+  <ul>
+  <li><a href="#methodology" id="toc-methodology">Methodology</a></li>
+  <li><a href="#results-a-target-inherited-signal-at-85000-a-spurious-one-at-90000" id="toc-results-a-target-inherited-signal-at-85000-a-spurious-one-at-90000">Results: a target-inherited signal at £85,000, a spurious one at £90,000</a></li>
+  <li><a href="#ssec:bunch-placebo" id="toc-ssec:bunch-placebo">Placebo test</a></li>
+  <li><a href="#ssec:bunch-recovery" id="toc-ssec:bunch-recovery">Power (recovery) test</a></li>
+  <li><a href="#ssec:bunch-lit" id="toc-ssec:bunch-lit">Comparison with the literature</a></li>
+  <li><a href="#reduced-form-evidence-and-the-dominated-region" id="toc-reduced-form-evidence-and-the-dominated-region">Reduced-form evidence and the dominated region</a></li>
+  </ul></li>
+  <li><a href="#sec:model" id="toc-sec:model">The notch and its dominated region</a>
+  <ul>
+  <li><a href="#the-firms-problem" id="toc-the-firms-problem">The firm’s problem</a></li>
+  <li><a href="#ssec:dominated" id="toc-ssec:dominated">The dominated region</a></li>
+  </ul></li>
+  <li><a href="#sec:behavioural" id="toc-sec:behavioural">Behavioural reform costs</a>
+  <ul>
+  <li><a href="#ssec:simulator" id="toc-ssec:simulator">An iso-elastic simulator on the intensive margin</a></li>
+  <li><a href="#ssec:behavioural-results" id="toc-ssec:behavioural-results">Results</a></li>
+  </ul></li>
+  <li><a href="#sec:conclusion" id="toc-sec:conclusion">Conclusion</a></li>
+  <li><a href="#sec:appendix" id="toc-sec:appendix">Appendix</a>
+  <ul>
+  <li><a href="#app:data" id="toc-app:data">Data construction detail</a></li>
+  <li><a href="#app:inference" id="toc-app:inference">Inference for the bunching estimator</a>
+  <ul>
+  <li><a href="#mass-conservation-constraint" id="toc-mass-conservation-constraint">Mass-conservation constraint</a></li>
+  <li><a href="#why-no-standard-errors-are-reported" id="toc-why-no-standard-errors-are-reported">Why no standard errors are reported</a></li>
+  <li><a href="#sensitivity-to-polynomial-degree-and-exclusion-window" id="toc-sensitivity-to-polynomial-degree-and-exclusion-window">Sensitivity to polynomial degree and exclusion window</a></li>
+  <li><a href="#placebo-tests" id="toc-placebo-tests">Placebo tests</a></li>
+  <li><a href="#power-recovery-test" id="toc-power-recovery-test">Power (recovery) test</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references">References</a></li>
+  </ul>
+</nav>
+<div class="paper-abstract">
+<p><strong>Abstract.</strong></p>
+<p>I present an open, reproducible firm-level microsimulation for costing UK VAT registration-threshold reforms, released with its synthetic-data generator. The threshold is a <em>notch</em>: once turnover crosses £85,000, VAT falls due on a firm’s whole base. I build synthetic firm records calibrated to 2023–24 HMRC and OBR statistics, and cost <em>level</em>, <em>shape</em> (a taper) and <em>rate</em> (a reduced-rate band) reforms statically on a common £184.8bn base: raising the threshold to £100,000 costs £753m, a taper £520m, and reduced-rate bands £484m and £242m. I characterise the notch by its <em>dominated region</em>—the £21,250 band above the threshold in which no firm profits from locating—and how each reform changes it. Conditional on an assumed elasticity, intensive-margin responses barely move these costings. The near-threshold shape is target-inherited: a placebo regenerated without the OBR targets returns zero excess mass, so band-calibrated data support no bunching inference.</p>
+</div>
+<p><strong>Keywords:</strong> value-added tax, microsimulation, tax notch, policy</p>
+<h1 id="sec:intro">Introduction</h1>
+<p>The United Kingdom’s Value Added Tax (VAT) applies above a registration threshold that is the highest in the OECD alongside Switzerland <span class="citation" data-cites="hoc_vat hmrc_threshold">(<a href="#ref-hoc_vat" role="doc-biblioref">Seely 2024</a>; <a href="#ref-hmrc_threshold" role="doc-biblioref">HM Revenue and Customs 2024</a>)</span>. The threshold is a <em>notch</em> rather than a kink: once a firm’s annual taxable turnover crosses it, VAT falls due on the firm’s whole base, not only on the part above the threshold, so registration produces a discrete jump in liability rather than a marginal one. The threshold falls in a dense part of the firm distribution. Figure&nbsp;<a href="#fig:dist" data-reference-type="ref" data-reference="fig:dist">1</a>(a) shows that VAT- and PAYE-registered UK businesses are concentrated at the lower end of the turnover distribution, and Figure&nbsp;<a href="#fig:dist" data-reference-type="ref" data-reference="fig:dist">1</a>(b) shows that the VAT-registered population per £1,000 of turnover is densest at and below the threshold, so the notch applies to a large number of firms.</p>
+<figure id="fig:dist" data-latex-placement="htbp">
+<img src="figures/firms_by_turnover_band_85k.png" style="width:48.0%">
+<p>
+<span><em>VAT- and/or PAYE-registered businesses (ONS, 2023–24)</em></span>
+</p>
+<img src="figures/vat_firms_by_turnover_band_85k.png" style="width:48.0%">
+<p>
+<span><em>VAT-registered firms (HMRC, 2023–24)</em></span>
+</p>
+<figcaption>
+The UK firm-size distribution and VAT registration, 2023–24 (threshold £85<span>,</span>000). Panel (a): number of businesses by turnover band in the ONS business register, which covers businesses registered for VAT and/or PAYE (about 2.7 million); the full business population including unregistered businesses is roughly twice as large (DBT business population estimates). Panel (b): number of VAT-registered firms by turnover band. Band widths are unequal, so cross-band count comparisons should be read per £1<span>,</span>000 of turnover. Source: panel (a), ONS, <a href="https://www.ons.gov.uk/businessindustryandtrade/business/activitysizeandlocation/bulletins/ukbusinessactivitysizeandlocation/2023"><em>UK Business: Activity, Size and Location</em></a> (business counts by turnover band); panel (b), HMRC, <a href="https://www.gov.uk/government/statistics/value-added-tax-vat-annual-statistics"><em>Value Added Tax (VAT) Annual Statistics</em></a> (VAT-registered population by turnover band).
+</figcaption>
+</figure>
+<p>Firms respond to the notch by locating below the threshold. Tabulations of HMRC turnover data show the number of firms rising towards £84,000 and then dropping sharply at the £85,000 threshold, leaving excess mass just below it <span class="citation" data-cites="obr2023vat">(<a href="#ref-obr2023vat" role="doc-biblioref">Office for Budget Responsibility 2023</a>)</span>. <span class="citation" data-cites="liuetal2021">Liu et al. (<a href="#ref-liuetal2021" role="doc-biblioref">2021</a>)</span> document this bunching in UK administrative firm data over 2004–05 to 2014–15, when the threshold rose from £58,000 to £81,000, and <span class="citation" data-cites="liulockwoodtam2024">Liu et al. (<a href="#ref-liulockwoodtam2024" role="doc-biblioref">2024</a>)</span> find that firms slow their turnover growth as they approach the threshold. The notch therefore distorts the size distribution and the growth decisions of firms near the margin, which places the threshold under recurrent pressure for reform.</p>
+<p>Reform proposals change the threshold in one of three ways: its <em>level</em> (raising or lowering it), its <em>shape</em> (replacing the notch with a schedule that phases the rate in over a band), or its <em>rate</em> (a reduced rate for firms in a band above the threshold). The three are not equivalent. Changing the level moves the notch along the turnover axis; changing the shape or the rate alters the size of the discrete jump itself. Costing the three on a common basis is the practical difficulty this paper addresses. A change in the level can be costed by mechanical accounting, but a change in the shape of the schedule cannot be evaluated with the reduced-form bunching methods used to study the threshold, because a continuous schedule leaves no single point of excess mass to exploit. The firm-level data needed to study turnover near the threshold is, in addition, not available in open form.</p>
+<p>In this paper I build an open, reproducible firm-level microsimulation for costing UK VAT threshold reforms on a common static basis. I construct synthetic firm microdata calibrated to published official aggregates—HMRC registered-firm counts by turnover band and by sector, net VAT liability by turnover band, and ONS business counts and employment bands—for the 2023–24 tax year, when the threshold was £85,000, and separately for 2024–25, when it rose to £90,000. Each firm’s net VAT liability is the standard rate applied to its value added. The synthetic data can be released openly and regenerated under any counterfactual schedule.</p>
+<p>On these data I do four things. First, I cost level reforms and schedule reforms—a graduated taper and a reduced-rate band—statically, by applying each counterfactual schedule mechanically to the firm distribution. Second, I characterise the notch’s distortion through its <em>dominated region</em>—the exact, elasticity-free range of turnover above the threshold in which no firm profits from locating—and how each reform changes it. Third, I price the level and rate reforms behaviourally: each firm re-optimises its turnover within its schedule region, conditional on an assumed turnover elasticity <span class="math inline">\(e\)</span> that the data do not identify, reported as an <span class="math inline">\(e\)</span>-sensitivity range that nests the static costing exactly in its <span class="math inline">\(e\to0\)</span> limit. Fourth, I show that the synthetic data’s near-threshold structure is target-inherited and cannot support bunching inference: the £85,000 profile is calibrated to the OBR’s published £1,000-band data and the estimator reads exactly that back, a placebo without the fine targets returns zero, and the uncalibrated £90,000 vintage shows a spurious band-edge signal.</p>
+<p>Four findings follow. First, the static pipeline prices all the reforms on a common basis, and its anchor costing tracks the Government’s published number once the deregistration convention is stated. My static costing of the April 2024 increase from £85,000 to £90,000 depends on what released firms are assumed to do: if every firm in the band deregisters, the 2025–26 cost is £323m, overshooting HMRC’s published £185m <span class="citation" data-cites="hmt_spring_budget_2024">(<a href="#ref-hmt_spring_budget_2024" role="doc-biblioref">HM Treasury 2024</a>)</span> in line with the official costing’s phased registration response; if the roughly 43% voluntary-registration share that <span class="citation" data-cites="liuetal2021">Liu et al. (<a href="#ref-liuetal2021" role="doc-biblioref">2021</a>)</span> document is retained, it is £184m, in line with the published figure—agreement finer than the model’s liability-level calibration error supports reading as precision (Section&nbsp;<a href="#sec:static" data-reference-type="ref" data-reference="sec:static">4</a>). Both conventions reproduce the official profile’s narrowing and its 2028–29 sign change. Forward moves from the £90,000 base range from a gain of about £1,040m at £70,000 to a cost of about £1,450m at £120,000, against a base of about £200.9bn in 2025–26.</p>
+<p>Second, the shape and rate reforms act on the notch’s distortion in a way that a change in level does not. The notch creates a <em>dominated region</em> of width <span class="math inline">\(a = T^{*}\tau/(1-\tau) = \unicode{xA3} 21{,}250\)</span> above the threshold (£85,000–£106,250), a range of turnover in which no firm can locate without being strictly worse off than at the threshold. This region is an exact property of the schedule: under the value-added formulation of Section&nbsp;<a href="#sec:behavioural" data-reference-type="ref" data-reference="sec:behavioural">7</a> its width is the same for every firm with positive value added, whatever its input share, and it requires no behavioural calibration. It also spans a populous part of the firm distribution—about 148,000 weighted firms in the calibrated data—so its width is an economically meaningful distortion index. Raising the threshold relocates this region without removing it. A reduced rate does <em>not</em> remove it: the jump at the threshold falls (from £17,000 to £12,750 at a 15% band), but the band reverts to the standard rate at its £105,000 top, introducing a second notch and a second dominated region, so the total dominated width is essentially unchanged—£21,562 at 15% and £22,569 at 10%, both marginally above the £21,250 baseline. Only the graduated taper, being continuous, removes the dominated region. On the common £85,000 data-year base, raising the threshold to £100,000 costs £753m and removes none of the dominated region; the taper removes all of it for £520m; and the 10% and 15% reduced rates cost £484m and £242m while splitting the dominated band in two. On the dominated-region metric the level move is the most expensive option per unit of distortion removed—a comparison that indexes the misallocation distortion only and omits the compliance-cost saving a higher threshold delivers (Section&nbsp;<a href="#sec:conclusion" data-reference-type="ref" data-reference="sec:conclusion">8</a>).</p>
+<p>Third, conditional on the assumed elasticity, intensive-margin responses barely move these costings. A pure level rise has <em>exactly</em> zero intensive-margin revenue offset at every <span class="math inline">\(e\)</span>: released firms leave the VAT base, so their expansion is untaxed, and no other firm’s effective rate changes—a result the simulator verifies to £0.1m. For the reduced-rate bands the offset is second order: at <span class="math inline">\(e=0.17\)</span> the 10% band’s cost falls from £484m to £475m and the 15% band’s from £242m to £235m, under 6% even at <span class="math inline">\(e=0.32\)</span>. I do not report a behavioural cost for the graduated taper: its rate varies continuously with turnover, so its marginal-rate channel is outside the flat-rate machinery, and only its static cost and dominated-region removal are reported. The sweep values <span class="math inline">\(e \in \{0.05, 0.17, 0.32\}\)</span> are assumptions: the lower end has an external anchor <span class="citation" data-cites="klevenwaseem2013">(<a href="#ref-klevenwaseem2013" role="doc-biblioref">Kleven and Waseem 2013</a>)</span>, and the published UK VAT-base estimates of <span class="citation" data-cites="liuetal2021">Liu et al. (<a href="#ref-liuetal2021" role="doc-biblioref">2021</a>)</span> fall between it and the midpoint. The consequence of these results runs opposite to the usual worry: the static costings are robust to the intensive margin, and the behavioural uncertainty that matters—registration and location choice at the notch—is exactly the margin the synthetic data cannot identify.</p>
+<p>Fourth, the open data carry a transparency lesson about bunching: every sub-band feature of band-calibrated synthetic data is exactly what its targets put there, and this paper demonstrates the point in three directions. The 2023–24 population’s near-threshold density is calibrated to the OBR’s published £1,000-band profile <span class="citation" data-cites="obr2023vat">(<a href="#ref-obr2023vat" role="doc-biblioref">Office for Budget Responsibility 2023</a>)</span>, so it reproduces the administratively observed bunching shape—and the estimator reads that shape back as excess mass (<span class="math inline">\(E=7{,}933\)</span>), which is target inheritance, not behaviour. A placebo that regenerates the population <em>without</em> the fine targets returns <span class="math inline">\(E=0\)</span>: remove the targets and the “bunching” vanishes. And the 2024–25 vintage, for which no fine bands are published, shows what the trap looks like from the other side: the coarse £90,000 band edge alone produces an excess-bunching statistic within 10% of the administrative estimate of <span class="citation" data-cites="liuetal2021">Liu et al. (<a href="#ref-liuetal2021" role="doc-biblioref">2021</a>)</span>—a coincidence of band geometry, four-fold unstable across estimator specifications, with no behaviour behind it. An earlier draft of this paper reported “reproducing” the administrative step when a liability mis-scaling in the generator manufactured it; the correction removed it, and the OBR targets now supply the shape from published data instead. The lesson is symmetric and general: synthetic bunching is not evidence of behaviour, its absence is not evidence of no behaviour, and any sub-band feature of calibrated data should be traced to its targets before it is read as economics. The behavioural evidence on UK VAT bunching remains <span class="citation" data-cites="liuetal2021">Liu et al. (<a href="#ref-liuetal2021" role="doc-biblioref">2021</a>)</span>’s administrative estimate.</p>
+<h2 class="unnumbered anchored" id="related-literature">Related literature</h2>
+<p>The paper draws on four strands of work. The first is the methodology of bunching and notches <span class="citation" data-cites="chettyetal2011 saez2010 klevenwaseem2013 kleven2016 best2015">(<a href="#ref-chettyetal2011" role="doc-biblioref">Chetty et al. 2011</a>; <a href="#ref-saez2010" role="doc-biblioref">Saez 2010</a>; <a href="#ref-klevenwaseem2013" role="doc-biblioref">Kleven and Waseem 2013</a>; <a href="#ref-kleven2016" role="doc-biblioref">Kleven 2016</a>; <a href="#ref-best2015" role="doc-biblioref">Best et al. 2015</a>)</span>, which provides the analytic notion of a dominated region; I use the dominated region to characterise a distortion that leaves no single point of excess mass to exploit.</p>
+<p>The second is the empirical literature on VAT registration thresholds <span class="citation" data-cites="liuetal2021 liulockwoodtam2024 onji2009 harju2019 asatryanpeichl2017 nandiwarwick2020 waseem2024">(<a href="#ref-liuetal2021" role="doc-biblioref">Liu et al. 2021</a>, <a href="#ref-liulockwoodtam2024" role="doc-biblioref">2024</a>; <a href="#ref-onji2009" role="doc-biblioref">Onji 2009</a>; <a href="#ref-harju2019" role="doc-biblioref">Harju et al. 2019</a>; <a href="#ref-asatryanpeichl2017" role="doc-biblioref">Asatryan and Peichl 2017</a>; <a href="#ref-nandiwarwick2020" role="doc-biblioref">Nandi and Warwick 2020</a>; <a href="#ref-waseem2024" role="doc-biblioref">Bashir et al. 2024</a>)</span>. <span class="citation" data-cites="liuetal2021">Liu et al. (<a href="#ref-liuetal2021" role="doc-biblioref">2021</a>)</span> is closest: it estimates bunching at the UK notch on administrative data over 2004–2014 and documents voluntary registration; I take its estimates as the established behavioural facts and cost shape and rate reforms statically on a common basis, which that literature does not do. The international evidence <span class="citation" data-cites="harju2019 onji2009 asatryanpeichl2017 nandiwarwick2020">(<a href="#ref-harju2019" role="doc-biblioref">Harju et al. 2019</a>; <a href="#ref-onji2009" role="doc-biblioref">Onji 2009</a>; <a href="#ref-asatryanpeichl2017" role="doc-biblioref">Asatryan and Peichl 2017</a>; <a href="#ref-nandiwarwick2020" role="doc-biblioref">Nandi and Warwick 2020</a>)</span> notes that bunching at a VAT threshold can reflect compliance costs, firm-splitting, or reporting rather than real turnover responses.</p>
+<p>The third strand questions whether bunching identifies a structural elasticity at all: <span class="citation" data-cites="blomquistetal2021">Blomquist et al. (<a href="#ref-blomquistetal2021" role="doc-biblioref">2021</a>)</span> show that the elasticity is not non-parametrically identified from bunching at a kink or a notch without strong functional-form assumptions, and <span class="citation" data-cites="bertanhaetal2023">Bertanha et al. (<a href="#ref-bertanhaetal2023" role="doc-biblioref">2023</a>)</span> develop the notch case. This literature motivates my refusal to read an elasticity off the synthetic data: even setting aside the placebo evidence that any synthetic step is mechanical, the mapping from excess mass to an elasticity requires assumptions I am unwilling to impose. The fourth strand is the structural literature on size-based thresholds <span class="citation" data-cites="garicano2016 gourioroys2014">(<a href="#ref-garicano2016" role="doc-biblioref">Garicano et al. 2016</a>; <a href="#ref-gourioroys2014" role="doc-biblioref">Gourio and Roys 2014</a>)</span>, which identifies policy-invariant primitives at the French 50-employee threshold and computes welfare from them; the present paper makes no such structural claim.</p>
+<p>This paper makes three contributions. First, it provides an open, reproducible firm-level microsimulation for costing UK VAT threshold reforms, where the existing firm-level evidence rests on restricted administrative data; the released pipeline regenerates every number in the paper from public inputs. Second, it characterises the notch’s distortion through its exact dominated region and costs two schedule reforms—a graduated taper and a reduced-rate band—on the same static basis as level reforms. Third, it demonstrates, by construction and by correction, that band-calibrated synthetic data carry no sub-band behavioural information beyond their targets: the paper documents how its own earlier build manufactured a plausible-looking density step, how the correction removed it, how calibrating to the OBR’s published fine bands restores the administrative shape as an explicit target, and how the same band-edge mechanism manufactures a spurious signal where no fine targets exist. Identifying the turnover elasticity from administrative micro-data, a welfare accounting, revenue-neutral designs, and an explicit model of voluntary registration are left for future work.</p>
+<p>The remainder of the paper proceeds as follows. Section&nbsp;<a href="#sec:background" data-reference-type="ref" data-reference="sec:background">2</a> describes the institutional background of the UK VAT threshold. Section&nbsp;<a href="#sec:data" data-reference-type="ref" data-reference="sec:data">3</a> sets out the synthetic firm microdata and its calibration to official aggregates. Section&nbsp;<a href="#sec:static" data-reference-type="ref" data-reference="sec:static">4</a> sets out the static costing of threshold changes and the schedule reforms. Section&nbsp;<a href="#sec:bunching" data-reference-type="ref" data-reference="sec:bunching">5</a> shows that the synthetic data contain no usable bunching signal and validates the estimator’s power on injected signals. Section&nbsp;<a href="#sec:model" data-reference-type="ref" data-reference="sec:model">6</a> develops the notch and its exact dominated region, and shows how each reform changes it. Section&nbsp;<a href="#sec:behavioural" data-reference-type="ref" data-reference="sec:behavioural">7</a> prices the reforms behaviourally, conditional on an assumed elasticity, and derives the level-rise invariance. Section&nbsp;<a href="#sec:conclusion" data-reference-type="ref" data-reference="sec:conclusion">8</a> concludes.</p>
+<h1 id="sec:background">Institutional background</h1>
+<h4 id="registration-and-the-notch." class="anchored">Registration and the notch.</h4>
+<p>The United Kingdom levies a value-added tax at a standard rate of 20% on most goods and services. A business must register once its taxable turnover over any rolling twelve-month period exceeds the registration threshold, after which it charges VAT on its taxable sales and reclaims VAT paid on inputs. Because registration makes VAT due on the firm’s <em>entire</em> taxable turnover rather than only the amount above the cutoff, the threshold is a <em>notch</em>—a discrete jump in liability—and not a kink. The cost of crossing is largest for consumer-facing firms with limited pass-through and small reclaimable input shares, for whom the incentive is to restrain turnover and locate just below the threshold <span class="citation" data-cites="liuetal2021 klevenwaseem2013">(<a href="#ref-liuetal2021" role="doc-biblioref">Liu et al. 2021</a>; <a href="#ref-klevenwaseem2013" role="doc-biblioref">Kleven and Waseem 2013</a>)</span>.</p>
+<h4 id="value-added-input-reclaim-and-voluntary-registration." class="anchored">Value added, input reclaim, and voluntary registration.</h4>
+<p>Real VAT is a tax on <em>value added</em>, not on turnover: a registered firm charges output VAT on its sales but reclaims input VAT on its purchases. The model reflects this: each synthetic firm’s net liability is the standard rate applied to its value added (Section&nbsp;<a href="#sec:data" data-reference-type="ref" data-reference="sec:data">3</a>), and under the value-added formulation—in which unregistered firms bear no unreclaimed input VAT—the notch’s dominated region is invariant to the firm’s input share (Section&nbsp;<a href="#sec:model" data-reference-type="ref" data-reference="sec:model">6</a>). Two features of the real system remain outside the model’s scope. A large share of below-threshold firms register <em>voluntarily</em>—roughly <span class="math inline">\(43\%\)</span> of eligible below-threshold firms <span class="citation" data-cites="liuetal2021">(<a href="#ref-liuetal2021" role="doc-biblioref">Liu et al. 2021</a>)</span>, driven by input-VAT reclaim and business-to-business sales—and for them the threshold carries no bunching incentive; voluntary registration enters the model only as a registration-rate parameter and a retention sensitivity, not as a choice. And net-repayment traders (zero-rated exporters and similar, HMRC’s negative-liability column) are not represented, because the public aggregates do not resolve rated structure by turnover band.</p>
+<h4 id="threshold-history." class="anchored">Threshold history.</h4>
+<p>The registration threshold was held at £85,000 from 1&nbsp;April 2017 to 31&nbsp;March 2024—a seven-year nominal freeze, the longest in the history of the tax—before being raised to £90,000 on 1&nbsp;April 2024, with the deregistration threshold rising from £83,000 to £88,000 <span class="citation" data-cites="hmrc_threshold hoc_vat">(<a href="#ref-hmrc_threshold" role="doc-biblioref">HM Revenue and Customs 2024</a>; <a href="#ref-hoc_vat" role="doc-biblioref">Seely 2024</a>)</span>. Because nominal turnover grows with inflation and real activity, freezing the threshold lowers it in real terms and draws an increasing number of firms towards the registration margin; this fiscal-drag mechanism was a central motivation for the April&nbsp;2024 increase. My data year is 2023–24, so the prevailing statutory threshold throughout my analysis is £85,000. Figure&nbsp;<a href="#fig:obr_bunching" data-reference-type="ref" data-reference="fig:obr_bunching">2</a> shows the pattern in the turnover distribution: the number of firms rises towards £84,000 and falls sharply above £85,000, and the projected 2025–26 distribution is more sharply bunched than the 2019–20 outturn as fiscal drag draws more firms towards the frozen threshold.</p>
+<figure id="fig:obr_bunching" data-latex-placement="htbp">
+<img src="figures/obr_vat_bunching_85k.png" style="width:74.0%">
+<figcaption>
+Bunching below the £85<span>,</span>000 VAT registration threshold: number of businesses by £1<span>,</span>000 turnover band. Source: <a href="https://obr.uk/box/the-impact-of-the-frozen-vat-registration-threshold/">OBR, <em>Economic and Fiscal Outlook</em> March 2023</a>, Chart C (Open Government Licence).
+</figcaption>
+</figure>
+<h4 id="the-reform-debate." class="anchored">The reform debate.</h4>
+<p>The UK threshold is the highest in the OECD alongside Switzerland <span class="citation" data-cites="hmrc_threshold">(<a href="#ref-hmrc_threshold" role="doc-biblioref">HM Revenue and Customs 2024</a>)</span>, and there is debate over whether to raise it—to reduce the compliance burden on small firms—or lower it, to broaden the base and reduce the growth distortion at the margin. Three families of reform feature, and I evaluate all three: a change in the threshold’s <em>level</em> (the £85,000 to £90,000 increase of April&nbsp;2024 and further moves around it); a change in its <em>shape</em> (a <em>graduated taper</em> that phases the effective rate in over a band, replacing the notch with a continuous profile); and a change in its <em>rate</em> (a <em>reduced rate</em> for small firms in a band above the threshold, with the standard 20% rate retained above). The taper and reduced-rate designs follow proposals in the UK policy debate: <span class="citation" data-cites="ots2017vat">Office of Tax Simplification (<a href="#ref-ots2017vat" role="doc-biblioref">2017</a>)</span> canvassed a financial incentive or reduced effective rate to smooth the cliff-edge at the threshold, and HM Treasury’s call for evidence on the registration threshold examined smoothing mechanisms in the same family <span class="citation" data-cites="hmt2018cfe">(<a href="#ref-hmt2018cfe" role="doc-biblioref">HM Treasury 2018</a>)</span>. The European Union ran a closely related “graduated relief” scheme for small enterprises and abolished it from January&nbsp;2025 on complexity grounds, in favour of a simple exemption with a transition tolerance <span class="citation" data-cites="eudirective2020285">(<a href="#ref-eudirective2020285" role="doc-biblioref">Council of the European Union 2020</a>)</span>—relevant precedent for the administrability of taper-style designs. A banded reduced rate introduces a smaller <em>secondary</em> notch at the band top, which the continuous taper avoids. I cost all three by the same machinery in Section&nbsp;<a href="#sec:static" data-reference-type="ref" data-reference="sec:static">4</a>.</p>
+<h1 id="sec:data">Data</h1>
+<p>Studying firm responses at the threshold needs firm-level turnover near the cutoff, which the official statistics publish only in coarse turnover bands. I therefore build a synthetic firm population calibrated to those aggregates: it reproduces the official totals while resolving the individual firm that the authorities do not release, opening the analysis to anyone. The same calibrate-to-published-aggregates approach underlies open household-level tax-benefit microsimulation <span class="citation" data-cites="policyengine">(<a href="#ref-policyengine" role="doc-biblioref">PolicyEngine 2025</a>)</span>; here I apply it at the firm level. The generator takes the registration threshold as a parameter and is documented in Appendix&nbsp;<a href="#app:data" data-reference-type="ref" data-reference="app:data">9.1</a>; I build one population for 2023–24 (threshold £85,000), the paper’s primary data year, and one for 2024–25 (threshold £90,000), used for the forward sweep of Section&nbsp;<a href="#sec:static" data-reference-type="ref" data-reference="sec:static">4</a>.</p>
+<p>The archived CSV inputs in this repository remain the reproduction source for the paper’s reported numbers; a pinned migration snapshot also represents the same numeric target surface through PolicyEngine Ledger and the experimental Populace firm generator, and Appendix&nbsp;<a href="#app:data" data-reference-type="ref" data-reference="app:data">9.1</a> reports the parity check between that shared source-of-truth path and the paper inputs.</p>
+<h4 id="construction." class="anchored">Construction.</h4>
+<p>Index firms by <span class="math inline">\(i\)</span>. For each sector <span class="math inline">\(s\)</span> and ONS turnover band <span class="math inline">\(b=[\underline{b},\overline{b}]\)</span>, the <em>UK Business: Activity, Size and Location</em> table gives a business count <span class="math inline">\(N_{s,b}\)</span>, and I draw <span class="math inline">\(N_{s,b}\)</span> firms with within-band turnover <span class="math display">\[y_i \;=\; \underline{b} + (\overline{b}-\underline{b})\,u_i + \varepsilon_i,
+  \qquad u_i \sim \mathcal{U}(0,1), \;\; \varepsilon_i \sim \mathcal{N}(0,\sigma_b^2),\]</span> truncated below at zero, where <span class="math inline">\(\varepsilon_i\)</span> smooths the within-band distribution. The ONS register covers businesses registered for VAT and/or PAYE—about 2.7 million—so the synthetic population represents that registered-business frame, not the full business population of roughly 5.6 million in the DBT business population estimates; the difference is concentrated below the threshold and matters for threshold <em>cuts</em>, which I flag where relevant. Each firm is given input expenditure <span class="math inline">\(x_i = \rho_i\,y_i\)</span>, with the input–output ratio <span class="math inline">\(\rho_i\)</span> drawn from a rescaled Beta distribution with sector-specific shifts, clamped to <span class="math inline">\(\rho_i \in [0.1, 0.95]\)</span> (mean about 0.6, so value added averages about 40% of turnover, in line with the UK non-financial business economy). Its net VAT liability is the standard rate applied to its value added, <span class="math display">\[v_i \;=\; \tau\,(y_i - x_i), \qquad \tau = 0.20,\]</span> so every firm’s net rate <span class="math inline">\(v_i/y_i = \tau(1-\rho_i)\)</span> lies in <span class="math inline">\([1\%, 18\%]\)</span>, strictly positive and below the statutory cap of 20%. The model therefore abstracts from net-repayment traders (firms with zero-rated outputs whose input reclaim exceeds output VAT—HMRC’s negative-liability column); representing them requires rated-structure detail (zero, reduced, and exempt output shares) that the public aggregates do not resolve by band. Employment is assigned from the ONS employment-band shares.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>The base population reproduces the ONS structure but not the HMRC VAT-registered totals, so I re-weight it. Each firm receives a strictly positive weight <span class="math inline">\(w_i = e^{\theta_i}\)</span>, and for a vector of official targets <span class="math inline">\(T=(T_k)_{k=1}^{K}\)</span> the weighted synthetic counterpart of target <span class="math inline">\(k\)</span> is <span class="math display">\[\widehat{T}_k(\theta) \;=\; \sum_i a_{ki}\, w_i ,\]</span> where <span class="math inline">\(a_{ki}\)</span> is firm <span class="math inline">\(i\)</span>’s contribution to target <span class="math inline">\(k\)</span>: an indicator of band or sector membership for a count target, and the firm’s net liability <span class="math inline">\(v_i\)</span> for a VAT-liability target. I choose <span class="math inline">\(\theta\)</span> to minimise a symmetric relative-error loss with per-target importance weights <span class="math inline">\(\lambda_k\)</span>, <span class="math display">\[L(\theta) \;=\; \frac{1}{K}\sum_{k} \lambda_k
+    \min\!\Big\{ \big(\widehat{T}_k/T_k - 1\big)^2,\; \big(T_k/\widehat{T}_k - 1\big)^2 \Big\}
+    \;+\; \frac{\alpha}{N}\sum_i \lvert \theta_i \rvert ,\]</span> the final term a mean absolute penalty on the log-weights. The targets are the HMRC VAT-registered counts by turnover band and by sector, the HMRC net VAT liability by turnover band, the ONS employment-band totals, and—for the 2023–24 vintage—the OBR’s published near-threshold profile: the March 2023 <em>Economic and Fiscal Outlook</em> Chart&nbsp;C data give HMRC counts of businesses by £1,000 turnover band over £65,000–£90,000 <span class="citation" data-cites="obr2023vat">(<a href="#ref-obr2023vat" role="doc-biblioref">Office for Budget Responsibility 2023</a>)</span>, which I interpolate to the 2023–24 data year between the 2019–20 outturn and the OBR’s 2025–26 frozen-threshold projection (the chart’s final row, the £90,000 bin, lies beyond the fine window and is not used). All twenty-five bins enter as <em>shape</em> targets, applied side-consistently: each side of the threshold takes the OBR profile’s within-side shape, normalised over its own window (£65,000–£85,000 below; £85,000–£90,000 above) and scaled to the synthetic population’s own mass there. The chart counts HMRC traders—a different unit and, below the threshold, a substantially narrower universe than the ONS business frame—so its levels are not imported on either side. An earlier build that mixed conventions (direct counts above the threshold, frame-scaled shape below) placed more mass just above the threshold than just below it, inverting the administrative profile’s cross-threshold ordering; under side-consistent scaling the cross-threshold step comes from the frame’s own band structure and the OBR data supply only the within-side geometry—the rise into the threshold and the decline beyond it. These fine targets pin the near-threshold density to the OBR profile’s within-side geometry at frame-implied levels—the region that coarse bands alone leave to the weight optimiser (Section&nbsp;<a href="#sec:bunching" data-reference-type="ref" data-reference="sec:bunching">5</a>); the resulting cross-threshold step (<span class="math inline">\(-25\%\)</span>) is about half the OBR chart’s own (<span class="math inline">\(-60\%\)</span>), because the chart’s below-threshold universe is narrower than the frame. No fine bands are published for the £90,000 threshold era, so the 2024–25 vintage keeps coarse bands only. Turnover-band and near-threshold targets carry the largest <span class="math inline">\(\lambda_k\)</span>, followed by VAT liability by band. Two liability dimensions are reported as informational diagnostics but excluded from the optimizer. VAT liability by sector is excluded because the generator draws a common input-share distribution with sector shifts rather than calibrating the input/output tax structure by sector. The below-threshold liability band (£1–threshold, £1.46bn in 2023–24) is excluded because that total is remitted by voluntary registrants—input-reclaim traders averaging about £2,150 of net remittance—whom the model’s standard-rate-on-value-added liability does not represent (Section&nbsp;<a href="#sec:background" data-reference-type="ref" data-reference="sec:background">2</a>); imposing it on the whole below-threshold population would force the optimiser to suppress weights in the £50,000–£85,000 region, distorting the near-threshold shape the fine targets exist to pin. The problem is solved by gradient descent, and the symmetric loss keeps targets of very different magnitudes on a common scale.</p>
+<p>A firm is registered with certainty when its data-year turnover exceeds the threshold <span class="math inline">\(T^{*}\)</span>. This is an approximation to the statutory test, which is a rolling 12-month test on <em>taxable</em> turnover with a roughly two-month registration lag, a forward-looking 30-day test, and an exception for temporary breaches (Section&nbsp;<a href="#sec:background" data-reference-type="ref" data-reference="sec:background">2</a>); the model also registers firms whose turnover is largely exempt, whom the law would not require to register. For a single-year cross-section calibrated to registered-population totals these timing and composition wedges are second order for the aggregates, but they are worth naming: the HMRC band tables classify traders by total declared outputs (VAT-return Box 6), and the ONS turnover measure is likewise total turnover, so the running variable throughout is total rather than taxable turnover. Below the threshold a firm registers voluntarily with probability <span class="math inline">\(r = M / n_{&lt;}\)</span>, where <span class="math inline">\(M\)</span> is the HMRC count of registered firms in the £1–threshold band and <span class="math inline">\(n_{&lt;}\)</span> is the unweighted number of synthetic below-threshold firm rows. This sets the expected row-level voluntary-registration rate; I do not treat below-threshold voluntary registration as a separate weighted calibration target. The resulting dataset comprises approximately <span class="math inline">\(2.94\)</span>&nbsp;million firm records per vintage, weighted to represent roughly <span class="math inline">\(2.5\)</span>&nbsp;million registered businesses. Checked against the official sources along every calibrated dimension, the vintages attain overall calibration accuracies of 89.2% (2023–24) and 92.8% (2024–25), with dimension scores ranging from 77.9% (2023–24 employment bands) to 94.2%; Appendix&nbsp;<a href="#app:data" data-reference-type="ref" data-reference="app:data">9.1</a> reports the full table. The headline is the mean of five calibrated-dimension scores, each clipped at zero as <span class="math inline">\(\max\{0,1-\lvert \widehat{T}-T\rvert/\lvert T\rvert\}\)</span>; it excludes the VAT-liability-by-sector diagnostic described above.</p>
+<h4 id="the-registration-threshold-in-the-data." class="anchored">The registration threshold in the data.</h4>
+<p>My primary data year is 2023–24, when the statutory threshold was £85,000. The HMRC band targets step down across the threshold—678,350 firms in the £1–£85,000 band against 305,320 in £85,000–£150,000, or roughly <span class="math inline">\(8{,}000\)</span> against <span class="math inline">\(4{,}700\)</span> firms per £1,000 of band width—and the calibrated population necessarily inherits that band-average step. The <em>local</em> shape within a few thousand pounds of the threshold is pinned by the OBR near-threshold targets described above: the calibrated density rises into the threshold (about <span class="math inline">\(13{,}800\)</span> firms per £1,000 in the £84,000–£85,000 bin), steps down across it (about <span class="math inline">\(10{,}300\)</span> just above), and declines through the band—the administratively observed bunching geometry <span class="citation" data-cites="obr2023vat liuetal2021">(<a href="#ref-obr2023vat" role="doc-biblioref">Office for Budget Responsibility 2023</a>; <a href="#ref-liuetal2021" role="doc-biblioref">Liu et al. 2021</a>)</span>, present in the file because it is targeted, not because any synthetic firm chooses it. In an earlier build without these targets the local shape was an unpinned optimiser equilibrium (and, under the pre-correction liability scale, a spurious bunching look-alike); the central data caveat of the paper stands in all three configurations: no sub-band feature of band-calibrated synthetic data carries behavioural information beyond what its targets put there (Section&nbsp;<a href="#sec:bunching" data-reference-type="ref" data-reference="sec:bunching">5</a> quantifies this with placebo and recovery tests). Counterfactual policies—including the £85,000 to £90,000 reform and the forward threshold sweep of Section&nbsp;<a href="#sec:static" data-reference-type="ref" data-reference="sec:static">4</a>—are evaluated on these firms by re-applying the registration rule to the microdata for the static costings, holding the empirical turnover distribution fixed. A behavioural layer that re-prices firms under counterfactual schedules, conditional on an assumed turnover elasticity, is developed in Section&nbsp;<a href="#sec:behavioural" data-reference-type="ref" data-reference="sec:behavioural">7</a>.</p>
+<figure id="fig:turnover_dist" data-latex-placement="htbp">
+<img src="figures/turnover_distribution_85k.png" style="width:74.0%">
+<figcaption>
+Synthetic firm turnover distribution (weighted firm counts, £1<span>,</span>000 bins), 2023–24. The near-threshold profile—rising into the £85<span>,</span>000 threshold and stepping down across it—is calibrated to the OBR’s published £1<span>,</span>000-band counts and is therefore target-inherited, not behavioural (Section&nbsp;<a href="#sec:bunching" data-reference-type="ref" data-reference="sec:bunching">5</a>). Levels reflect the ONS VAT/PAYE-registered frame: unregistered businesses—most of the below-threshold mass, and most of the cross-threshold cliff, in all-business administrative charts—are outside it, so level comparisons to such charts are not like-for-like. The steps at £90<span>,</span>000 (about <span class="math inline">9, 100</span> firms per £1<span>,</span>000 in the last OBR-pinned bin against about <span class="math inline">6, 800</span> in the first unpinned bin) and £150<span>,</span>000 are calibration-target boundaries—the top of the OBR fine-band window and an HMRC band edge respectively—not features of the underlying firm distribution. The £90<span>,</span>000 boundary lies inside the bunching estimator’s fit range; Appendix&nbsp;<a href="#app:inference" data-reference-type="ref" data-reference="app:inference">9.2</a> measures its effect on the headline statistics.
+</figcaption>
+</figure>
+<h1 id="sec:static">Static costing of threshold reforms</h1>
+<p>A static costing measures the first-order revenue effect of a reform by re-applying the tax rule to a fixed firm population, with no behavioural response. Let firm <span class="math inline">\(i\)</span> have turnover <span class="math inline">\(y_i\)</span>, calibrated net VAT liability <span class="math inline">\(v_i = \tau(y_i - x_i)\)</span> (Section&nbsp;<a href="#sec:data" data-reference-type="ref" data-reference="sec:data">3</a>), and weight <span class="math inline">\(w_i\)</span>. A firm remits VAT only once registered, which the model equates with turnover above the threshold <span class="math inline">\(T\)</span>, so total VAT revenue at threshold <span class="math inline">\(T\)</span> is the weighted sum of liabilities over registered firms, <span class="math display">\[R(T) \;=\; \sum_i w_i\, v_i \,\mathbf{1}\{y_i \ge T\}.\]</span> Two scope conventions follow from this formula and are worth stating. First, below-threshold <em>voluntary</em> registrants’ remittances (a £1.46bn HMRC target in 2023–24) are outside <span class="math inline">\(R(T)\)</span>, so a threshold cut credits the full liability of newly covered firms even though roughly 43% of below-threshold firms would already be registered voluntarily <span class="citation" data-cites="liuetal2021">(<a href="#ref-liuetal2021" role="doc-biblioref">Liu et al. 2021</a>)</span>. Second, and symmetrically, the headline treats every firm released by a threshold rise as deregistering; the anchor comparison below reports the voluntary-retention sensitivity. Because turnover is held fixed, moving the threshold from <span class="math inline">\(T_0\)</span> to <span class="math inline">\(T\)</span> changes revenue only through the firms whose registration status flips: <span class="math display">\[\Delta R \;=\; R(T) - R(T_0) \;=\; -\,\operatorname{sign}(T - T_0)
+  \sum_i w_i\, v_i \,\mathbf{1}\{\,T_{\min} \le y_i &lt; T_{\max}\,\},\]</span> where <span class="math inline">\(T_{\min}=\min(T,T_0)\)</span> and <span class="math inline">\(T_{\max}=\max(T,T_0)\)</span>: lowering the threshold draws firms into the net and raises revenue, while raising it releases firms and loses revenue. The estimate is the mechanical reclassification effect and excludes the behavioural response of Section&nbsp;<a href="#sec:behavioural" data-reference-type="ref" data-reference="sec:behavioural">7</a>. I age the microdata to a given fiscal year by a cumulative nominal-growth factor; band membership is evaluated on data-year turnover against each year’s nominal thresholds, and only liabilities are aged—an approximation stated because a fully aged band would shift membership toward the pinned near-threshold density. At the £90,000 threshold this puts total VAT revenue at £200.9bn in 2025–26 and £206.1bn in 2026–27.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<h4 id="anchor-comparison-against-hmrcs-published-costing." class="anchored">Anchor comparison against HMRC’s published costing.</h4>
+<p>I compare the static pipeline against HMRC’s costing of the April&nbsp;2024 increase from £85,000 to £90,000, announced and costed at Spring Budget 2024 <span class="citation" data-cites="hmt_spring_budget_2024">(<a href="#ref-hmt_spring_budget_2024" role="doc-biblioref">HM Treasury 2024</a>)</span>. The comparison requires the costing baseline convention: the official pre-measure baseline is not a frozen £85,000 threshold but a counterfactual path in which the freeze legislated to March&nbsp;2026 ends and the threshold resumes uprating (85, 85, 87, 89, 92 thousand pounds over 2024–25 to 2028–29 in the model’s implementation), so the measure’s impact shrinks over the forecast and changes sign in 2028–29, when the counterfactual threshold overtakes £90,000. The official profile is <span class="math inline">\(-\)</span><!-- -->150, <span class="math inline">\(-\)</span><!-- -->185, <span class="math inline">\(-\)</span><!-- -->125, <span class="math inline">\(-\)</span><!-- -->50, <span class="math inline">\(+\)</span><!-- -->65 £m. My mechanical costing depends on the deregistration convention. If every released firm deregisters, the model gives <span class="math inline">\(-\)</span><!-- -->317, <span class="math inline">\(-\)</span><!-- -->323, <span class="math inline">\(-\)</span><!-- -->195, <span class="math inline">\(-\)</span><!-- -->66, <span class="math inline">\(+\)</span><!-- -->103: it reproduces the sign, the narrowing profile, and the 2028–29 turning point, but overshoots the official magnitudes throughout (<span class="math inline">\(-\)</span><!-- -->317 against <span class="math inline">\(-\)</span><!-- -->150 in 2024–25; <span class="math inline">\(-\)</span><!-- -->323 against <span class="math inline">\(-\)</span><!-- -->185 in 2025–26). If instead the <span class="citation" data-cites="liuetal2021">Liu et al. (<a href="#ref-liuetal2021" role="doc-biblioref">2021</a>)</span> voluntary-registration share (43%) of released-firm liability is retained, the model gives <span class="math inline">\(-\)</span><!-- -->180, <span class="math inline">\(-\)</span><!-- -->184, <span class="math inline">\(-\)</span><!-- -->111, <span class="math inline">\(-\)</span><!-- -->38, <span class="math inline">\(+\)</span><!-- -->59: above the official number in the first year, close to it in 2025–26 (<span class="math inline">\(-\)</span><!-- -->184.1 against <span class="math inline">\(-\)</span><!-- -->185), and modestly below it thereafter (Figure&nbsp;<a href="#fig:hmrc_validation" data-reference-type="ref" data-reference="fig:hmrc_validation">4</a>). That is the honest reading of the anchor: the official costing embeds a phased registration response (HMRC expected roughly 28,000 fewer registrants in the first year, against about 48,000 firms in the released band here, now pinned by the OBR fine-band targets), so the full-deregistration convention overshoots throughout, and the retention convention crosses the official path—above it in the first year, below it from 2026–27. Because my microdata are calibrated to HMRC VAT aggregates, even a close match would confirm internal consistency rather than out-of-sample accuracy. The sub-£1m agreement in 2025–26 is, in particular, finer than the model’s own liability level supports: the £85,000–£150,000 band’s calibrated liability sits <span class="math inline">\(9.8\%\)</span> above its HMRC target total (footnote above), and rescaling the released band to target puts the retention figure near <span class="math inline">\(-\unicode{xA3}168\)</span>m—the year-2 agreement is a coincidence within that error band, not model precision. The retention share is itself a convention: LLAT’s roughly <span class="math inline">\(43\%\)</span> is a <em>firm</em> share among all below-threshold eligibles, applied here as a liability share among just-released firms.</p>
+<figure id="fig:hmrc_validation" data-latex-placement="htbp">
+<img src="figures/vat_threshold_revenue_impact.png" style="width:78.0%">
+<figcaption>
+Anchor reform: revenue impact of raising the VAT registration threshold from £85<span>,</span>000 to £90<span>,</span>000 (the April&nbsp;2024 change), my estimate versus HMRC’s published costing, 2024–25 to 2028–29. Both series narrow over the forecast and turn positive by 2028–29 because the costing baseline is a counterfactual threshold path that resumes uprating after March&nbsp;2026 and overtakes £90<span>,</span>000. The mechanical full-deregistration estimate overshoots the official costing while its phased registration response builds; the voluntary-retention convention runs close to the official figure in 2025–26 and modestly below it thereafter; agreement finer than the calibrated liability level supports is coincidental (see text). Because the microdata are calibrated to HMRC and OBR aggregates, this is a consistency check, not an out-of-sample validation.
+</figcaption>
+</figure>
+<h4 id="a-menu-of-threshold-locations." class="anchored">A menu of threshold locations.</h4>
+<p>I next cost a menu of further threshold locations, taking the post-reform £90,000 threshold as the baseline. This sweep runs on the 2024–25 vintage population (Section&nbsp;<a href="#sec:data" data-reference-type="ref" data-reference="sec:data">3</a>), whose liability-by-band calibration is the marginally stronger of the two (92.0% against 91.3%; both vintages score about 90% overall). Each row of Table&nbsp;<a href="#tab:static_revenue" data-reference-type="ref" data-reference="tab:static_revenue">1</a> costs a move of the threshold to a new location for 2025–26, holding the turnover distribution fixed, so the revenue change reflects only the reclassification of firms into or out of the VAT net. Because the optimiser determines the within-band shape near the threshold (Section&nbsp;<a href="#sec:data" data-reference-type="ref" data-reference="sec:data">3</a>), I evaluate the reclassified band from a smooth extrapolation of the above-threshold profile rather than the raw local mass. Lowering the threshold draws firms in and raises revenue; raising it loses revenue; the threshold-cut rows inherit the registered-business frame, so they omit currently unregistered businesses that a lower threshold would newly cover. The schedule is approximately linear with a mild concavity: each £5,000 step changes revenue by roughly £230m–£265m, slightly less per step at higher thresholds because the number of firms reclassified per step falls (from about <span class="math inline">\(38{,}000\)</span> to about <span class="math inline">\(26{,}000\)</span>) faster than per-firm liability rises. A £30,000 rise to £120,000 costs about £1.4bn, 0.7% of the £200.9bn base, because the threshold governs many small firms whose individual liabilities are small. Figure&nbsp;<a href="#fig:static_sweep" data-reference-type="ref" data-reference="fig:static_sweep">5</a> shows the sweep graphically. These are <em>static</em> results: they bound the first-order fiscal effect of a threshold change but abstract from the behavioural response of Section&nbsp;<a href="#sec:behavioural" data-reference-type="ref" data-reference="sec:behavioural">7</a>.</p>
+<div id="tab:static_revenue">
+<table class="caption-top">
+<caption>Static revenue and VAT-paying-firm effects of moving the VAT registration threshold, 2025–26, relative to the post-reform £90,000 baseline (total VAT revenue £200.9bn; 2024–25 vintage population). Figures are mechanical, holding firm turnover fixed (no behavioural response). This sweep is distinct from the anchor reform of Figure&nbsp;<a href="#fig:hmrc_validation" data-reference-type="ref" data-reference="fig:hmrc_validation">4</a>. The machine-readable table is <code>results/static_sweep.txt</code> in the replication repository.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Threshold</th>
+<th style="text-align: right;">Revenue change (£m)</th>
+<th style="text-align: right;">Change (%)</th>
+<th style="text-align: right;">VAT-paying firms (000s)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">£70,000</td>
+<td style="text-align: right;"><span class="math inline">\(+1{,}042.8\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(+0.52\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(+145.7\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">£75,000</td>
+<td style="text-align: right;"><span class="math inline">\(+776.2\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(+0.39\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(+107.2\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">£80,000</td>
+<td style="text-align: right;"><span class="math inline">\(+513.6\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(+0.26\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(+70.1\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">£85,000</td>
+<td style="text-align: right;"><span class="math inline">\(+254.8\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(+0.13\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(+34.4\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">£90,000 (baseline)</td>
+<td style="text-align: right;"><span class="math inline">\(0\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">£95,000</td>
+<td style="text-align: right;"><span class="math inline">\(-250.9\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-0.12\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-33.0\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">£100,000</td>
+<td style="text-align: right;"><span class="math inline">\(-498.0\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-0.25\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-64.6\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">£105,000</td>
+<td style="text-align: right;"><span class="math inline">\(-741.1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-0.37\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-94.8\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">£110,000</td>
+<td style="text-align: right;"><span class="math inline">\(-980.4\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-0.49\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-123.7\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">£115,000</td>
+<td style="text-align: right;"><span class="math inline">\(-1{,}215.7\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-0.61\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-151.2\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">£120,000</td>
+<td style="text-align: right;"><span class="math inline">\(-1{,}447.1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-0.72\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-177.3\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure id="fig:static_sweep" data-latex-placement="htbp">
+<img src="figures/revenue_impact_2025_26.png" style="width:48.0%">
+<p>
+<span><em>Revenue impact (£m)</em></span>
+</p>
+<img src="figures/firms_impact_2025_26.png" style="width:48.0%">
+<p>
+<span><em>Change in VAT-paying firms (000s)</em></span>
+</p>
+<figcaption>
+Static effect of moving the VAT registration threshold, 2025–26, relative to the £90<span>,</span>000 baseline (dashed line). Panel (a): revenue impact—lowering the threshold raises revenue, raising it loses revenue, approximately linearly over the £70<span>,</span>000–£120<span>,</span>000 range. Panel (b): the change in the number of VAT-paying firms, tracking the local density of firms on each side of the threshold.
+</figcaption>
+</figure>
+<h2 id="ssec:schedule_costs" class="anchored">Costing schedule reforms</h2>
+<p>The threshold sweep above moves the <em>location</em> of a single cutoff. The same static principle—re-applying a tax rule to the fixed turnover distribution, with no behavioural response—also costs reforms that change the <em>shape</em> of the schedule rather than merely its position. I consider four reforms and report their first-order revenue effects against a common baseline: the £85,000-notch / £184.8bn 2023–24 base. (This 2023–24 data-year base differs from the £200.9bn figure in the sweep above, which runs on the 2024–25 vintage aged to 2025–26 at the post-reform £90,000 threshold; the schedule reforms are costed in the data year to match the bunching and dominated-region analysis. Both bases are theoretical-liability (VTTL-style) aggregates in the sense of the footnote above, not cash-receipts lines.) For each reform I recompute the weighted sum of liabilities <span class="math inline">\(R = \sum_i w_i\, v_i\)</span> under the new schedule, holding each firm’s turnover fixed, and difference it against the baseline.</p>
+<h4 id="threshold-relocation." class="anchored">Threshold relocation.</h4>
+<p>Raising the threshold from £85,000 to £100,000 releases the firms with turnover in <span class="math inline">\([\unicode{xA3}85{,}000, \unicode{xA3}100{,}000)\)</span>—about <span class="math inline">\(111{,}900\)</span> firms—from the VAT net, for a static revenue change of <span class="math inline">\(-\)</span>£753m on the common base. Because the released band lies <em>above</em> the data-year threshold, its liabilities are directly calibrated (and its lower reach pinned by the OBR fine-band targets), so the band is summed directly; the sweep’s smooth-counterfactual method, which irons out the near-threshold concentration by construction, gives <span class="math inline">\(-\)</span>£697m and <span class="math inline">\(100{,}700\)</span> firms, 7% and 10% below the direct sum—a gap that now measures the real, target-pinned concentration of firms just above the threshold rather than an optimiser artifact. On this common base the level move carries the largest static cost of the menu and leaves the dominated region in place, relocating it to the new cutoff (Section&nbsp;<a href="#sec:model" data-reference-type="ref" data-reference="sec:model">6</a>); the taper removes the dominated region at a static cost of <span class="math inline">\(-\)</span>£520m. Which matters more depends on what the reader wants from the reform—the dominated-region metric indexes misallocation only, and Section&nbsp;<a href="#sec:conclusion" data-reference-type="ref" data-reference="sec:conclusion">8</a> discusses what it omits.</p>
+<h4 id="graduated-taper." class="anchored">Graduated taper.</h4>
+<p>A graduated taper replaces the discrete notch with an effective rate that phases linearly from <span class="math inline">\(0\%\)</span> at £85,000 to the full <span class="math inline">\(20\%\)</span> at £105,000. Firms in the band remit a tapered rather than a full rate on their (fixed) turnover; mechanically this reduces revenue by <span class="math inline">\(-\)</span>£520m, with about <span class="math inline">\(140{,}800\)</span> firms in the £85,000–£105,000 band facing a lower effective rate.</p>
+<h4 id="banded-reduced-rate." class="anchored">Banded reduced rate.</h4>
+<p>A banded reduced rate charges firms in the £85,000–£105,000 band a reduced rate <span class="math inline">\(\tau_{\text{low}}\in\{10\%,15\%\}\)</span> in place of the standard <span class="math inline">\(20\%\)</span>, with <span class="math inline">\(20\%\)</span> retained above £105,000. Statically this reduces revenue by <span class="math inline">\(-\)</span>£484m at <span class="math inline">\(\tau_{\text{low}}=10\%\)</span> and by <span class="math inline">\(-\)</span>£242m at <span class="math inline">\(\tau_{\text{low}}=15\%\)</span>, again with about <span class="math inline">\(140{,}800\)</span> firms in the band facing the lower rate.</p>
+<div id="tab:schedule_costs">
+<table class="caption-top">
+<caption>Static, behaviour-free revenue effect of the four reforms relative to the common £85,000-notch / £184.8bn 2023–24 baseline. Each reform is costed mechanically by re-applying its schedule to the fixed turnover distribution, with no behavioural response.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Reform</th>
+<th style="text-align: left;">Lever</th>
+<th style="text-align: right;">Static revenue (£m)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Raise threshold to £100,000</td>
+<td style="text-align: left;">Location</td>
+<td style="text-align: right;"><span class="math inline">\(-753\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Graduated taper $[85,105</td>
+<td style="text-align: left;">{k}]$ Shape (</td>
+<td style="text-align: right;">phase-in) <span class="math inline">\(-520\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Reduced rate <span class="math inline">\(10\%\)</span> $[85,105\</td>
+<td style="text-align: left;">text{k}]$ Rate (s</td>
+<td style="text-align: right;">tep) <span class="math inline">\(-484\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Reduced rate <span class="math inline">\(15\%\)</span> $[85,105\</td>
+<td style="text-align: left;">text{k}]$ Rate (s</td>
+<td style="text-align: right;">tep) <span class="math inline">\(-242\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>These static figures bound the first-order fiscal effect of each reform but abstract from the behavioural response of Section&nbsp;<a href="#sec:behavioural" data-reference-type="ref" data-reference="sec:behavioural">7</a>. One feature of the shape reforms is not visible in a static costing: unlike a threshold move, which transports the notch to a new cutoff, the taper and the reduced rate <em>change the size of the notch itself</em>—the discrete drop in net revenue at the threshold and the empty band of turnover it induces. Quantifying that change requires the structural object I develop in Section&nbsp;<a href="#sec:model" data-reference-type="ref" data-reference="sec:model">6</a>, where I derive the notch’s dominated region and show analytically how each of these reforms alters it.</p>
+<h1 id="sec:bunching">Bunching and the limits of band-calibrated synthetic data</h1>
+<p>This section applies the polynomial counterfactual-density estimator of <span class="citation" data-cites="chettyetal2011">Chetty et al. (<a href="#ref-chettyetal2011" role="doc-biblioref">2011</a>)</span> and <span class="citation" data-cites="klevenwaseem2013">Kleven and Waseem (<a href="#ref-klevenwaseem2013" role="doc-biblioref">2013</a>)</span>—as applied to UK VAT data by <span class="citation" data-cites="liuetal2021">Liu et al. (<a href="#ref-liuetal2021" role="doc-biblioref">2021</a>)</span>—to the synthetic firm population. Its finding is about the data, not about firm behaviour: every sub-band feature of a band-calibrated synthetic population is exactly what its targets put there, and this section demonstrates the point in three directions. The 2023–24 population’s near-threshold density is calibrated to the OBR’s published £1,000-band profile (Section&nbsp;<a href="#sec:data" data-reference-type="ref" data-reference="sec:data">3</a>), and the estimator reads that profile back as excess mass—target inheritance, not behaviour. A placebo that regenerates the population <em>without</em> those targets returns zero. And the 2024–25 vintage, for which no fine bands are published, produces a very large <em>spurious</em> excess-mass signal sitting exactly on an HMRC calibration-band edge. Together with a power (recovery) test, these results establish the section’s transparency claim: band-calibrated synthetic data support no bunching inference in either direction, and any sub-band feature of such data should be traced to its calibration targets before it is read as economics. The behavioural evidence on UK VAT bunching remains the administrative estimate of <span class="citation" data-cites="liuetal2021">Liu et al. (<a href="#ref-liuetal2021" role="doc-biblioref">2021</a>)</span>.</p>
+<p>The section also documents a correction. An earlier draft of this paper reported an excess mass of <span class="math inline">\(8{,}712\)</span> firms at £85,000 that appeared to “reproduce” the density step documented in administrative data. That excess mass was an artifact of a liability mis-scaling in the generator (net liability set to value added itself rather than the standard rate applied to value added, inflating per-firm liabilities roughly fivefold; Section&nbsp;<a href="#sec:data" data-reference-type="ref" data-reference="sec:data">3</a>, footnote), which distorted how the weight optimiser distributed mass near the threshold. Correcting the scaling removed the step entirely; the near-threshold profile is now supplied by the OBR targets instead, as published data rather than an optimiser side-effect.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> A plausible-looking, literature-adjacent bunching statistic was manufactured by an accounting bug in the data layer and survived until the liability accounting was audited. I report this openly because it is the sharpest available demonstration of the section’s thesis.</p>
+<h2 id="methodology" class="anchored">Methodology</h2>
+<p>Following <span class="citation" data-cites="liuetal2021">Liu et al. (<a href="#ref-liuetal2021" role="doc-biblioref">2021</a>)</span>, I group firms into fine turnover bins of £1,000 and estimate a counterfactual density—the distribution that would obtain absent the registration notch—by polynomial regression on bin counts, excluding a manipulation window around the threshold <span class="math inline">\(y^{*}\)</span>: <span class="math display">\[c_j \;=\; \sum_{l=0}^{q} \beta_l \, (y_j)^{l}
+  \;+\; \sum_{i \in [y^{*}_{-},\, y^{*}_{+}]} \gamma_i \, \mathbb{1}\{j = i\}
+  \;+\; \varepsilon_j ,\]</span> where <span class="math inline">\(c_j\)</span> is the number of firms in bin <span class="math inline">\(j\)</span>, <span class="math inline">\(y_j\)</span> is the distance of bin <span class="math inline">\(j\)</span> from the threshold, <span class="math inline">\(q\)</span> is the polynomial order, and <span class="math inline">\([y^{*}_{-},\,y^{*}_{+}]\)</span> is the excluded window. The fitted polynomial is then projected into the excluded region to recover the counterfactual density <span class="math inline">\(g(y)\)</span>, with a mass-conservation restriction that locates the upper edge of the manipulation window endogenously (excess mass below the threshold must equal missing mass above it; Appendix&nbsp;<a href="#app:inference" data-reference-type="ref" data-reference="app:inference">9.2</a>). Excess bunching is the integrated difference between the observed and counterfactual densities just below the threshold, <span class="math display">\[B(y^{*}) \;=\; \int_{y^{*}-\Delta y^{*}}^{y^{*}} g(y)\,\mathrm{d}y
+  \;\approx\; g(y^{*})\,\Delta y^{*},\]</span> the approximation holding when <span class="math inline">\(g\)</span> is locally smooth. The bunching ratio <span class="math inline">\(b(y^{*}) = B(y^{*})/g(y^{*}) \approx \Delta y^{*}/y^{*}\)</span> is the width of the bunching region expressed as a fraction of the threshold—a normalised <em>ratio</em>, not an elasticity. The estimator delivers the raw geometry of any density step at the threshold; whether that step reflects firm behaviour is a separate question. The estimator reports geometry only (<span class="math inline">\(b\)</span>, excess mass <span class="math inline">\(E\)</span>, and the mass-conservation objects): no elasticity is computed from it, both because the identification critique of bunching designs applies <span class="citation" data-cites="blomquistetal2021 bertanhaetal2023">(<a href="#ref-blomquistetal2021" role="doc-biblioref">Blomquist et al. 2021</a>; <a href="#ref-bertanhaetal2023" role="doc-biblioref">Bertanha et al. 2023</a>)</span> and because on these data there is no behavioural mass to convert.</p>
+<h2 id="results-a-target-inherited-signal-at-85000-a-spurious-one-at-90000" class="anchored">Results: a target-inherited signal at £85,000, a spurious one at £90,000</h2>
+<p>Applied to the 2023–24 population at the £85,000 threshold, the estimator returns an excess mass of <span class="math inline">\(E = 7{,}933\)</span> weighted firms: it reads back the bunching profile that the OBR £1,000-band targets place in the file (Section&nbsp;<a href="#sec:data" data-reference-type="ref" data-reference="sec:data">3</a>). This is target inheritance, not behaviour—the generator contains no firm location-choice—and the placebo below proves it by deletion. On the <span class="citation" data-cites="liuetal2021">Liu et al. (<a href="#ref-liuetal2021" role="doc-biblioref">2021</a>)</span> normalisation the target-inherited excess is <span class="math inline">\(b_{\mathrm{LLAT}} = 1.91\)</span>, about 1.4 times their administrative <span class="math inline">\(1.361\)</span>; the two are not comparable estimates of the same object—LLAT’s sample ends in 2014–15, the profile here is interpolated OBR data whose cross-threshold level is frame-implied (Section&nbsp;<a href="#sec:data" data-reference-type="ref" data-reference="sec:data">3</a>), and the readback varies severalfold across estimator specifications (Appendix&nbsp;<a href="#app:inference" data-reference-type="ref" data-reference="app:inference">9.2</a>)—so the distance from <span class="math inline">\(1.361\)</span> carries no information. Mass conservation fails to bind at £85,000: the marginal-buncher walk is censored at the search bound (<span class="math inline">\(y_R = \unicode{xA3}100\)</span>k) with missing mass <span class="math inline">\(\Delta_R = 5{,}761 &lt; E\)</span>, all of it accruing beyond the £90,000 fine-target boundary—a calibration-band edge inside the estimator’s own window, not administrative-style missing mass (Appendix&nbsp;<a href="#app:inference" data-reference-type="ref" data-reference="app:inference">9.2</a>).</p>
+<p>Applied to the 2024–25 population at the £90,000 threshold—which has <em>no</em> fine targets—the same estimator returns <span class="math inline">\(E = 11{,}072\)</span> and <span class="math inline">\(b_{\mathrm{LLAT}} = 1.23\)</span>: within ten per cent of <span class="citation" data-cites="liuetal2021">Liu et al. (<a href="#ref-liuetal2021" role="doc-biblioref">2021</a>)</span>’s administrative <span class="math inline">\(1.361\)</span>. Nothing behavioural produced it. It is the coarse £90,000 band edge, where the £1–£90,000 and £90,000–£150,000 targets meet, read through the estimator; its magnitude swings four-fold across estimator specifications (<span class="math inline">\(E\)</span> between roughly <span class="math inline">\(8{,}600\)</span> and <span class="math inline">\(36{,}700\)</span> over the degree–window grid, Appendix&nbsp;<a href="#app:inference" data-reference-type="ref" data-reference="app:inference">9.2</a>) and the manipulation-window edge sits at the search bound. The pair of results is the section’s central exhibit (Figure&nbsp;<a href="#fig:bunch85" data-reference-type="ref" data-reference="fig:bunch85">6</a>): where fine targets exist, the estimator recovers exactly the shape they encode; where they do not, band geometry alone can manufacture a bunching statistic in the publishable range of the literature—a researcher looking to “validate” synthetic data against <span class="citation" data-cites="liuetal2021">Liu et al. (<a href="#ref-liuetal2021" role="doc-biblioref">2021</a>)</span> would have found agreement here, and it would have meant nothing.</p>
+<figure id="fig:bunch85" data-latex-placement="htbp">
+<img src="figures/bunching_analysis_85k.png" style="width:48.0%">
+<p>
+<span><em>2023–24 population, £85<span>,</span>000: target-inherited profile</em></span>
+</p>
+<img src="figures/bunching_analysis_90k.png" style="width:48.0%">
+<p>
+<span><em>2024–25 population, £90<span>,</span>000: band-edge artifact</em></span>
+</p>
+<figcaption>
+Observed synthetic firm density and polynomial no-bunching counterfactual at each vintage’s registration threshold. Panel (a): the 2023–24 population reproduces the administratively observed bunching profile because it is calibrated to the OBR £1<span>,</span>000-band targets; the estimator reads the target-inherited excess back as <span class="math inline"><em>E</em> = 7, 933</span> (<span class="math inline"><em>b</em><sub>LLAT</sub> = 1.91</span>). Panel (b): the 2024–25 population has no fine targets, and its coarse £90<span>,</span>000 band edge alone yields <span class="math inline"><em>E</em> = 11, 072</span> with <span class="math inline"><em>b</em><sub>LLAT</sub> = 1.23</span>—within 10% of the administrative estimate, coincidentally and unstably. Neither is behavioural: the generator has no firm location-choice, so all sub-band structure is inherited from the targets and the weight optimiser.
+</figcaption>
+</figure>
+<h2 id="ssec:bunch-placebo" class="anchored">Placebo test</h2>
+<p>The placebo diagnoses where any threshold-adjacent structure comes from by manipulating the calibration targets directly. HMRC publishes turnover counts only in coarse bands across the threshold: in 2023–24, <span class="math inline">\(678{,}350\)</span> firms at or below £85,000 (about <span class="math inline">\(7{,}981\)</span> per £1,000) against <span class="math inline">\(305{,}320\)</span> between £85,000 and £150,000 (about <span class="math inline">\(4{,}697\)</span> per £1,000), so a band-average step is present in the target before any firm is generated. In Placebo&nbsp;A I reweight the synthetic firms so the per-£1,000 density follows a single smooth trend across the threshold, holding total mass fixed. In Placebo&nbsp;B I regenerate the entire population and re-calibrate from scratch with <em>no</em> fine structure in the targets at all: the OBR near-threshold bins are removed and the two HMRC band counts straddling the threshold are replaced by a split implied by one common density. The results track the targets exactly. The control—calibrated to the OBR profile—returns <span class="math inline">\(E = 7{,}933\)</span>; Placebo&nbsp;A returns <span class="math inline">\(E = 0\)</span> (<span class="math inline">\(b = -0.059\)</span>); Placebo&nbsp;B returns <span class="math inline">\(E = 0\)</span> (<span class="math inline">\(b = -0.073\)</span>). Deleting the fine targets deletes the “bunching”; and where a coarse step is present in the targets—as at the 2024–25 vintage’s £90,000 band edge—the estimator reads it as (artifactual) mass. Inserting or removing structure in the targets inserts or removes “bunching” in the estimates.</p>
+<h2 id="ssec:bunch-recovery" class="anchored">Power (recovery) test</h2>
+<p>A null result is only informative if the estimator could have detected a signal. I therefore inject a Kleven–Waseem-consistent behavioural response of known magnitude into the step-free (Placebo&nbsp;A) population: firms relocate to just below the threshold from a donor region extending to a true marginal buncher at £112,000—beyond the estimator’s exclusion window, as with genuine bunching—with relocation probability declining linearly in distance from the threshold. Scored by the headline estimator with no reference to the known null, injected excess masses of <span class="math inline">\(5{,}000\)</span> and <span class="math inline">\(8{,}000\)</span> weighted firms are recovered at <span class="math inline">\(49\%\)</span> and <span class="math inline">\(62\%\)</span> respectively, while a small <span class="math inline">\(2{,}000\)</span>-firm injection sits near the detection floor (<span class="math inline">\(15\%\)</span>); the estimated marginal-buncher location is attenuated toward the threshold throughout. The attenuation has a measured mechanical source: part of the missing-mass region lies outside the exclusion window, where it pulls the fitted counterfactual down. The estimator therefore <em>under</em>-states a true response, more severely for small ones, and does not over-state one—so the target-inherited <span class="math inline">\(E=7{,}933\)</span> at £85,000 is, if anything, an attenuated reading of the targeted profile.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<h2 id="ssec:bunch-lit" class="anchored">Comparison with the literature</h2>
+<p>The behavioural fact in the literature is administrative. <span class="citation" data-cites="liuetal2021">Liu et al. (<a href="#ref-liuetal2021" role="doc-biblioref">2021</a>)</span> (hereafter LLAT) document genuine bunching at the UK VAT registration notch in HMRC micro-data over 2004–05 to 2014–15, during which the threshold rose from £58,000 to £81,000, with an excess-bunching ratio of <span class="math inline">\(b = 1.361\)</span> (SE <span class="math inline">\(0.202\)</span>) around the year-specific threshold and a manipulation window of <span class="math inline">\(-\unicode{xA3}14{,}000\)</span> to <span class="math inline">\(+\unicode{xA3}24{,}000\)</span>. My data’s <span class="math inline">\(b_{\mathrm{LLAT}} = 1.91\)</span> is not a second estimate of their parameter: it is the OBR target profile read back through their normalisation; and the uncalibrated 2024–25 vintage’s <span class="math inline">\(b_{\mathrm{LLAT}} = 1.23\)</span>, despite sitting within 10% of their estimate, is not one either—it is band geometry.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> What does carry across is institutional context: LLAT report that almost half (roughly <span class="math inline">\(43\%\)</span>) of eligible below-threshold firms register voluntarily, which dampens observed bunching relative to a pure notch and which motivates the voluntary-retention sensitivity of Section&nbsp;<a href="#sec:static" data-reference-type="ref" data-reference="sec:static">4</a>. For wider order-of-magnitude context, <span class="citation" data-cites="obr2023vat">Office for Budget Responsibility (<a href="#ref-obr2023vat" role="doc-biblioref">2023</a>)</span> count firms holding turnover below the frozen threshold over a <em>wide</em> band (rising from <span class="math inline">\(23{,}000\)</span> in 2017–18 to about <span class="math inline">\(44{,}000\)</span> in 2025–26, with foregone turnover of £110m rising to £350m); this is a different object from a near-threshold spike and is cited only as context.</p>
+<h2 id="reduced-form-evidence-and-the-dominated-region" class="anchored">Reduced-form evidence and the dominated region</h2>
+<p>These results sharpen, rather than weaken, the case for grounding the policy analysis in structure. The reduced-form density around the threshold cannot price reforms—it has no single point of excess mass to forward-map onto a change in the <em>shape</em> of the schedule—and on band-calibrated synthetic data it cannot be read behaviourally at all, in either direction. What the structure of Section&nbsp;<a href="#sec:model" data-reference-type="ref" data-reference="sec:model">6</a> <em>does</em> deliver exactly, for every reform considered, is the notch’s dominated region and how each schedule change alters it. It is precisely because the reduced-form bunching is non-identifying here that the exact dominated region carries the distortion characterisation. The behavioural layer that re-prices each firm’s turnover under counterfactual schedules—conditional on an assumed turnover elasticity—is developed in Section&nbsp;<a href="#sec:behavioural" data-reference-type="ref" data-reference="sec:behavioural">7</a>.</p>
+<h1 id="sec:model">The notch and its dominated region</h1>
+<p>The behavioural response to the registration notch is documented in administrative data by <span class="citation" data-cites="liuetal2021">Liu et al. (<a href="#ref-liuetal2021" role="doc-biblioref">2021</a>)</span>; the synthetic data contain no bunching signal to exploit (Section&nbsp;<a href="#sec:bunching" data-reference-type="ref" data-reference="sec:bunching">5</a>). To characterise the notch precisely I therefore turn to its analytic structure, which yields an exact distortion measure that needs no behavioural calibration. I set out the firm-level structure following <span class="citation" data-cites="klevenwaseem2013">Kleven and Waseem (<a href="#ref-klevenwaseem2013" role="doc-biblioref">2013</a>)</span>, <span class="citation" data-cites="saez2010">Saez (<a href="#ref-saez2010" role="doc-biblioref">2010</a>)</span>, and <span class="citation" data-cites="kleven2016">Kleven (<a href="#ref-kleven2016" role="doc-biblioref">2016</a>)</span>, whose bunching framework <span class="citation" data-cites="liuetal2021">Liu et al. (<a href="#ref-liuetal2021" role="doc-biblioref">2021</a>)</span> adapt to UK VAT. The UK registration threshold is a <em>notch</em>, not a kink: once turnover crosses the threshold the firm becomes liable for VAT on its <em>entire</em> base, not merely on the increment above it. The section’s central deliverable is the notch’s <em>dominated region</em>—an exact, elasticity-free property of the schedule that indexes the distortion the threshold imposes (Section&nbsp;<a href="#ssec:dominated" data-reference-type="ref" data-reference="ssec:dominated">6.2</a>)—and its analytic response to each schedule reform, complementing the static reform costs of Section&nbsp;<a href="#ssec:schedule_costs" data-reference-type="ref" data-reference="ssec:schedule_costs">4.1</a>. Section&nbsp;<a href="#sec:behavioural" data-reference-type="ref" data-reference="sec:behavioural">7</a> prices the intensive-margin response to each reform conditional on an assumed turnover elasticity; nothing in this section depends on that assumption.</p>
+<h4 id="scope." class="anchored">Scope.</h4>
+<p>The model prices the registration margin for firms that remit positive net VAT. Two populations are outside its scope and are treated as such throughout: below-threshold <em>voluntary</em> registrants (roughly 43% of eligible firms in <span class="citation" data-cites="liuetal2021">(<a href="#ref-liuetal2021" role="doc-biblioref">Liu et al. 2021</a>)</span>), who have chosen registration and so face no notch at the threshold, and net-repayment traders (zero-rated exporters and similar), whose remittance is negative for rated-structure reasons the generator does not represent (Section&nbsp;<a href="#sec:data" data-reference-type="ref" data-reference="sec:data">3</a>).</p>
+<h2 id="the-firms-problem" class="anchored">The firm’s problem</h2>
+<p>Each firm <span class="math inline">\(i\)</span> chooses turnover <span class="math inline">\(y_i\)</span> to maximise after-tax profit. Let <span class="math inline">\(c_i(y_i)\)</span> denote the cost of producing turnover <span class="math inline">\(y_i\)</span>, <span class="math inline">\(T^{*}\)</span> the registration threshold, and <span class="math inline">\(\tau\)</span> the standard VAT rate. In the simplest statement VAT applies to the firm’s entire turnover once it registers, so after-tax revenue is discontinuous and profit is</p>
+<p><span id="eq-firm-problem"><span class="math display">\[
+\pi_i(y_i) \;=\;
+  \begin{cases}
+    \;y_i - c_i(y_i), &amp; y_i &lt; T^{*} \quad \text{(unregistered)},\\[4pt]
+    \;(1-\tau)\,y_i - c_i(y_i), &amp; y_i \ge T^{*} \quad \text{(registered)}.
+  \end{cases}
+\tag{1}\]</span></span></p>
+<p>At <span class="math inline">\(T^{*}\)</span> after-tax revenue falls discretely by <span class="math inline">\(\tau\,T^{*}\)</span>: a firm that nudges its turnover from just below to just above the threshold loses <span class="math inline">\(\tau\,T^{*}\)</span> of net revenue on turnover it was already earning. With the standard rate <span class="math inline">\(\tau=0.20\)</span> and threshold <span class="math inline">\(T^{*}=\unicode{xA3}85{,}000\)</span> this discrete drop is <span class="math inline">\(\tau\,T^{*}=\unicode{xA3}17{,}000\)</span> on whole turnover. Real VAT taxes value added, and the corrected data give each firm net liability <span class="math inline">\(v_i=\tau(y_i-x_i)\)</span> with deductible inputs <span class="math inline">\(x_i=\delta_i y_i\)</span> (Section&nbsp;<a href="#sec:data" data-reference-type="ref" data-reference="sec:data">3</a>); profit is then <span class="math inline">\((1-\delta_i)y_i - \tilde c_i(y_i)\)</span> unregistered and <span class="math inline">\((1-\delta_i)(1-\tau)y_i - \tilde c_i(y_i)\)</span> registered—the deductible share multiplies <em>both</em> branches, so the notch geometry of&nbsp;<a href="#eq-firm-problem" class="quarto-xref">Equation&nbsp;1</a> carries over firm by firm, with the cash size of the jump scaled to <span class="math inline">\(\tau(1-\delta_i)T^{*}\)</span> (about £6,800 at the mean value-added share of 40%). This drop—absent from a kink, where only the <em>marginal</em> rate changes at the threshold while average liability moves continuously—is the defining feature of a notch: it makes locating just below the cutoff strictly attractive and creates the empty band derived next.</p>
+<h2 id="ssec:dominated" class="anchored">The dominated region</h2>
+<p>The notch creates a range of turnover just above <span class="math inline">\(T^{*}\)</span> that <em>no</em> firm chooses, because every point in it yields strictly lower profit than locating at <span class="math inline">\(T^{*}\)</span>. A firm at the threshold earns net revenue <span class="math inline">\(T^{*}\)</span>; a registered firm at <span class="math inline">\(T^{*}+a\)</span> earns <span class="math inline">\((1-\tau)(T^{*}+a)\)</span>. Equating the two—the cost difference across this narrow band is negligible—the upper edge of the dominated region is</p>
+<p><span id="eq-dominated"><span class="math display">\[
+(1-\tau)\,(T^{*}+a) \;=\; T^{*}
+  \quad\Longrightarrow\quad
+  a \;=\; T^{*}\,\frac{\tau}{1-\tau} .
+\tag{2}\]</span></span></p>
+<p>This is the Kleven–Waseem dominated-region width <span class="citation" data-cites="klevenwaseem2013">(<a href="#ref-klevenwaseem2013" role="doc-biblioref">Kleven and Waseem 2013</a>)</span>. At my parameters it gives <span class="math inline">\(a = \unicode{xA3}85{,}000\times 0.20/0.80 = \unicode{xA3}21{,}250\)</span>, so the dominated region is <span class="math inline">\((T^{*},\,T^{*}+a)=(\unicode{xA3}85{,}000,\ \unicode{xA3}106{,}250)\)</span>, shown in Figure&nbsp;<a href="#fig:notch_fit" data-reference-type="ref" data-reference="fig:notch_fit">7</a>.</p>
+<p>shape. It is the width <span class="math inline">\(a\)</span>, not the count, that is exact.</p>
+<figure id="fig:notch_fit" data-latex-placement="htbp">
+<img src="figures/dynamic_notch_fit_e017.png" style="width:78.0%">
+<figcaption>
+The £85<span>,</span>000 notch and its dominated region. The observed synthetic turnover density is shown with the dominated region <span class="math inline">(£85, 000, £106, 250)</span> shaded; no firm optimally locates there. The marginal buncher at an assumed turnover elasticity <span class="math inline"><em>e</em> = 0.17</span> sits at <span class="math inline"><em>n</em><sub><em>H</em></sub> = £127, 382</span> (Section&nbsp;<a href="#sec:behavioural" data-reference-type="ref" data-reference="sec:behavioural">7</a>). The dominated-region width <span class="math inline"><em>a</em> = £21, 250</span> is exact and independent of any elasticity.
+</figcaption>
+</figure>
+<h4 id="how-each-reform-changes-the-dominated-region." class="anchored">How each reform changes the dominated region.</h4>
+<p>Because the width <span class="math inline">\(a=T^{*}\tau/(1-\tau)\)</span> depends on the threshold and the rate alone, the effect of each schedule reform of Section&nbsp;<a href="#ssec:schedule_costs" data-reference-type="ref" data-reference="ssec:schedule_costs">4.1</a> on the dominated region is exact and follows directly from the notch arithmetic of&nbsp;<a href="#eq-dominated" class="quarto-xref">Equation&nbsp;2</a> and&nbsp;<a href="#eq-dominated-secondary" class="quarto-xref">Equation&nbsp;3</a>, with no dependence on the cost specification, any behavioural elasticity, or any simulated re-optimisation. Raising the threshold to £100,000 leaves the rate unchanged and therefore <em>relocates</em> the region without altering its width: it is the same £21,250 band, transported to the new cutoff. A banded reduced rate does <em>not</em> remove the distortion. It reduces the <em>largest single</em> notch—the jump at <span class="math inline">\(T^{*}\)</span> falls from <span class="math inline">\(\tau T^{*}=\unicode{xA3}17{,}000\)</span> to <span class="math inline">\(r\,T^{*}=\unicode{xA3}12{,}750\)</span> at a <span class="math inline">\(15\%\)</span> band rate—but, because the band reverts to the standard rate <span class="math inline">\(\tau\)</span> at its upper edge <span class="math inline">\(T_{1}=\unicode{xA3}105{,}000\)</span>, it introduces a <em>secondary</em> notch there, and hence a second dominated region the simple “<span class="math inline">\(a\)</span> shrinks with <span class="math inline">\(\tau\)</span>” reasoning omits. The primary region at <span class="math inline">\(T^{*}\)</span> (the band rate <span class="math inline">\(r\)</span> on whole turnover) has the usual width <span class="math inline">\(a=T^{*}r/(1-r)\)</span>: <span class="math inline">\(\unicode{xA3}85{,}000\times0.15/0.85=\unicode{xA3}15{,}000\)</span> at <span class="math inline">\(15\%\)</span> and <span class="math inline">\(\unicode{xA3}85{,}000\times0.10/0.90=\unicode{xA3}9{,}444\)</span> at <span class="math inline">\(10\%\)</span>. The secondary region at the band top—where the schedule steps from <span class="math inline">\(r\)</span> back to <span class="math inline">\(\tau\)</span> on whole turnover—has width</p>
+<p><span id="eq-dominated-secondary"><span class="math display">\[
+a' \;=\; T_{1}\,\frac{\tau-r}{1-\tau},
+\tag{3}\]</span></span></p>
+<p>giving <span class="math inline">\(\unicode{xA3}105{,}000\times0.05/0.80=\unicode{xA3}6{,}562\)</span> at <span class="math inline">\(15\%\)</span> and <span class="math inline">\(\unicode{xA3}105{,}000\times0.10/0.80=\unicode{xA3}13{,}125\)</span> at <span class="math inline">\(10\%\)</span>. The <em>total</em> dominated-turnover width is therefore <span class="math inline">\(a+a'=\unicode{xA3}21{,}562\)</span> at <span class="math inline">\(15\%\)</span> and <span class="math inline">\(\unicode{xA3}22{,}569\)</span> at <span class="math inline">\(10\%\)</span>—both marginally <em>above</em> the <span class="math inline">\(\unicode{xA3}21{,}250\)</span> baseline, not below it. The reduced rate splits one wide empty band into two narrower ones rather than shrinking the total: it lowers the largest single notch (to <span class="math inline">\(\unicode{xA3}12{,}750\)</span> at <span class="math inline">\(15\%\)</span>) at the price of adding a secondary notch of <span class="math inline">\((\tau-r)\,T_{1}=\unicode{xA3}5{,}250\)</span>. The firm counts confirm this (<code>results/dominated_region_mass.txt</code>): the primary regions hold about <span class="math inline">\(111{,}900\)</span> (<span class="math inline">\(15\%\)</span>) and <span class="math inline">\(77{,}300\)</span> (<span class="math inline">\(10\%\)</span>) weighted firms, the secondary regions add about <span class="math inline">\(34{,}200\)</span> and <span class="math inline">\(65{,}500\)</span>, and the totals—<span class="math inline">\(146{,}100\)</span> and <span class="math inline">\(142{,}900\)</span>—sit within <span class="math inline">\(3.3\%\)</span> of the <span class="math inline">\(147{,}700\)</span>-firm baseline band. A graduated taper, by contrast, has <em>no</em> notch and hence no dominated region: marginal net revenue declines smoothly through the band rather than off a cliff, so the band of dominated turnover—and with it the discrete incentive to suppress turnover—is removed entirely. On the dominated-region metric, then, only the taper removes the distortion; the reduced rate splits it and the level move relocates it. The metric indexes the misallocation distortion only—what it omits, and how the reforms compare on cost, is taken up in Section&nbsp;<a href="#sec:conclusion" data-reference-type="ref" data-reference="sec:conclusion">8</a>. The dominated region is the paper’s exact, elasticity-free measure of the distortion the notch imposes, and the analytic statement above is exactly how much of that distortion each reform of Section&nbsp;<a href="#ssec:schedule_costs" data-reference-type="ref" data-reference="ssec:schedule_costs">4.1</a> removes.</p>
+<h1 id="sec:behavioural">Behavioural reform costs</h1>
+<p>The reforms of Section&nbsp;<a href="#sec:static" data-reference-type="ref" data-reference="sec:static">4</a> are costed <em>statically</em>: each schedule is re-applied to a fixed turnover distribution, and the revenue change is the mechanical reclassification of firms with no response in turnover. Section&nbsp;<a href="#sec:bunching" data-reference-type="ref" data-reference="sec:bunching">5</a> shows that the synthetic data contain no behavioural signal from which a response could be estimated, and Section&nbsp;<a href="#sec:model" data-reference-type="ref" data-reference="sec:model">6</a> supplies the one object that needs no behavioural calibration at all: the exact dominated region. What is missing from this sequence is the behavioural layer itself—a costing that lets firms re-optimise turnover when a reform changes the effective rate they face. This section supplies that layer for an <em>assumed</em> turnover elasticity <span class="math inline">\(e\)</span>, reported as an <span class="math inline">\(e\)</span>-sensitivity range rather than a point estimate, and nesting the static costing exactly in its <span class="math inline">\(e\to0\)</span> limit. Its headline is deflationary, and usefully so: on the intensive margin the static costings are robust. A pure threshold rise has <em>exactly</em> zero intensive-margin revenue offset at every <span class="math inline">\(e\)</span>, and the reduced-rate bands’ offsets stay under <span class="math inline">\(6\%\)</span> of the static cost across the sweep.</p>
+<h2 id="ssec:simulator" class="anchored">An iso-elastic simulator on the intensive margin</h2>
+<p>I adapt the iso-elastic model of <span class="citation" data-cites="klevenwaseem2013">Kleven and Waseem (<a href="#ref-klevenwaseem2013" role="doc-biblioref">2013</a>)</span>, in the sufficient-statistics tradition of <span class="citation" data-cites="saez2010">Saez (<a href="#ref-saez2010" role="doc-biblioref">2010</a>)</span>, writing the tax on <em>value added</em> rather than on turnover. (<span class="citation" data-cites="liuetal2021">Liu et al. (<a href="#ref-liuetal2021" role="doc-biblioref">2021</a>)</span> caution that turnover-tax bunching formulae do not carry to VAT unmodified, because input costs intervene; the value-added statement below is the adaptation this requires.) In this statement—formulation&nbsp;A—a firm of ability <span class="math inline">\(n_i\)</span> chooses turnover <span class="math inline">\(y\)</span> to maximise</p>
+<p><span id="eq-isoelastic"><span class="math display">\[
+\pi_i(y) \;=\; (1-\delta_i)\,\bigl(1-\tau\,f(y)\bigr)\,y \;-\;
+  C(y;n_i,e), \qquad
+  C(y;n,e)=\frac{n}{1+1/e}\left(\frac{y}{n}\right)^{1+1/e},
+\tag{4}\]</span></span></p>
+<p>where <span class="math inline">\(\delta_i\in[0,1)\)</span> is the firm’s <em>deductible-input share</em> of turnover, so that value added is <span class="math inline">\((1-\delta_i)\,y\)</span>; <span class="math inline">\(\tau\)</span> is the statutory VAT rate; and <span class="math inline">\(f(y)\in[0,1]\)</span> is the fraction of <span class="math inline">\(\tau\)</span> that the schedule levies on the firm once registered (<span class="math inline">\(f=0\)</span> below the threshold, <span class="math inline">\(f=1\)</span> for a fully registered firm under the standard rate). Here <span class="math inline">\(e&gt;0\)</span> is the elasticity of turnover with respect to the net-of-tax rate.</p>
+<p>It is essential to read <span class="math inline">\(C\)</span> correctly. Because the deductible inputs <span class="math inline">\(\delta_i\,y\)</span> are already netted out of revenue through the <span class="math inline">\((1-\delta_i)\)</span> factor, <span class="math inline">\(C(y;n_i,e)\)</span> must be understood as the firm’s <em>own-factor production cost</em>—the labour and capital effort the firm itself supplies—and <em>not</em> its total cost of production. Reading <span class="math inline">\(C\)</span> as total cost would double-count the bought-in inputs, which the value-added factor has already removed. Marginal own-factor cost is <span class="math inline">\((y/n)^{1/e}\)</span>, so the undistorted optimum is <span class="math inline">\(y=n\)</span>: ability <span class="math inline">\(n\)</span> is the firm’s frictionless turnover. A firm registered under a flat rate (<span class="math inline">\(f\equiv1\)</span>) chooses</p>
+<p><span id="eq-flat-optimum"><span class="math display">\[
+y^{*} \;=\; n\,\bigl[(1-\delta)(1-\tau)\bigr]^{e},
+\tag{5}\]</span></span></p>
+<p>so the retained wedge facing the firm is the product <span class="math inline">\((1-\delta)(1-\tau)\)</span> of the value-added share and the statutory net-of-tax rate, and <span class="math inline">\(\mathrm{d}\ln y^{*}/\mathrm{d}\ln\!\bigl[(1-\delta)(1-\tau)\bigr]=e\)</span>: <span class="math inline">\(e\)</span> is exactly the knob that governs the intensive response. Figure&nbsp;<a href="#fig:formulation_a_optima" data-reference-type="ref" data-reference="fig:formulation_a_optima">8</a> traces the formulation-A profit and its optima across the notch and taper schedules for three deductible shares.</p>
+<figure id="fig:formulation_a_optima" data-latex-placement="htbp">
+<img src="figures/formulation_a_optima.png" style="width:85.0%">
+<figcaption>
+Optima of the formulation-A profit function&nbsp;<a href="#eq-isoelastic" class="quarto-xref">Equation&nbsp;4</a> at <span class="math inline"><em>τ</em> = 0.20</span>, <span class="math inline"><em>n</em> = £130</span>k, <span class="math inline"><em>e</em> = 0.17</span>, under the registration notch (left) and the graduated taper (right), for deductible-input shares <span class="math inline"><em>δ</em> ∈ {0.0, 0.4, 0.8}</span>. Dots mark local maxima, the star the global optimum, and the dashed line the £85<span>,</span>000 threshold. A higher <span class="math inline"><em>δ</em></span> scales the profit curve down and pulls the registered optimum <span class="math inline"><em>y</em><sup>*</sup> = <em>n</em>[(1 − <em>δ</em>)(1 − <em>τ</em>)]<sup><em>e</em></sup></span> toward the threshold, eventually tipping the global optimum to bunching at the notch.
+</figcaption>
+</figure>
+<h4 id="the-response-ratio-is-free-of-the-deductible-share." class="anchored">The response ratio is free of the deductible share.</h4>
+<p>The reform costing needs each firm’s optimal turnover under a counterfactual schedule, <em>given</em> that its observed turnover is optimal under the baseline notch. Formulation&nbsp;A makes this a one-line object. Inverting&nbsp;<a href="#eq-flat-optimum" class="quarto-xref">Equation&nbsp;5</a> at the baseline (fraction <span class="math inline">\(f_0\)</span>) and re-solving at the reform (fraction <span class="math inline">\(f_1\)</span> on the firm’s region of the schedule), the ability and the deductible share cancel in the ratio:</p>
+<p><span id="eq-rescale"><span class="math display">\[
+y^{*}_i \;=\; y_{\mathrm{obs},i}\,
+  \left(\frac{1-\tau f_1}{1-\tau f_0}\right)^{e}.
+\tag{6}\]</span></span></p>
+<p>The intensive response depends only on <span class="math inline">\(e\)</span>, the statutory rate, and the schedule fractions—not on <span class="math inline">\(\delta_i\)</span>, not on the firm’s net remittance rate, and not on the recovered ability level. Ability recovery (<span class="math inline">\(n_i=y_{\mathrm{obs},i}\)</span> below the threshold, <span class="math inline">\(n_i=y_{\mathrm{obs},i}/[(1-\delta_i)(1-\tau)]^{e}\)</span> above) is an <em>accounting anchor</em>—it rationalises the observed allocation given <span class="math inline">\(e\)</span> and reproduces the baseline by construction—but no reform number below depends on it.</p>
+<h4 id="region-confined-scope." class="anchored">Region-confined scope.</h4>
+<p>The margin priced here is purely <em>intensive</em>: each firm re-optimises within the region of the reform schedule that contains its observed turnover, per&nbsp;<a href="#eq-rescale" class="quarto-xref">Equation&nbsp;6</a>, clipped at its region’s edges. Relocation across a notch—bunching below a threshold from above, or de-registering past a band edge—is the <em>extensive</em> margin, which is the separate analytic object of Section&nbsp;<a href="#sec:model" data-reference-type="ref" data-reference="sec:model">6</a> (the dominated region and the marginal buncher) and is deliberately out of scope: the synthetic data contain no information about it (Section&nbsp;<a href="#sec:bunching" data-reference-type="ref" data-reference="sec:bunching">5</a>), and pricing it would require assumptions about re-bunching dynamics the paper has declined to make. Confining the response to the firm’s own region also makes the <span class="math inline">\(e\to0\)</span> limit collapse onto the static costing <em>exactly</em>, with no solver tolerance.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<h4 id="conditional-on-e." class="anchored">Conditional on <span class="math inline">\(e\)</span>.</h4>
+<p>The elasticity <span class="math inline">\(e\)</span> is not identified from these data, so every behavioural magnitude below is conditional on the assumed <span class="math inline">\(e\)</span>, and the sweep is a sensitivity analysis rather than a set of forecasts. The sweep values <span class="math inline">\(e\in\{0.05,\,0.17,\,0.32\}\)</span> are assumptions: <span class="math inline">\(0.05\)</span> is the external anchor—<span class="citation" data-cites="klevenwaseem2013">Kleven and Waseem (<a href="#ref-klevenwaseem2013" role="doc-biblioref">2013</a>)</span> report lower-bound structural elasticities mostly in <span class="math inline">\([0.05, 0.15]\)</span>—and <span class="math inline">\(0.17\)</span> and <span class="math inline">\(0.32\)</span> are chosen to span the range used in the threshold literature; the published UK VAT-base elasticities of <span class="citation" data-cites="liuetal2021">Liu et al. (<a href="#ref-liuetal2021" role="doc-biblioref">2021</a>)</span> (roughly <span class="math inline">\(0.09\)</span>–<span class="math inline">\(0.14\)</span>) fall between the anchor and the midpoint. A reader may substitute any preferred value directly. The robust, <span class="math inline">\(e\)</span>-free headline objects remain the static costs of Section&nbsp;<a href="#sec:static" data-reference-type="ref" data-reference="sec:static">4</a> and the dominated region of Section&nbsp;<a href="#sec:model" data-reference-type="ref" data-reference="sec:model">6</a>.</p>
+<h2 id="ssec:behavioural-results" class="anchored">Results</h2>
+<p>Table&nbsp;<a href="#tab:behavioural_costs" data-reference-type="ref" data-reference="tab:behavioural_costs">3</a> reports the behavioural cost of each of the three flat-rate reforms—the raised threshold and the two reduced-rate bands—measured as the change in revenue relative to the £85,000-notch baseline, alongside the static figure of Table&nbsp;<a href="#tab:schedule_costs" data-reference-type="ref" data-reference="tab:schedule_costs">2</a>, for each <span class="math inline">\(e\)</span>. For context, the marginal buncher <span class="math inline">\(n_H(e)\)</span>—the highest ability that still finds bunching at the threshold optimal, the extensive-margin object held fixed here—sits at £112,795, £127,382 and £143,527 for <span class="math inline">\(e=0.05, 0.17, 0.32\)</span>.</p>
+<div id="tab:behavioural_costs">
+<table class="caption-top">
+<caption>Behavioural revenue effect of the three flat-rate reforms relative to the £85,000-notch baseline, by assumed turnover elasticity <span class="math inline">\(e\)</span>, with the static (<span class="math inline">\(e\to0\)</span> limit) figure for comparison. Each behavioural figure re-solves every firm’s optimum within its schedule region per&nbsp;<a href="#eq-rescale" class="quarto-xref">Equation&nbsp;6</a>, holding <span class="math inline">\(e\)</span> fixed. The final column reports the number of firms whose optimal turnover moves by more than £500 at <span class="math inline">\(e=0.17\)</span>; slightly more firms (<span class="math inline">\(111{,}940\)</span> and <span class="math inline">\(140{,}826\)</span>) see their effective rate change, the difference being firms whose optimum shifts by less than the tolerance. Estimates are conditional on the assumed <span class="math inline">\(e\)</span> (Section&nbsp;<a href="#ssec:simulator" data-reference-type="ref" data-reference="ssec:simulator">7.1</a>). The graduated taper is excluded; see the paragraph below.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Reform</th>
+<th style="text-align: right;">Static</th>
+<th style="text-align: right;"><span class="math inline">\(e=0.05\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(e=0.17\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(e=0.32\)</span></th>
+<th style="text-align: right;">Firms (<span class="math inline">\(e{=}0.17\)</span>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Raise threshold to £100,000</td>
+<td style="text-align: right;">$-</td>
+<td style="text-align: right;">753$m $-</td>
+<td style="text-align: right;">e{xA3}753$m $-\</td>
+<td style="text-align: right;">unicode{xA3}753$m</td>
+<td style="text-align: right;"><span class="math inline">\(-\unicode{xA3}753\)</span>m <span class="math inline">\(108{,}973\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Reduced rate <span class="math inline">\(10\%\)</span> $[85,105\</td>
+<td style="text-align: right;">text{k}]$ $-\</td>
+<td style="text-align: right;">unicode{xA3}484$m</td>
+<td style="text-align: right;">$-\unicode{xA3</td>
+<td style="text-align: right;">}481$m $-</td>
+<td style="text-align: right;">de{xA3}475$m <span class="math inline">\(-\unicode{xA3}467\)</span>m <span class="math inline">\(137{,}944\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Reduced rate <span class="math inline">\(15\%\)</span> $[85,105\</td>
+<td style="text-align: right;">text{k}]$ $-\</td>
+<td style="text-align: right;">unicode{xA3}242$m</td>
+<td style="text-align: right;">$-\unicode{xA3</td>
+<td style="text-align: right;">}240$m $-</td>
+<td style="text-align: right;">de{xA3}235$m <span class="math inline">\(-\unicode{xA3}228\)</span>m <span class="math inline">\(137{,}944\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><em>Note.</em> The graduated taper is omitted: its rate varies continuously with turnover, so its intensive response is outside the region-confined solve, and its marginal-rate channel is not represented by the flat-rate first-order condition. Its <span class="math inline">\(e\)</span>-free figures—the static cost of <span class="math inline">\(-\)</span>£520m and the exact removal of the dominated region—are in Sections&nbsp;<a href="#sec:static" data-reference-type="ref" data-reference="sec:static">4</a> and&nbsp;<a href="#sec:model" data-reference-type="ref" data-reference="sec:model">6</a>.</p>
+<h4 id="a-level-rise-has-no-intensive-margin-offset." class="anchored">A level rise has no intensive-margin offset.</h4>
+<p>The raise-to- £100,000 row is identical to its static cost at every <span class="math inline">\(e\)</span>, and this is a result, not a failure to respond. Partition the firms. Those with observed turnover below £85,000 face <span class="math inline">\(f=0\)</span> before and after; nothing changes. Those released by the raise (<span class="math inline">\(y_{\mathrm{obs}}\in[\unicode{xA3}85\text{k},
+\unicode{xA3}100\text{k})\)</span>) see their rate fall to zero and expand per&nbsp;<a href="#eq-rescale" class="quarto-xref">Equation&nbsp;6</a> by the factor <span class="math inline">\((1-\tau)^{-e}\)</span> (about <span class="math inline">\(+3.9\%\)</span> at <span class="math inline">\(e=0.17\)</span>)—but their expansion is <em>untaxed</em>: they have left the VAT base, so the revenue loss is their full baseline remittance, exactly the static figure. Those above £100,000 face <span class="math inline">\(f=1\)</span> before and after; nothing changes. The only candidates for a taxed response are released firms whose expansion would carry them across the new threshold, and for every such firm the new notch’s bunching condition binds (its ability lies strictly below the new marginal buncher), so it optimally stops at the threshold and remits nothing. Base broadening from a threshold rise is therefore real economic activity but generates no VAT: conditional on this model, the static costing of a level move is not an upper bound that behaviour erodes—it <em>is</em> the behavioural costing on the intensive margin. The simulator asserts this invariance programmatically (to £0.1m at each swept <span class="math inline">\(e\)</span>).</p>
+<h4 id="reduced-rate-offsets-are-second-order." class="anchored">Reduced-rate offsets are second order.</h4>
+<p>A reduced-rate band lowers the rate on band firms from <span class="math inline">\(\tau\)</span> to <span class="math inline">\(r\)</span>, so each scales up by&nbsp;<a href="#eq-rescale" class="quarto-xref">Equation&nbsp;6</a> with <span class="math inline">\(f_1 = r/\tau\)</span>: about <span class="math inline">\(+2.0\%\)</span> at the <span class="math inline">\(10\%\)</span> rate and <span class="math inline">\(e=0.17\)</span>, and about <span class="math inline">\(+1.0\%\)</span> at <span class="math inline">\(15\%\)</span>. Remittance scales with turnover, so the offset is roughly the scale gain times the band’s (rate-reduced) remittance—£9m against a static £484m at <span class="math inline">\(e=0.17\)</span> for the <span class="math inline">\(10\%\)</span> band, reaching £17m (<span class="math inline">\(3.5\%\)</span>) only at <span class="math inline">\(e=0.32\)</span>. The direction is uniform—a larger <span class="math inline">\(e\)</span> makes the bands slightly cheaper—but the magnitude never approaches the static term. Figure&nbsp;<a href="#fig:reform_dist" data-reference-type="ref" data-reference="fig:reform_dist">9</a> traces the costs across the full range of <span class="math inline">\(e\)</span>: the raise is exactly flat, the bands nearly so.</p>
+<h4 id="validation." class="anchored">Validation.</h4>
+<p>Three properties are asserted programmatically in the released code on every run: the baseline solve reproduces each firm’s observed turnover exactly (the accounting anchor is internally consistent); the <span class="math inline">\(e\to0\)</span> behavioural cost equals the static cost to £0.1m for every priced reform; and the solved response satisfies <span class="math inline">\(\mathrm{d}\ln y^{*}/\mathrm{d}\ln(1-\tau f)=e\)</span> to machine precision. The static costing is thus the <span class="math inline">\(e=0\)</span> corner of the same machine, not a separate calculation.</p>
+<figure id="fig:reform_dist" data-latex-placement="htbp">
+<img src="figures/dynamic_cost_vs_elasticity.png" style="width:78.0%">
+<figcaption>
+Behavioural reform cost against the assumed turnover elasticity <span class="math inline"><em>e</em></span>, for the three flat-rate reforms. Each curve is the change in revenue relative to the £85<span>,</span>000-notch baseline; the intercept at <span class="math inline"><em>e</em> = 0</span> is the static cost of Table&nbsp;<a href="#tab:schedule_costs" data-reference-type="ref" data-reference="tab:schedule_costs">2</a>. The raise-to-£100<span>,</span>000 line is exactly flat (no intensive-margin offset); the reduced-rate lines decline by under 8% of their static values across the plotted range. Dotted lines mark the swept values <span class="math inline"><em>e</em> ∈ {0.05, 0.17, 0.32}</span>. Estimates are conditional on the assumed <span class="math inline"><em>e</em></span> (Section&nbsp;<a href="#ssec:simulator" data-reference-type="ref" data-reference="ssec:simulator">7.1</a>).
+</figcaption>
+</figure>
+<p>This section completes the costing framework, and its contribution is a robustness statement. Where Section&nbsp;<a href="#sec:static" data-reference-type="ref" data-reference="sec:static">4</a> prices each reform mechanically and Section&nbsp;<a href="#sec:model" data-reference-type="ref" data-reference="sec:model">6</a> measures the distortion each removes, the intensive-margin layer shows that naming an elasticity barely moves the static numbers: not at all for a level move, and by under <span class="math inline">\(6\%\)</span> for the reduced-rate bands. The behavioural uncertainty that could move these costings materially sits on the <em>extensive</em> margin—registration, de-registration, and location choice at the notch—which the synthetic data cannot identify and which this paper prices only through its exact analytic geometry.</p>
+<h1 id="sec:conclusion">Conclusion</h1>
+<p>This paper contributes an open, reproducible firm-level microsimulation for analysing the UK VAT registration threshold, released in full—including its synthetic-data generator—for replication. Its value is as usable policy infrastructure rather than a structural identification result: I make no claim to recover policy-invariant firm primitives, unlike <span class="citation" data-cites="garicano2016">Garicano et al. (<a href="#ref-garicano2016" role="doc-biblioref">2016</a>)</span> and <span class="citation" data-cites="gourioroys2014">Gourio and Roys (<a href="#ref-gourioroys2014" role="doc-biblioref">2014</a>)</span>. The analysis is anchored to the 2023–24 data year, in which the statutory threshold was £85,000, with a second 2024–25 population (threshold £90,000) for the forward sweep. Table&nbsp;<a href="#tab:summary" data-reference-type="ref" data-reference="tab:summary">4</a> collects the headline objects.</p>
+<div id="tab:summary">
+<table class="caption-top">
+<caption>Summary of headline estimates, consolidating results defined in the body sections cross-referenced below. Rows 1–2 are 2025–26 figures (the anchor on the 2023–24 population, the sweep on the 2024–25 population at its £90,000 baseline); the remaining rows refer to the £85,000 data-year baseline.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Object</th>
+<th style="text-align: left;">Symbol / definition</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Static cost, £85k to £90k anchor</td>
+<td style="text-align: left;">dereg.&nbsp;/ retention conventions</td>
+<td style="text-align: left;"><span class="math inline">\(-\unicode{xA3}323\)</span>m / $-\unicode{</td>
+<td style="text-align: left;">xA3}184$m Section&nbsp;<a href="#sec:static" data-reference-type="ref" data-reference="sec:static">4</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Static sweep, £90k baseline</td>
+<td style="text-align: left;">per £5k step</td>
+<td style="text-align: left;">£230m–£265m</td>
+<td style="text-align: left;">Table&nbsp;<a href="#tab:static_revenue" data-reference-type="ref" data-reference="tab:static_revenue">1</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Dominated region</td>
+<td style="text-align: left;"><span class="math inline">\(a=T^{*}\tau/(1-\tau)\)</span></td>
+<td style="text-align: left;">£21,250</td>
+<td style="text-align: left;">Section&nbsp;<a href="#ssec:dominated" data-reference-type="ref" data-reference="ssec:dominated">6.2</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Firms in the dominated band (weighted)</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;"><span class="math inline">\(\approx148{,}000\)</span></td>
+<td style="text-align: left;">Section&nbsp;<a href="#ssec:dominated" data-reference-type="ref" data-reference="ssec:dominated">6.2</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Raise to £100k, static and behavioural</td>
+<td style="text-align: left;">invariant in <span class="math inline">\(e\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(-\unicode{xA3}753\)</span>m</td>
+<td style="text-align: left;">Sections&nbsp;<a href="#sec:static" data-reference-type="ref" data-reference="sec:static">4</a>, <a href="#sec:behavioural" data-reference-type="ref" data-reference="sec:behavioural">7</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Graduated taper, static</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;"><span class="math inline">\(-\unicode{xA3}520\)</span>m</td>
+<td style="text-align: left;">Section&nbsp;<a href="#ssec:schedule_costs" data-reference-type="ref" data-reference="ssec:schedule_costs">4.1</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="findings." class="anchored">Findings.</h4>
+<p>Four results stand out. First, the static pipeline prices level and schedule reforms on a common £85,000 / £184.8bn base (<span class="math inline">\(-\)</span>£753m to raise the threshold to £100,000, <span class="math inline">\(-\)</span>£520m for a graduated taper, <span class="math inline">\(-\)</span>£484m and <span class="math inline">\(-\)</span>£242m for <span class="math inline">\(10\%\)</span> and <span class="math inline">\(15\%\)</span> banded reduced rates), and its anchor costing of the £85,000 to £90,000 move tracks HMRC’s published figure once the deregistration convention is stated: the full-deregistration convention overshoots (<span class="math inline">\(-\)</span>£323m against the published <span class="math inline">\(-\)</span>£185m in 2025–26, consistent with the official costing’s phased registration response), the retention convention runs close to the published 2025–26 figure (<span class="math inline">\(-\)</span>£184.1m against <span class="math inline">\(-\)</span>£185m; agreement finer than the calibrated liability level supports, Section&nbsp;<a href="#sec:static" data-reference-type="ref" data-reference="sec:static">4</a>), and both conventions reproduce the official profile’s narrowing and its 2028–29 sign change under the uprated counterfactual threshold path.</p>
+<p>Second, the notch’s distortion is captured exactly by its dominated region, the <span class="citation" data-cites="klevenwaseem2013">Kleven and Waseem (<a href="#ref-klevenwaseem2013" role="doc-biblioref">2013</a>)</span> width <span class="math inline">\(a=T^{*}\tau/(1-\tau)=\unicode{xA3}21{,}250\)</span>—an accounting identity rather than a new structural result, but one that is invariant to the firm’s input share under the value-added formulation and spans a populous range of roughly <span class="math inline">\(148{,}000\)</span> weighted firms. Setting cost against distortion on this metric: raising the threshold carries the largest static cost and relocates the region without changing its width; a banded reduced rate lowers the largest single notch (from £17,000 to £12,750 at <span class="math inline">\(15\%\)</span>) but adds a secondary notch at the band top, leaving the total dominated width essentially unchanged (£21,562 at <span class="math inline">\(15\%\)</span>, £22,569 at <span class="math inline">\(10\%\)</span>); only the graduated taper removes the dominated region, at a static cost of <span class="math inline">\(-\)</span>£520m against the <span class="math inline">\(10\%\)</span> band’s <span class="math inline">\(-\)</span>£484m, which removes none of it. The metric indexes misallocation only; the limitations paragraph below states what it omits.</p>
+<p>Third, the synthetic data carry a transparency lesson: sub-band structure in band-calibrated microdata is exactly what its targets put there, so it supports no bunching inference in either direction. The 2023–24 population’s near-threshold profile is calibrated to the OBR’s published £1,000-band data, and the estimator reads it back as target-inherited excess mass (<span class="math inline">\(E=7{,}933\)</span>); a placebo that regenerates without the fine targets returns zero; and the 2024–25 vintage, which has no fine targets, shows the coarse £90,000 band edge alone yielding an excess-bunching statistic within 10% of the administrative estimate—coincidental, specification-unstable, and behaviour-free. A redesigned power test confirms the estimator detects moderate genuine signals (recovering half to two-thirds of 5,000–8,000-firm injections, attenuated, never inflated). An earlier draft of this paper reported “reproducing” the administrative density step at £85,000 when a liability mis-scaling manufactured it; the paper now documents the artifact, its correction, and the replacement of optimiser side-effects with published fine-band targets as the sharpest demonstration of the lesson. The behavioural evidence on threshold bunching remains the administrative estimate of <span class="citation" data-cites="liuetal2021">Liu et al. (<a href="#ref-liuetal2021" role="doc-biblioref">2021</a>)</span>.</p>
+<p>Fourth, the behavioural layer’s contribution is a robustness statement: on the intensive margin, naming an elasticity barely moves the static costings. A pure level rise has exactly zero intensive-margin offset at every <span class="math inline">\(e\)</span>—released firms leave the VAT base, so their expansion is untaxed, and boundary-crossers optimally bunch below the new threshold—and the reduced-rate bands’ offsets stay under <span class="math inline">\(6\%\)</span> of the static cost across <span class="math inline">\(e\in\{0.05,0.17,0.32\}\)</span> (the <span class="math inline">\(10\%\)</span> band falls from £484m to £475m at <span class="math inline">\(e=0.17\)</span>). The graduated taper is priced only statically: its continuously varying rate is outside the flat-rate machinery. The behavioural uncertainty that could move these costings materially sits on the extensive margin—registration and location choice at the notch—which these data cannot identify and the paper prices only through its exact analytic geometry.</p>
+<h4 id="limitations-and-future-work." class="anchored">Limitations and future work.</h4>
+<p>The model abstracts from several margins, each stated where it binds. It has no firm location choice and no extensive-margin response; voluntary registration enters only as a registration-rate parameter and a retention sensitivity, not a choice model; net-repayment traders are outside the liability model (Section&nbsp;<a href="#sec:data" data-reference-type="ref" data-reference="sec:data">3</a>); the statutory rolling registration test is approximated by a data-year turnover test on total rather than taxable turnover; the near-threshold profile rests on two stated assumptions (the 2023–24 interpolation between the OBR’s 2019–20 outturn and 2025–26 frozen-threshold projection, and the shape-only, side-consistent treatment of the OBR bins, whose chart universe differs from the ONS frame); and the calibrated revenue bases sit about <span class="math inline">\(5.8\%\)</span> above the HMRC liability-by-band target sums, with liability-by-band calibration scores of <span class="math inline">\(91.3\%\)</span> and <span class="math inline">\(92.0\%\)</span> (Section&nbsp;<a href="#sec:static" data-reference-type="ref" data-reference="sec:static">4</a>, footnote). The dominated-region width indexes the misallocation distortion only and omits the compliance and administrative-cost saving that a <em>higher</em> threshold delivers by removing small firms from VAT—the classic rationale for a high registration threshold <span class="citation" data-cites="keenmintz2004">(<a href="#ref-keenmintz2004" role="doc-biblioref">Keen and Mintz 2004</a>)</span>—so the efficiency comparison is partial; it likewise books no compliance saving to the taper or reduced rate, which keep every band firm inside the VAT system, and a taper’s administrability (an effective rate that depends on annual turnover cannot be charged on invoices, so a real design would operate as remittance-side relief) is a design question the costing does not address. The menu reforms are costed only in aggregate: because VAT liability by sector is excluded from the calibration optimiser (Section&nbsp;<a href="#sec:data" data-reference-type="ref" data-reference="sec:data">3</a>), the framework does not yet report the sectoral incidence of a taper or reduced rate, a cut of obvious policy interest, and the split of band-total liability across sub-band turnover—which the anchor and relocation costings use—rests on the generator’s common input-share distribution rather than on sector-composition data. The analysis is partial-equilibrium, abstracting from pass-through into prices <span class="citation" data-cites="benedek2015 belloncopestake2022">(<a href="#ref-benedek2015" role="doc-biblioref">Benedek et al. 2015</a>; <a href="#ref-belloncopestake2022" role="doc-biblioref">Copestake et al. 2026</a>)</span>. The chief outstanding empirical task is to <em>identify</em> the turnover elasticity from administrative micro-data, which would turn the <span class="math inline">\(e\)</span>-sensitivity range into a point estimate; a welfare/MVPF accounting would net compliance costs against the misallocation distortion and support revenue-neutral schedule designs. Above all, validation against administrative firm-level data with genuine location choice would replace the present internal-consistency checks with out-of-sample tests.</p>
+<section id="sec:appendix" class="appendix">
+<h1>Appendix</h1>
+<p>This appendix collects supporting material in two parts: data construction and calibration robustness (Appendix&nbsp;<a href="#app:data" data-reference-type="ref" data-reference="app:data">9.1</a>); and statistical inference for the reduced-form bunching results (Appendix&nbsp;<a href="#app:inference" data-reference-type="ref" data-reference="app:inference">9.2</a>), including the placebo and power tests establishing that band-calibrated synthetic data cannot support bunching inference in either direction.</p>
+<h2 id="app:data" class="anchored">Data construction detail</h2>
+<p>Section&nbsp;<a href="#sec:data" data-reference-type="ref" data-reference="sec:data">3</a> describes the two-stage synthetic-population pipeline, parameterised by the registration threshold, and its calibration to HMRC and ONS aggregates. This appendix records the implementation detail deferred from that account.</p>
+<p>Each of the approximately <span class="math inline">\(2.94\)</span> million firm rows carries a turnover, an input expenditure, a net VAT liability (<span class="math inline">\(v_i = 0.20\,(y_i - x_i)\)</span>), a calibration weight, and a registration status; the weights are chosen so the weighted totals reproduce the official targets while the population sums to about <span class="math inline">\(2.5\)</span> million firms. Because the population is calibrated <em>to</em> the HMRC aggregates, agreement between my weighted outputs and those aggregates is a check of <em>internal consistency</em>, not external validation: any target used in calibration is reproduced by construction. The headline calibration accuracies (89.2% and 92.8% for the two vintages) and the anchor comparison of Section&nbsp;<a href="#sec:static" data-reference-type="ref" data-reference="sec:static">4</a> are therefore consistency checks on the pipeline, not out-of-sample tests of firm behaviour.</p>
+<p>The reported calibration score is a bounded summary statistic. For each dimension I compute <span class="math inline">\(\max\{0,1-\lvert \widehat{T}-T\rvert/\lvert T\rvert\}\)</span>, so a dimension missed by more than 100 percent receives zero rather than a negative score. The headline “overall” number is the unweighted mean of the five dimensions used as calibration targets—HMRC turnover bands, ONS population, employment bands, HMRC sector counts, and VAT liability by turnover band. VAT liability by sector is excluded from that mean and reported separately as an informational diagnostic, because the current generator does not calibrate sector-specific input/output VAT structure.</p>
+<h4 id="ledger-and-populace-migration-check." class="anchored">Ledger and Populace migration check.</h4>
+<p>The official target tables are being moved into PolicyEngine Ledger, with Populace providing the shared synthetic-population generator. I therefore keep the paper’s archived processed CSVs as the reproduction source for the reported results, and treat the pinned Populace/Ledger path as an auditable migration check rather than a silent replacement. The snapshot used here is PolicyEngine/ledger pull request 67 at commit <code>cd98b5c</code> and PolicyEngine/populace pull request 223 at commit <code>fa20daf</code>; both upstream pull requests merged on June 30, 2026. For the 2024–25 vintage, the Ledger-backed targets match the paper’s processed numeric inputs exactly after dropping presentation-only labels, totals, and the HMRC “Unknown” column that the generator does not calibrate: six normalized source tables checked, zero mismatches, and maximum numeric difference zero. (The “2024–25 vintage” here denotes the HMRC/ONS statistical release labelled 2024–25, the same target tables the paper’s 2024–25 population calibrates to.) A 1,000-iteration Populace run from those targets generated 2,946,015 firm rows; its validator reported a 93.8 percent overall score against the paper validator’s then-90.5 percent, a comparison that is not like-for-like (different band sets and sector-target definitions). Two caveats now attach to that pinned snapshot. First, it predates this paper’s net-liability correction (Section&nbsp;<a href="#sec:data" data-reference-type="ref" data-reference="sec:data">3</a>, footnote): both generators at the pin date shared the mis-scaled <span class="math inline">\(v_i = y_i - x_i\)</span> convention, so the experimental Populace firm generator inherits the same defect, which I have reported upstream; the target-parity result (zero mismatches) is unaffected, since it concerns the input tables, not the generated population. Second, the paper validator’s scores on the corrected build are 89.2 percent (2023–24) and 92.8 percent (2024–25). The comparison table and structured provenance are reproduced by <code>firm-microsim-populace-ledger</code> and checked into <code>results/populace_ledger_comparison.txt</code> and <code>results/populace_ledger_provenance.json</code>.</p>
+<h4 id="counterfactual-exclusion-window-and-polynomial-degree." class="anchored">Counterfactual exclusion window and polynomial degree.</h4>
+<p>The no-VAT counterfactual density of Section&nbsp;<a href="#sec:bunching" data-reference-type="ref" data-reference="sec:bunching">5</a> is fitted by polynomial regression on the observed density outside a manipulation window around the threshold. The baseline excludes <span class="math inline">\([T^{*}-15\text{k}, T^{*}+15\text{k}]\)</span> and fits a degree-7 polynomial. Widening the window guards against contamination of the counterfactual by the behavioural response but reduces the data available for the fit; raising the degree improves in-sample fit but risks over-fitting the tails. The sensitivity of the excess-mass and bunching-ratio estimates to window width and degree, with associated uncertainty, is reported in Appendix&nbsp;<a href="#app:inference" data-reference-type="ref" data-reference="app:inference">9.2</a>.</p>
+<h2 id="app:inference" class="anchored">Inference for the bunching estimator</h2>
+<p>This appendix documents the inference procedure for the reduced-form bunching results of Section&nbsp;<a href="#sec:bunching" data-reference-type="ref" data-reference="sec:bunching">5</a>: the mass-conservation constraint that disciplines the counterfactual density, why no standard errors are reported, sensitivity to the polynomial degree, the exclusion window, and the generator seed, the placebo tests, and the power (recovery) test. All numbers are produced by the released estimator run on the regenerated weighted synthetic populations for both vintages; the machine-readable artifacts are <code>results/bunching_inference.txt</code>, <code>results/placebo_bunching.txt</code>, <code>results/recovery_bunching.txt</code> and <code>results/seed_sensitivity.txt</code>. The estimator reports the geometry only—the bunching ratio <span class="math inline">\(b\)</span>, its <span class="citation" data-cites="liuetal2021">Liu et al. (<a href="#ref-liuetal2021" role="doc-biblioref">2021</a>)</span>-normalised counterpart <span class="math inline">\(b_{\mathrm{LLAT}}\)</span>, the excess mass <span class="math inline">\(E\)</span>, and the mass-conservation objects (<span class="math inline">\(\Delta_R\)</span>, <span class="math inline">\(y_R\)</span>)—and computes no elasticities: the mapping from excess mass to an elasticity is not identified without functional-form assumptions <span class="citation" data-cites="blomquistetal2021 bertanhaetal2023">(<a href="#ref-blomquistetal2021" role="doc-biblioref">Blomquist et al. 2021</a>; <a href="#ref-bertanhaetal2023" role="doc-biblioref">Bertanha et al. 2023</a>)</span>, and on these data there is no behavioural mass to convert in the first place.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p>
+<h3 class="unnumbered anchored" id="mass-conservation-constraint">Mass-conservation constraint</h3>
+<p>The canonical bunching estimator of <span class="citation" data-cites="chettyetal2011">Chetty et al. (<a href="#ref-chettyetal2011" role="doc-biblioref">2011</a>)</span> and <span class="citation" data-cites="klevenwaseem2013">Kleven and Waseem (<a href="#ref-klevenwaseem2013" role="doc-biblioref">2013</a>)</span> imposes that the counterfactual density conserves mass: every firm removed from above the threshold reappears as excess mass below it. An unconstrained polynomial fit on bins outside a hand-set window computes the excess mass <span class="math inline">\(E\)</span> (below <span class="math inline">\(T^{*}\)</span>) and the missing mass <span class="math inline">\(\Delta_{R}\)</span> (above <span class="math inline">\(T^{*}\)</span>) <em>independently</em>, with no guarantee that <span class="math inline">\(E=\Delta_{R}\)</span> and no endogenous location of the marginal buncher. I impose the constraint in two ways. First, the counterfactual polynomial in <span class="math inline">\((y-T^{*})\)</span> is fit by an iterated procedure in which the density of the bins above the excluded region is rescaled until the fitted counterfactual integrates to the observed total mass over the estimation range <span class="math inline">\([\unicode{xA3}20\text{k},\unicode{xA3}140\text{k}]\)</span> (the regressor is normalised to <span class="math inline">\([-1,1]\)</span> for numerical stability of the high-degree basis). Second, the upper edge of the manipulation region—the marginal buncher <span class="math inline">\(y_{R}\)</span>—is located endogenously by integrating missing mass upward from <span class="math inline">\(T^{*}\)</span> until it equals the excess mass below, <span class="math display">\[\int_{T^{*}}^{y_{R}} \bigl[f^{\mathrm{cf}}(y)-f^{\mathrm{obs}}(y)\bigr]_{+}\,dy
+  \;=\;
+  \int_{T^{*}-W}^{T^{*}} \bigl[f^{\mathrm{obs}}(y)-f^{\mathrm{cf}}(y)\bigr]_{+}\,dy
+  \;=\; E .\]</span> The constraint’s behaviour differs by vintage, diagnostically so. On the 2024–25 population it is satisfied in the interior (<span class="math inline">\(y_R = \unicode{xA3}101\)</span>k, <span class="math inline">\(\Delta_R = 11{,}452 \ge E\)</span>): the band-edge artifact is not a local spike. On the 2023–24 population it <em>fails to bind</em>: the walk is censored at the search cap (<span class="math inline">\(y_R = \unicode{xA3}100\text{k} = T^{*}+W\)</span>) with <span class="math inline">\(\Delta_R = 5{,}761 &lt; E = 7{,}933\)</span>, and decomposing the missing mass locates all of it in <span class="math inline">\((\unicode{xA3}90\text{k},\unicode{xA3}100\text{k}]\)</span> and none in the OBR-pinned <span class="math inline">\((\unicode{xA3}85\text{k},\unicode{xA3}90\text{k}]\)</span> segment. The counterfactual exceeds the observed density only beyond the £90,000 fine-target boundary—the same calibration-band-edge mechanism as the 2024–25 exhibit, operating inside the headline estimator’s own window—so the reported <span class="math inline">\(y_R\)</span> is a property of the target boundary, not evidence of administrative-style missing mass.</p>
+<h3 class="unnumbered anchored" id="why-no-standard-errors-are-reported">Why no standard errors are reported</h3>
+<p>Earlier drafts attached bootstrap standard errors to the bunching statistics (resampling firm rows with replacement and re-running the estimator). Those numbers are not reported anywhere in this paper, because the exercise has no estimand: the synthetic file is a deterministic construction from published targets, not a sample from a population, and row-resampling dispersion scales as <span class="math inline">\(1/\sqrt{n}\)</span> in a row count the analyst chooses. A standard error that can be made arbitrarily small by generating more synthetic rows conveys precision that does not exist. Two reportable quantities replace them. First, the specification grids below, which show how the point estimates move with the estimator’s own knobs. Second, generator-seed sensitivity (<code>results/seed_sensitivity.txt</code>): regenerating the full 2023–24 population under three seeds moves <span class="math inline">\(E\)</span> by <span class="math inline">\(\pm161\)</span> firms (<span class="math inline">\(\pm2\%\)</span>), <span class="math inline">\(b_{\mathrm{LLAT}}\)</span> by <span class="math inline">\(\pm0.02\)</span>, the raise-to-£100k cost by <span class="math inline">\(\pm\unicode{xA3}2.1\)</span>m, and the registered base by <span class="math inline">\(\pm\unicode{xA3}0.08\)</span>bn—the pipeline’s actual Monte Carlo error. Table&nbsp;<a href="#tab:boot" data-reference-type="ref" data-reference="tab:boot">5</a> reports the point estimates. Two conventions matter for reading them. Bins are centred on integer £k values (edges at half-integers), so the bin containing the threshold spans £84.5k–£85.5k and its mass is attributed to the above side, attenuating <span class="math inline">\(E\)</span> and <span class="math inline">\(\Delta_R\)</span> relative to edge-aligned binning. And <span class="math inline">\(E\)</span> sums the <em>positive part</em> of the observed-minus-counterfactual gap in the excluded window below the threshold; the net gap there is <span class="math inline">\(1{,}570\)</span>, so the statistic reads gross rather than net excess.</p>
+<div id="tab:boot">
+<table class="caption-top">
+<caption>Headline bunching statistics (point estimates; degree-7 polynomial, <span class="math inline">\(\pm\unicode{xA3}15\)</span>k window). Uncertainty is characterised by the specification grids and the generator-seed sensitivity, not by standard errors—see the text.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Vintage</th>
+<th style="text-align: right;"><span class="math inline">\(E\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(\Delta_R\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(b_{\mathrm{LLAT}}\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(y_R\)</span> (£k)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">2023–24 (£85k, OBR fine targets)</td>
+<td style="text-align: right;"><span class="math inline">\(7{,}933\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(5{,}761\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.91\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(100.0\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2024–25 (£90k, coarse bands only)</td>
+<td style="text-align: right;"><span class="math inline">\(11{,}072\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(11{,}452\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.23\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(101.0\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 class="unnumbered anchored" id="sensitivity-to-polynomial-degree-and-exclusion-window">Sensitivity to polynomial degree and exclusion window</h3>
+<p>Table entries for a grid of polynomial degree <span class="math inline">\(\in\{5,6,7,8\}\)</span> and symmetric exclusion window <span class="math inline">\(\in\{\unicode{xA3}10\text{k},\ldots,\unicode{xA3}25\text{k}\}\)</span> are in <code>results/bunching_inference.txt</code>; the pattern matters more than the cells. On the 2023–24 population the target-inherited excess ranges over roughly <span class="math inline">\(6{,}700\)</span>–<span class="math inline">\(9{,}800\)</span> in the interior cells (degrees 6–7, windows £10–15k; 4 of the 16 grid cells), inflating in the corner cells where the polynomial confuses the profile’s shoulders with its counterfactual. On the 2024–25 population the band-edge artifact swings four-fold across the grid (<span class="math inline">\(E\)</span> between roughly <span class="math inline">\(8{,}600\)</span> and <span class="math inline">\(36{,}700\)</span>; <span class="math inline">\(b_{\mathrm{LLAT}}\)</span> between <span class="math inline">\(0.94\)</span> and <span class="math inline">\(4.46\)</span>) while its headline cell lands within 10% of the administrative estimate: neither specification stability nor literature-proximity certifies a synthetic bunching statistic—a caution for any bunching exercise on calibrated synthetic data.</p>
+<h3 class="unnumbered anchored" id="placebo-tests">Placebo tests</h3>
+<p>The placebo makes the target-inheritance mechanism precise by manipulating the calibration targets and re-running the estimator (Table&nbsp;<a href="#tab:placebo" data-reference-type="ref" data-reference="tab:placebo">6</a>; Section&nbsp;<a href="#ssec:bunch-placebo" data-reference-type="ref" data-reference="ssec:bunch-placebo">5.3</a> describes the constructions). The estimates track the targets exactly: the control, calibrated to the OBR fine-band profile, returns <span class="math inline">\(E=7{,}933\)</span>; Placebo&nbsp;A (smooth reweighting) returns <span class="math inline">\(E=0\)</span>; and Placebo&nbsp;B (no fine targets, un-stepped coarse bands, full regeneration and recalibration) returns <span class="math inline">\(E=0\)</span>. Removing structure from the targets removes structure from the estimates because the targets are the only place sub-band structure can come from: the generator has no firm location-choice.</p>
+<div id="tab:placebo">
+<table class="caption-top">
+<caption>Placebo tests, 2023–24 population (£85,000 threshold).</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Population</th>
+<th style="text-align: right;"><span class="math inline">\(b_{\mathrm{LLAT}}\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(E\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Actual (control, OBR fine-band targets)</td>
+<td style="text-align: right;"><span class="math inline">\(1.911\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(7{,}933\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Placebo A (reweight density smooth)</td>
+<td style="text-align: right;"><span class="math inline">\(0.000\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Placebo B (no fine targets, un-stepped)</td>
+<td style="text-align: right;"><span class="math inline">\(0.395\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 class="unnumbered anchored" id="power-recovery-test">Power (recovery) test</h3>
+<p>The placebo establishes <em>specificity</em>: no false positive on step-free data. The complementary property is <em>power</em>. Starting from the step-free Placebo&nbsp;A population, I inject a Kleven–Waseem-consistent behavioural signal of known magnitude: firms in the donor region <span class="math inline">\((T^{*}, \unicode{xA3}112\text{k}]\)</span> relocate to <span class="math inline">\([\unicode{xA3}80\text{k}, T^{*})\)</span> with probability declining linearly from the threshold to zero at the true marginal buncher <span class="math inline">\(y_R^{\mathrm{true}}=\unicode{xA3}112\)</span>k, so the missing-mass region extends £12k <em>beyond</em> the exclusion window—as with genuine bunching—and the counterfactual fit confronts genuinely depressed above-window bins. Recovery is scored with the headline estimator alone (Table&nbsp;<a href="#tab:recovery" data-reference-type="ref" data-reference="tab:recovery">7</a>).<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
+<div id="tab:recovery">
+<table class="caption-top">
+<caption>Power (recovery) test on the step-free population: Kleven–Waseem-consistent injections with true marginal buncher at £112,000. Baseline (no injection): <span class="math inline">\(E=0\)</span>.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;"><span class="math inline">\(E_{\mathrm{true}}\)</span> (injected)</th>
+<th style="text-align: right;"><span class="math inline">\(E_{\mathrm{hat}}\)</span></th>
+<th style="text-align: right;">Recovery</th>
+<th style="text-align: right;"><span class="math inline">\(\hat y_R\)</span> (true 112)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(2{,}000\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(298\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(14.9\%\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(85.8\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(5{,}000\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(2{,}445\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(48.9\%\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(91.9\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(8{,}000\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(4{,}918\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(61.5\%\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(100.0\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Recovery rises with signal size—half to two-thirds of moderate (5,000–8,000-firm) injections, while a small 2,000-firm injection sits near the detection floor—and the estimator <em>under</em>-states the truth rather than inflating it. The attenuation has a measured mechanical source: the depressed bins between the window top (£100k) and the true marginal buncher (£112k) enter the counterfactual fit and pull it down, truncating measured missing mass and drawing <span class="math inline">\(\hat y_R\)</span> toward the threshold. The implication is the one Section&nbsp;<a href="#sec:bunching" data-reference-type="ref" data-reference="sec:bunching">5</a> turns on: the target-inherited excess on the 2023–24 data is read with the same attenuation a genuine signal would face, so the estimator, if anything, under-states the targeted profile; and no attenuation argument can turn the 2024–25 band-edge artifact into behaviour. Both tests are part of the released code and are fully reproducible.</p>
+</section>
+<h2 id="references" class="anchored">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-asatryanpeichl2017" class="csl-entry" role="listitem">
+Asatryan, Zareh, and Andreas Peichl. 2017. <em>Responses of Firms to Tax, Administrative and Accounting Rules: Evidence from <span>Armenia</span></em>. CESifo Working Paper No. 6754. CESifo. <a href="https://ideas.repec.org/p/ces/ceswps/_6754.html">https://ideas.repec.org/p/ces/ceswps/_6754.html</a>.
+</div>
+<div id="ref-waseem2024" class="csl-entry" role="listitem">
+Bashir, Muhammad, Zehra Farooq, Usama Jamal, and Mazhar Waseem. 2024. <em>Size-Based Policies and Firm Growth: Evidence from <span>Pakistan</span></em>. Working Paper. University of Manchester. <a href="https://mazharwaseem.com/static/uploads/PAK_VAT_Threshold_October_2024.pdf">https://mazharwaseem.com/static/uploads/PAK_VAT_Threshold_October_2024.pdf</a>.
+</div>
+<div id="ref-benedek2015" class="csl-entry" role="listitem">
+Benedek, Dora, Ruud A. de Mooij, Michael Keen, and Philippe Wingender. 2015. <em>Estimating <span>VAT</span> Pass Through</em>. IMF Working Paper WP/15/214. International Monetary Fund. <a href="https://www.elibrary.imf.org/view/journals/001/2015/214/001.2015.issue-214-en.xml">https://www.elibrary.imf.org/view/journals/001/2015/214/001.2015.issue-214-en.xml</a>.
+</div>
+<div id="ref-bertanhaetal2023" class="csl-entry" role="listitem">
+Bertanha, Marinho, Andrew H. McCallum, and Nathan Seegert. 2023. <span>“Better Bunching, Nicer Notching.”</span> <em>Journal of Econometrics</em> 237 (2): 105512. <a href="https://doi.org/10.1016/j.jeconom.2023.105512">https://doi.org/10.1016/j.jeconom.2023.105512</a>.
+</div>
+<div id="ref-best2015" class="csl-entry" role="listitem">
+Best, Michael Carlos, Anne Brockmeyer, Henrik J. Kleven, Johannes Spinnewijn, and Mazhar Waseem. 2015. <span>“Production Versus Revenue Efficiency with Limited Tax Capacity: Theory and Evidence from <span>Pakistan</span>.”</span> <em>Journal of Political Economy</em> 123 (6): 1311–55. <a href="https://doi.org/10.1086/683849">https://doi.org/10.1086/683849</a>.
+</div>
+<div id="ref-blomquistetal2021" class="csl-entry" role="listitem">
+Blomquist, Sören, Whitney K. Newey, Anil Kumar, and Che-Yuan Liang. 2021. <span>“On Bunching and Identification of the Taxable Income Elasticity.”</span> <em>Journal of Political Economy</em> 129 (8): 2320–43. <a href="https://doi.org/10.1086/714446">https://doi.org/10.1086/714446</a>.
+</div>
+<div id="ref-chettyetal2011" class="csl-entry" role="listitem">
+Chetty, Raj, John N. Friedman, Tore Olsen, and Luigi Pistaferri. 2011. <span>“Adjustment Costs, Firm Responses, and Micro Vs. Macro Labor Supply Elasticities: Evidence from <span>Danish</span> Tax Records.”</span> <em>Quarterly Journal of Economics</em> 126 (2): 749–804. <a href="https://doi.org/10.1093/qje/qjr013">https://doi.org/10.1093/qje/qjr013</a>.
+</div>
+<div id="ref-belloncopestake2022" class="csl-entry" role="listitem">
+Copestake, Alexander, Matthieu Bellon, and Wenzhang Zhang. 2026. <span>“Supply and Demand Determinants of Heterogeneous <span>VAT</span> Pass-Through.”</span> <em>National Tax Journal</em>. <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4207882">https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4207882</a>.
+</div>
+<div id="ref-eudirective2020285" class="csl-entry" role="listitem">
+Council of the European Union. 2020. <em>Council Directive (<span>EU</span>) 2020/285 on the Special Scheme for Small Enterprises</em>. Official Journal of the European Union, <a href="https://eur-lex.europa.eu/eli/dir/2020/285/oj" class="uri">https://eur-lex.europa.eu/eli/dir/2020/285/oj</a>.
+</div>
+<div id="ref-garicano2016" class="csl-entry" role="listitem">
+Garicano, Luis, Claire Lelarge, and John Van Reenen. 2016. <span>“Firm Size Distortions and the Productivity Distribution: Evidence from <span>France</span>.”</span> <em>American Economic Review</em> 106 (11): 3439–79. <a href="https://doi.org/10.1257/aer.20130232">https://doi.org/10.1257/aer.20130232</a>.
+</div>
+<div id="ref-gourioroys2014" class="csl-entry" role="listitem">
+Gourio, François, and Nicolas Roys. 2014. <span>“Size-Dependent Regulations, Firm Size Distribution, and Reallocation.”</span> <em>Quantitative Economics</em> 5 (2): 377–416. <a href="https://doi.org/10.3982/QE338">https://doi.org/10.3982/QE338</a>.
+</div>
+<div id="ref-harju2019" class="csl-entry" role="listitem">
+Harju, Jarkko, Tuomas Matikka, and Timo Rauhanen. 2019. <span>“Compliance Costs Vs.&nbsp;Tax Incentives: Why Do Entrepreneurs Respond to Size-Based Regulations?”</span> <em>Journal of Public Economics</em> 173: 139–64. <a href="https://doi.org/10.1016/j.jpubeco.2019.02.003">https://doi.org/10.1016/j.jpubeco.2019.02.003</a>.
+</div>
+<div id="ref-hmrc_threshold" class="csl-entry" role="listitem">
+HM Revenue and Customs. 2024. <em>Increasing the <span>VAT</span> Registration Threshold</em>. Tax information and impact note, GOV.UK, <a href="https://www.gov.uk/government/publications/vat-increasing-the-registration-and-deregistration-thresholds/increasing-the-vat-registration-threshold" class="uri">https://www.gov.uk/government/publications/vat-increasing-the-registration-and-deregistration-thresholds/increasing-the-vat-registration-threshold</a>.
+</div>
+<div id="ref-hmt2018cfe" class="csl-entry" role="listitem">
+HM Treasury. 2018. <em><span>VAT</span> Registration Threshold: Call for Evidence</em>. HM Treasury, March 2018, <a href="https://www.gov.uk/government/consultations/vat-registration-threshold-call-for-evidence" class="uri">https://www.gov.uk/government/consultations/vat-registration-threshold-call-for-evidence</a>.
+</div>
+<div id="ref-hmt_spring_budget_2024" class="csl-entry" role="listitem">
+HM Treasury. 2024. <em>Spring Budget 2024: Policy Costings</em>. HM Treasury, March 2024, <a href="https://assets.publishing.service.gov.uk/media/65e7920c08eef600155a5617/Published_Costing_Document_Spring_Budget_2024_Final.pdf" class="uri">https://assets.publishing.service.gov.uk/media/65e7920c08eef600155a5617/Published_Costing_Document_Spring_Budget_2024_Final.pdf</a>.
+</div>
+<div id="ref-keenmintz2004" class="csl-entry" role="listitem">
+Keen, Michael, and Jack Mintz. 2004. <span>“The Optimal Threshold for a Value-Added Tax.”</span> <em>Journal of Public Economics</em> 88 (3–4): 559–76. <a href="https://doi.org/10.1016/S0047-2727(02)00165-2">https://doi.org/10.1016/S0047-2727(02)00165-2</a>.
+</div>
+<div id="ref-kleven2016" class="csl-entry" role="listitem">
+Kleven, Henrik J. 2016. <span>“Bunching.”</span> <em>Annual Review of Economics</em> 8: 435–64. <a href="https://doi.org/10.1146/annurev-economics-080315-015234">https://doi.org/10.1146/annurev-economics-080315-015234</a>.
+</div>
+<div id="ref-klevenwaseem2013" class="csl-entry" role="listitem">
+Kleven, Henrik J., and Mazhar Waseem. 2013. <span>“Using Notches to Uncover Optimization Frictions and Structural Elasticities: Theory and Evidence from <span>Pakistan</span>.”</span> <em>Quarterly Journal of Economics</em> 128 (2): 669–723. <a href="https://doi.org/10.1093/qje/qjt004">https://doi.org/10.1093/qje/qjt004</a>.
+</div>
+<div id="ref-liuetal2021" class="csl-entry" role="listitem">
+Liu, Li, Ben Lockwood, Miguel Almunia, and Eddy H. F. Tam. 2021. <span>“<span>VAT</span> Notches, Voluntary Registration, and Bunching: Theory and <span>UK</span> Evidence.”</span> <em>Review of Economics and Statistics</em> 103 (1): 151–64. <a href="https://direct.mit.edu/rest/article/103/1/151/97767">https://direct.mit.edu/rest/article/103/1/151/97767</a>.
+</div>
+<div id="ref-liulockwoodtam2024" class="csl-entry" role="listitem">
+Liu, Li, Ben Lockwood, and Eddy H. F. Tam. 2024. <em>Small Firm Growth and the <span>VAT</span> Threshold: Evidence for the <span>UK</span></em>. IMF Working Paper WP/24/33. International Monetary Fund. <a href="https://www.imf.org/en/publications/wp/issues/2024/02/16/small-firm-growth-and-the-vat-threshold-evidence-for-the-uk-544462">https://www.imf.org/en/publications/wp/issues/2024/02/16/small-firm-growth-and-the-vat-threshold-evidence-for-the-uk-544462</a>.
+</div>
+<div id="ref-nandiwarwick2020" class="csl-entry" role="listitem">
+Nandi, Tushar, and Ross Warwick. 2020. <em>How Businesses Respond to <span>VAT</span>: Evidence from <span>West Bengal</span>, <span>India</span></em>. TaxDev / Institute for Fiscal Studies, <a href="https://www.taxdev.org/research-projects/how-businesses-respond-vat" class="uri">https://www.taxdev.org/research-projects/how-businesses-respond-vat</a>.
+</div>
+<div id="ref-obr2023vat" class="csl-entry" role="listitem">
+Office for Budget Responsibility. 2023. <em>The Impact of the Frozen <span>VAT</span> Registration Threshold</em>. Economic and Fiscal Outlook, March 2023, <a href="https://obr.uk/box/the-impact-of-the-frozen-vat-registration-threshold/" class="uri">https://obr.uk/box/the-impact-of-the-frozen-vat-registration-threshold/</a>.
+</div>
+<div id="ref-ots2017vat" class="csl-entry" role="listitem">
+Office of Tax Simplification. 2017. <em>Value Added Tax: Routes to Simplification</em>. OTS report, November 2017, <a href="https://assets.publishing.service.gov.uk/media/5a822577e5274a2e87dc1620/Value_added_tax_routes_to_simplification_web.pdf" class="uri">https://assets.publishing.service.gov.uk/media/5a822577e5274a2e87dc1620/Value_added_tax_routes_to_simplification_web.pdf</a>.
+</div>
+<div id="ref-onji2009" class="csl-entry" role="listitem">
+Onji, Kazuki. 2009. <span>“The Response of Firms to Eligibility Thresholds: Evidence from the <span>Japanese</span> Value-Added Tax.”</span> <em>Journal of Public Economics</em> 93 (5–6): 766–75. <a href="https://doi.org/10.1016/j.jpubeco.2008.10.003">https://doi.org/10.1016/j.jpubeco.2008.10.003</a>.
+</div>
+<div id="ref-policyengine" class="csl-entry" role="listitem">
+PolicyEngine. 2025. <em><span>PolicyEngine UK</span>: Open-Source Tax-Benefit Microsimulation</em>. <a href="https://policyengine.org" class="uri">Https://policyengine.org</a>.
+</div>
+<div id="ref-saez2010" class="csl-entry" role="listitem">
+Saez, Emmanuel. 2010. <span>“Do Taxpayers Bunch at Kink Points?”</span> <em>American Economic Journal: Economic Policy</em> 2 (3): 180–212. <a href="https://doi.org/10.1257/pol.2.3.180">https://doi.org/10.1257/pol.2.3.180</a>.
+</div>
+<div id="ref-hoc_vat" class="csl-entry" role="listitem">
+Seely, Antony. 2024. <em><span>VAT</span>: The Registration Threshold</em>. House of Commons Library Briefing Paper SN00963, <a href="https://commonslibrary.parliament.uk/research-briefings/sn00963/" class="uri">https://commonslibrary.parliament.uk/research-briefings/sn00963/</a>.
+</div>
+</div>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>An earlier draft of this generator set <span class="math inline">\(v_i = y_i - x_i\)</span> with <span class="math inline">\(\rho_i \in [0.6, 1.5]\)</span>—omitting the factor <span class="math inline">\(\tau\)</span>, so per-firm liabilities were about five times too large and a large minority of firms carried negative value added. The weight optimiser compensated on the band totals, leaving aggregate calibration scores similar but distorting the near-threshold density; Section&nbsp;<a href="#sec:bunching" data-reference-type="ref" data-reference="sec:bunching">5</a> documents the consequence and the correction.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>These aggregates are weighted sums of the synthetic registered population’s net VAT liabilities aged forward—a theoretical-liability (VTTL-style) base, not the published cash-receipts line (around £169bn in 2023–24; OBR forecast near £180bn for 2025–26), which is reduced by refunds, the VAT gap, and collection timing. The unaged bases also sit about 5.8% above the HMRC liability-by-band target sums they are calibrated toward (£184.8bn against £174.6bn above-threshold in 2023–24; £190.7bn against £180.4bn in 2024–25, and by <span class="math inline">\(9.8\%\)</span> in the £85,000–£150,000 band specifically): the multi-target optimiser trades the liability totals off against the count targets, and the liability-by-band calibration scores (91.3% and 92.0%) bound the shortfall. Band-to-band <em>differences</em>, which drive every costing in the paper, are less exposed than the level. The growth factors are cumulative from 2023–24 and are applied to both vintages; to the extent the 2024–25 vintage already embodies 2024–25 nominal levels, the aged 2024–25 aggregates overstate nominal growth by up to one year’s factor (<span class="math inline">\(\approx\)</span><!-- -->3%), within the calibration error just described.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>The defect and its diagnosis are recorded in the replication repository (issue #15); the near-threshold targets are issue #23. A second correction followed: the below-threshold HMRC liability total, which belongs to voluntary registrants the liability model does not represent, was initially calibrated against the whole below-threshold population, draining weights around the fine-target window; on an intermediate build it also manufactured a spectacular (<span class="math inline">\(E\approx196{,}000\)</span>), specification-robust artifact at the £90,000 band edge. It is now an informational diagnostic (Section&nbsp;<a href="#sec:data" data-reference-type="ref" data-reference="sec:data">3</a>). Aggregate calibration scores barely moved under any of these changes—the optimiser hit the band totals every time—which is itself part of the lesson: aggregate fit does not discipline sub-band shape.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>An earlier version of this exercise relocated mass entirely within the exclusion window, which the counterfactual fit cannot see by construction; its reported “<span class="math inline">\(\sim\)</span><!-- -->90% recovery” measured deposit bookkeeping, not estimator power. The redesigned test is in <code>analysis/recovery_bunching.py</code>.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>The earlier draft’s <span class="math inline">\(b_{\mathrm{LLAT}} = 0.94\)</span>, read against LLAT’s <span class="math inline">\(1.361\)</span>, illustrated how a band-inherited artifact can land in the publishable range of the literature; that artifact’s disappearance under the liability correction, and its replacement by an explicit published-data target, are reported above.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>An earlier version of this simulator computed the registered optimum by damped fixed-point iteration on the discontinuous schedule. For any firm whose ability straddles a reform notch that iteration has no fixed point—the iterate oscillates across the notch and the reported turnover is an artifact of the iteration count. The reported behavioural offsets in the earlier draft (for example <span class="math inline">\(-\unicode{xA3}292\)</span>m against a static <span class="math inline">\(-\unicode{xA3}508\)</span>m for the raise at <span class="math inline">\(e=0.17\)</span>) were dominated by this artifact. The corrected, region-confined solve is closed form; the replication repository documents the change.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Earlier versions of the estimator also printed a CES substitution elasticity and two wedge-normalised turnover elasticities, the latter inheriting an ad hoc <span class="math inline">\(\tau/2\)</span> normalisation from a deleted smoothed-schedule model. These outputs were labelled non-identified but were still reported; they have been removed from the code and the paper.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>An earlier version of this exercise relocated mass entirely <em>within</em> the exclusion window. The fitted counterfactual is identical across such injections by construction (it is fit outside the window and rescaled by total mass, which relocation preserves), so that version measured deposit bookkeeping, not power, and its stated attenuation mechanism was wrong. The redesigned test supersedes it.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+    tabsets.forEach(function(tabset) {
+      const tabby = new Tabby('#' + tabset.id);
+    });
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+
+
+
+
+</body></html>

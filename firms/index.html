@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Firms — populace</title>
+<meta name="description" content="The Populace approach pointed at a new population: an open synthetic file of UK businesses, calibrated to HMRC and ONS aggregates, costing VAT registration-threshold reforms at the firm level." />
+<meta property="og:title" content="Firms — populace" />
+<meta property="og:description" content="An open firm-level synthetic population for UK VAT threshold reform: level, shape, and rate reforms costed on one £184.8bn base." />
+<meta property="og:type" content="article" />
+<link rel="icon" type="image/svg+xml" href="/assets/policyengine-mark.svg" />
+<meta name="theme-color" content="#FFFFFF" />
+
+<link rel="stylesheet" href="/vendor/fonts/fonts.css" />
+<link rel="stylesheet" href="/vendor/ui-kit-tokens.css" />
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="nav">
+  <a class="brand" href="/">
+    <span class="brand-dot" aria-hidden="true"></span>populace
+  </a>
+  <nav class="nav-links">
+    <a href="/#idea">the idea</a>
+    <a href="/#stack">the stack</a>
+    <a href="/#result">evidence</a>
+    <a href="/papers">papers</a>
+    <a href="/firms/paper">paper</a>
+    <a class="nav-gh" href="https://github.com/PolicyEngine/firm-microsim-paper" aria-label="GitHub"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"/></svg></a>
+  </nav>
+</header>
+
+<main class="strategy-main">
+  <section class="strategy-hero">
+    <div class="strategy-hero-inner">
+      <p class="strategy-crumb reveal" style="--d:0"><a href="/#applications">applications</a> / firms</p>
+      <p class="eyebrow reveal" style="--d:0">an application · a new population</p>
+      <h1 class="reveal" style="--d:1">The firms.</h1>
+      <p class="strategy-lede reveal" style="--d:2">
+        Populace builds weighted synthetic populations where policy-relevant
+        microdata is missing. Households were the first population; this is
+        the second. The UK's VAT registration threshold is a cliff in the
+        firm-size distribution, published statistics resolve it only in
+        coarse turnover bands, and the firm-level data needed to cost
+        reforms is not available in open form — so the same recipe applies:
+        draw records from the published structure, calibrate weights to
+        administrative aggregates, simulate reforms on the file.
+      </p>
+      <div class="strategy-status-row reveal" style="--d:3">
+        <span class="tag tag-preprint">paper: preprint</span>
+        <a class="btn btn-primary" href="/firms/paper">Read the paper</a>
+        <a class="btn btn-ghost" href="https://github.com/PolicyEngine/firm-microsim-paper">Repository</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="explainer" class="band">
+    <div class="band-head">
+      <span class="kicker mono">01 — the 30-second version</span>
+      <h2>Three reform families, one common base.</h2>
+    </div>
+    <div class="prose">
+      <p>
+        Once turnover crosses £85,000, VAT falls due on a firm's whole base —
+        a notch, not a kink. Reform proposals change the threshold's
+        <em>level</em> (move it), its <em>shape</em> (taper the rate in), or
+        its <em>rate</em> (a reduced-rate band above it), and the three are
+        not comparable through the reduced-form methods used to study the
+        threshold. A firm-level file makes them comparable by construction:
+        every reform is costed statically on the same 2,460,268 weighted
+        firms and the same £184.8bn 2023–24 registered base.
+      </p>
+    </div>
+    <div class="metrics">
+      <div class="metric">
+        <span class="metric-label mono">raise threshold to £100k</span>
+        <span class="metric-val">−£753m<span class="metric-vs">level: moves the notch</span></span>
+        <span class="metric-note">static, 2023–24 base</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label mono">graduated taper £85k–£105k</span>
+        <span class="metric-val">−£520m<span class="metric-vs">shape: removes the notch</span></span>
+        <span class="metric-note">the only reform with no dominated region</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label mono">reduced-rate band £85k–£105k</span>
+        <span class="metric-val">−£484m<span class="metric-vs">rate: 10% in the band (−£242m at 15%)</span></span>
+        <span class="metric-note">splits the notch into two smaller ones</span>
+      </div>
+    </div>
+    <figure class="diagram-figure">
+      <svg viewBox="0 0 860 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="firms-menu-title firms-menu-desc">
+        <title id="firms-menu-title">Static cost of four VAT threshold reforms on one base</title>
+        <desc id="firms-menu-desc">Horizontal bars compare the static revenue cost of four reforms priced on the same £184.8bn 2023–24 base: raising the threshold to £100,000 costs £753 million, a graduated taper over £85,000 to £105,000 costs £520 million, a 10 percent reduced-rate band costs £484 million, and a 15 percent reduced-rate band costs £242 million.</desc>
+
+        <text class="dg-kicker" x="60" y="40">static revenue change, £m, common 2023–24 base</text>
+
+        <!-- baseline axis at x=790 (0), scale: 753m -> 560px -->
+        <line class="dg-gridline" x1="790" y1="60" x2="790" y2="290"/>
+
+        <!-- raise to 100k: -753 -->
+        <text class="dg-label" x="60" y="87">raise to £100k</text>
+        <rect class="dg-bar-primary" x="230" y="72" width="560" height="26" rx="3"/>
+        <text class="dg-label" x="222" y="90" text-anchor="end" font-weight="600">−753</text>
+
+        <!-- taper: -520 -->
+        <text class="dg-label" x="60" y="147">graduated taper</text>
+        <rect class="dg-bar-compare" x="403" y="132" width="387" height="26" rx="3"/>
+        <text class="dg-label" x="395" y="150" text-anchor="end" font-weight="600">−520</text>
+
+        <!-- reduced rate 10: -484 -->
+        <text class="dg-label" x="60" y="207">reduced rate 10%</text>
+        <rect class="dg-bar-compare" x="430" y="192" width="360" height="26" rx="3"/>
+        <text class="dg-label" x="422" y="210" text-anchor="end" font-weight="600">−484</text>
+
+        <!-- reduced rate 15: -242 -->
+        <text class="dg-label" x="60" y="267">reduced rate 15%</text>
+        <rect class="dg-bar-compare" x="610" y="252" width="180" height="26" rx="3"/>
+        <text class="dg-label" x="602" y="270" text-anchor="end" font-weight="600">−242</text>
+
+        <text class="dg-label" x="790" y="310" text-anchor="middle">£0</text>
+      </svg>
+      <figcaption class="mono">
+        Table 3 of the paper: level, shape, and rate reforms priced statically
+        on the £85,000-notch / £184.8bn 2023–24 baseline.
+      </figcaption>
+    </figure>
+    <p class="caveat">
+      <span class="mono">firm-microsim-paper, 2023–24 vintage; seed half-ranges ±£2.1m (raise) and ±£1.5m (taper) across generator seeds.</span>
+      Conditional on an assumed turnover elasticity, intensive-margin
+      re-optimisation barely moves these figures: a threshold raise has
+      exactly zero intensive-margin offset at every elasticity — released
+      firms leave the VAT base, so their expansion is untaxed — and the
+      reduced-rate bands recover at most £17m of £484m at the highest
+      elasticity swept. The static menu is the costing.
+    </p>
+  </section>
+
+  <section id="method" class="band">
+    <div class="band-head">
+      <span class="kicker mono">02 — the method</span>
+      <h2>The household recipe, on business registers.</h2>
+    </div>
+    <div class="prose">
+      <p>
+        The pipeline is two stages, parameterised by a single threshold.
+        <strong>Draw</strong>: sample 2,941,232 firm records — continuous
+        within-band turnover, employment, sector, and intermediate inputs —
+        from the ONS business-register structure, so the file has firm-level
+        resolution the published bands lack. <strong>Calibrate</strong>:
+        fit the weights by the same optimisation family as the household
+        stack (Adam on a symmetric relative-error loss) so weighted totals
+        reproduce HMRC VAT-registered counts by turnover band and sector,
+        ONS employment bands, HMRC liability totals, and the OBR's £1,000-band
+        counts near the threshold. Registration is mandatory above the
+        threshold and voluntary below at the HMRC-calibrated rate.
+      </p>
+      <p>
+        Each firm carries a structural net liability — the 20% rate applied
+        to value added, τ(turnover − inputs) — rather than a residual the
+        optimiser is free to absorb. An earlier build set liability to value
+        added itself, five times too large per firm; aggregate calibration
+        scores barely moved while the near-threshold density distorted.
+        The lesson is a design rule the household stack shares: build
+        liabilities from structured components, and never let the weight
+        optimiser determine what an accounting identity should.
+      </p>
+    </div>
+    <div class="metrics">
+      <div class="metric">
+        <span class="metric-label mono">calibration, 2023–24</span>
+        <span class="metric-val">89.2%<span class="metric-vs">across five calibrated dimensions</span></span>
+        <span class="metric-note">turnover bands 93.8% · liability by band 91.3%</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label mono">calibration, 2024–25</span>
+        <span class="metric-val">92.8%<span class="metric-vs">£90k threshold vintage, one-line switch</span></span>
+        <span class="metric-note">2,945,974 rows → 2,531,324 weighted firms</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label mono">dominated region</span>
+        <span class="metric-val">£21,250<span class="metric-vs">(£85,000, £106,250): no firm profits from locating there</span></span>
+        <span class="metric-note">elasticity-free measure of the notch distortion</span>
+      </div>
+    </div>
+    <p class="caveat">
+      <span class="mono">results/calibration_accuracy.txt; Kleven–Waseem dominated-region width at τ=0.20.</span>
+      Because the population is calibrated <em>to</em> the HMRC aggregates,
+      agreement with them is an internal consistency check, not external
+      validation. The frame is the ONS register of VAT- and/or PAYE-registered
+      businesses (~2.7M): unregistered sole traders below the threshold are
+      out of frame, so cross-threshold level comparisons against all-business
+      tabulations will differ by construction.
+    </p>
+  </section>
+
+  <section id="limits" class="band">
+    <div class="band-head">
+      <span class="kicker mono">03 — what the file cannot support</span>
+      <h2>Band-calibrated data carry no bunching evidence.</h2>
+    </div>
+    <div class="prose">
+      <p>
+        The generator has no location-choice model, so any excess mass below
+        the threshold is inherited from the calibration targets, not
+        discovered. The paper measures this directly: on the 2023–24 build
+        the bunching estimator reads excess mass E = 7,933 firms
+        (b<sub>LLAT</sub> = 1.91, roughly 1.4× the administrative-data
+        estimate of Liu et al.), but a placebo population regenerated with
+        the near-threshold step removed from the targets returns zero excess
+        mass. The estimator also recovers injected bunching cleanly — the
+        machinery works; the synthetic data simply contain no behavioural
+        signal of their own. The paper therefore reports bunching geometry
+        as a target-consistency diagnostic and computes no elasticities
+        from it.
+      </p>
+    </div>
+    <div class="metrics">
+      <div class="metric">
+        <span class="metric-label mono">measured excess mass, 2023–24</span>
+        <span class="metric-val">E = 7,933<span class="metric-vs">b_LLAT = 1.91 at the £85k notch</span></span>
+        <span class="metric-note">seed half-range ±161</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label mono">placebo without the target step</span>
+        <span class="metric-val">E = 0<span class="metric-vs">smooth-density regeneration</span></span>
+        <span class="metric-note">the shape is target-inherited</span>
+      </div>
+    </div>
+    <p class="caveat">
+      <span class="mono">results/bunching_inference.txt, placebo_bunching.txt, recovery_bunching.txt, seed_sensitivity.txt.</span>
+      On the 2024–25 vintage the £90,000 threshold sits on an OBR band edge,
+      and the estimator reads E = 11,072 there — a window-edge measurement
+      artifact the paper flags rather than hides. No standard errors are
+      reported because there is no estimand: the quantity is a property of
+      the calibrated file, not of firm behaviour.
+    </p>
+  </section>
+
+  <section id="populace" class="band">
+    <div class="band-head">
+      <span class="kicker mono">04 — where this lives in the stack</span>
+      <h2>From standalone paper to Populace population.</h2>
+    </div>
+    <div class="prose">
+      <p>
+        The paper ships as a standalone repository — generator, calibration,
+        estimator, and manuscript, regenerable end to end. Its official
+        target surface is being mirrored into PolicyEngine's Ledger fact
+        store, and an experimental UK firm generator already sits in
+        Populace behind the household stack's gates; the repository includes
+        a comparison command so the pinned migration snapshot can be audited
+        against the published paper population.
+        <a href="https://github.com/PolicyEngine/populace/issues/258">populace#258</a>
+        tracks porting the corrected liability identity before any Populace
+        firm build is certified.
+      </p>
+    </div>
+  </section>
+
+  <section class="band band-cta">
+    <h2>Read the full costings.</h2>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="/firms/paper">The paper</a>
+      <a class="btn btn-ghost" href="https://github.com/PolicyEngine/firm-microsim-paper">Reproduce the build</a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-row">
+    <a class="brand" href="/"><span class="brand-dot" aria-hidden="true"></span>populace</a>
+    <a class="foot-pe" href="https://policyengine.org" aria-label="PolicyEngine"><img src="/assets/policyengine.svg" alt="PolicyEngine" /></a>
+  </div>
+  <p class="mono foot-fine">
+    A weighted synthetic population for public policy. Open source · MIT · a PolicyEngine project.
+  </p>
+</footer>
+
+<script src="/reveal.js" defer></script>
+</body>
+</html>
