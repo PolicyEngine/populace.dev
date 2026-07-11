@@ -5,14 +5,15 @@
 // loads, so the page cannot go stale.
 //
 // Fetch strategy, in order:
-//   1) the manifest published in the release directory, if a build ships it there
-//      (future builds may publish release_input_coverage_manifest.json next to the
-//      other manifests) — keeps the page on-registry when that lands;
-//   2) fall back to raw.githubusercontent.com at the build sha embedded in the
-//      release id (e.g. ...-75d5add-<timestamp>), where the manifest lives today at
+//   1) raw.githubusercontent.com at the build sha embedded in the release id
+//      (e.g. ...-75d5add-<timestamp>), where the manifest is a source file at
 //      packages/populace-build/src/populace/build/us/release_input_coverage_manifest.json.
-// Build J renders from (2) today; when a build publishes the manifest in-release,
-// (1) takes over and the counts get richer automatically — no code change.
+//      It is present at every build's commit, so this renders today and the counts
+//      update automatically as each new release pins a newer sha — no code change.
+//   2) fall back to an in-release copy, if a future build publishes
+//      release_input_coverage_manifest.json next to the other manifests.
+// (1) is primary because it always exists at the build sha; the release-directory
+// copy is only a safety net, so no request 404s on a normal load.
 (async () => {
   const HF =
     "https://huggingface.co/datasets/policyengine/populace-us/resolve/main/";
@@ -55,26 +56,26 @@
   try {
     const latest = await getJSON(HF + "latest.json");
     releaseId = latest.release_id || "";
-    const relDir = String(
-      (latest.paths && latest.paths.build_manifest) || ""
-    ).replace(/build_manifest\.json$/, "");
 
-    // (1) prefer an in-release manifest if a build ships one
-    if (relDir) {
+    // (1) source tree at the release's build sha — present at every build's commit
+    const sha = shaFromReleaseId(releaseId);
+    if (sha) {
       try {
-        const url = HF + relDir + COV_FILE;
-        manifest = await getJSON(url);
-        sourceHref = url;
+        manifest = await getJSON(RAW + sha + "/" + COV_PATH);
+        sourceHref = GH_BLOB + sha + "/" + COV_PATH;
       } catch (_) {
         manifest = null;
       }
     }
-    // (2) fall back to the source tree at the release's build sha
+    // (2) safety net: an in-release copy, if a future build publishes one
     if (!manifest) {
-      const sha = shaFromReleaseId(releaseId);
-      if (!sha) return;
-      manifest = await getJSON(RAW + sha + "/" + COV_PATH);
-      sourceHref = GH_BLOB + sha + "/" + COV_PATH;
+      const relDir = String(
+        (latest.paths && latest.paths.build_manifest) || ""
+      ).replace(/build_manifest\.json$/, "");
+      if (!relDir) return;
+      const url = HF + relDir + COV_FILE;
+      manifest = await getJSON(url);
+      sourceHref = url;
     }
   } catch (_) {
     return; // best-effort, like releases.js
