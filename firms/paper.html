@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>UK VAT threshold paper — populace</title>
+<meta name="description" content="A web version and PDF of PolicyEngine's paper: an open firm-level microsimulation of the UK VAT registration threshold." />
+<meta property="og:title" content="An open firm-level microsimulation of the UK VAT registration threshold" />
+<meta property="og:description" content="Synthetic UK firm records calibrated to HMRC and ONS aggregates price level, shape, and rate threshold reforms on one £184.8bn base." />
+<meta property="og:type" content="article" />
+<link rel="icon" type="image/svg+xml" href="/assets/policyengine-mark.svg" />
+<meta name="theme-color" content="#FFFFFF" />
+
+<link rel="stylesheet" href="/vendor/fonts/fonts.css" />
+<link rel="stylesheet" href="/vendor/ui-kit-tokens.css" />
+<link rel="stylesheet" href="/style.css" />
+<link rel="stylesheet" href="/paper-page.css" />
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<header class="nav">
+  <a class="brand" href="/">
+    <span class="brand-dot" aria-hidden="true"></span>populace
+  </a>
+  <nav class="nav-links">
+    <a href="/#idea">the idea</a>
+    <a href="/#stack">the stack</a>
+    <a href="/#result">evidence</a>
+    <a href="/papers">papers</a>
+    <a href="/firms/web">web paper</a>
+    <a class="nav-gh" href="https://github.com/PolicyEngine/firm-microsim-paper" aria-label="GitHub"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"/></svg></a>
+  </nav>
+</header>
+<main class="paper-main">
+  <p class="strategy-crumb reveal" style="--d:0"><a href="/papers">papers</a> / <a href="/firms">firms</a> / paper</p>
+  <section class="paper-hero">
+    <p class="eyebrow reveal" style="--d:0">research paper · preprint</p>
+    <h1 class="paper-title reveal" style="--d:1">
+      An open firm-level microsimulation of the UK VAT registration threshold
+    </h1>
+    <p class="paper-lede reveal" style="--d:2">
+      The paper builds an open synthetic population of UK businesses —
+      calibrated to HMRC, ONS, and OBR statistics — and uses it to price
+      level, shape, and rate reforms of the VAT registration threshold on a
+      common base, with the threshold's dominated region as an
+      elasticity-free measure of the distortion each reform removes.
+    </p>
+    <div class="hero-cta reveal" style="--d:3">
+      <a class="btn btn-primary" href="#web">Read online</a>
+      <a class="btn btn-ghost" href="/firms/uk-vat-registration-threshold.pdf">Download PDF</a>
+      <a class="btn btn-ghost" href="https://github.com/PolicyEngine/firm-microsim-paper">Reproduction code</a>
+    </div>
+    <dl class="paper-facts reveal" style="--d:4">
+      <div>
+        <dt class="mono">anchor result</dt>
+        <dd>On a common £184.8bn 2023–24 base: raising the threshold to £100,000 costs £753m, a graduated taper £520m, and 10%/15% reduced-rate bands £484m/£242m.</dd>
+      </div>
+      <div>
+        <dt class="mono">method</dt>
+        <dd>2.94M synthetic firm records weighted to 2.46M UK firms, calibrated to administrative band aggregates, with net liability built structurally from value added.</dd>
+      </div>
+      <div>
+        <dt class="mono">discipline</dt>
+        <dd>A placebo regenerated without the near-threshold targets returns zero excess mass — band-calibrated data support no bunching inference, so the paper computes no elasticities from bunching.</dd>
+      </div>
+      <div>
+        <dt class="mono">author</dt>
+        <dd>Vahid Ahmadi, PolicyEngine. Preliminary and incomplete; comments welcome.</dd>
+      </div>
+    </dl>
+  </section>
+
+  <section id="web" class="paper-viewer" aria-labelledby="web-paper-title">
+    <div class="paper-viewer-head">
+      <div>
+        <span class="kicker mono">paper</span>
+        <h2 id="web-paper-title">Web paper</h2>
+      </div>
+      <a class="btn btn-ghost" href="/firms/web">Open full page</a>
+    </div>
+    <iframe class="paper-frame" src="/firms/web" title="An open firm-level microsimulation of the UK VAT registration threshold"></iframe>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-row">
+    <a class="brand" href="/"><span class="brand-dot" aria-hidden="true"></span>populace</a>
+    <a class="foot-pe" href="https://policyengine.org" aria-label="PolicyEngine"><img src="/assets/policyengine.svg" alt="PolicyEngine" /></a>
+  </div>
+  <p class="mono foot-fine">
+    A weighted synthetic population for public policy. Open source · MIT · a PolicyEngine project.
+  </p>
+</footer>
+  <script src="/reveal.js" defer></script>
+</body>
+</html>
