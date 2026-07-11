@@ -8,6 +8,15 @@
 <meta property="og:title" content="populace" />
 <meta property="og:description" content="A weighted synthetic population, built in the open." />
 <meta property="og:type" content="website" />
+<meta property="og:url" content="https://populace.dev/" />
+<meta property="og:image" content="https://populace.dev/assets/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="populace — a nation is millions of households. We build a synthetic one that stands in for them all." />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="populace" />
+<meta name="twitter:description" content="A weighted synthetic population, built in the open." />
+<meta name="twitter:image" content="https://populace.dev/assets/og-image.png" />
 <link rel="icon" type="image/svg+xml" href="/assets/policyengine-mark.svg" />
 <meta name="theme-color" content="#FFFFFF" /><!-- --background -->
 
@@ -178,8 +187,8 @@
         applying the strategies rather than adding to them.
       </p>
     </div>
-    <div class="strategy-grid" style="grid-template-columns: 1fr;">
-      <a class="strategy-card" href="/anywhere" style="max-width: 620px;">
+    <div class="application-grid">
+      <a class="strategy-card" href="/anywhere">
         <header><span class="card-id mono">anywhere</span><span class="tag tag-wip">paper in progress</span></header>
         <h3>Open microsimulation anywhere</h3>
         <p>
@@ -192,6 +201,18 @@
         </p>
         <span class="strategy-paper-link mono">read the application →</span>
       </a>
+      <div class="strategy-card strategy-card-static">
+        <header><span class="card-id mono">local</span><span class="tag tag-wip">in build</span></header>
+        <h3>Down to state, district, and county</h3>
+        <p>
+          The same stack, resolved below the nation. An American Community
+          Survey household spine carries PUMA-anchored geography, so a state,
+          congressional district, or county becomes a filter over one national
+          file — rather than a separate survey to source and calibrate for
+          every locality.
+        </p>
+        <span class="strategy-paper-link mono" style="color: var(--paper-faint);">building now</span>
+      </div>
     </div>
   </section>
 
@@ -204,9 +225,52 @@
     <p class="mono" id="sources-note" style="margin-top: 20px; max-width: 64ch; font-size: 13px; line-height: 1.55; color: var(--paper-faint);"></p>
   </section>
 
+  <section id="contract" class="band">
+    <div class="band-head">
+      <span class="kicker mono">05 — the contract</span>
+      <h2>Every input column, accounted for.</h2>
+    </div>
+    <div class="prose">
+      <p>
+        A reform only moves the numbers if the inputs it keys on carry signal.
+        So every release declares a <strong>coverage contract</strong>: each
+        input column the reference enhanced CPS exports is either present with
+        non-default signal, or carries a <em>reviewed exclusion</em> naming a
+        reason and a tracked issue. A hard release gate enforces it — a reform
+        keyed on a missing input fails the build loudly, instead of silently
+        scoring $0.
+      </p>
+    </div>
+    <div id="contract-live" class="contract-live" hidden>
+      <div class="contract-stats">
+        <div class="contract-stat">
+          <span class="contract-stat-label mono">input columns</span>
+          <span class="contract-stat-val" data-slot="total"></span>
+          <span class="contract-stat-note mono">declared in the contract</span>
+        </div>
+        <div class="contract-stat">
+          <span class="contract-stat-label mono">required</span>
+          <span class="contract-stat-val" data-slot="required"></span>
+          <span class="contract-stat-note mono">must carry non-default signal</span>
+        </div>
+        <div class="contract-stat">
+          <span class="contract-stat-label mono">reviewed exclusions</span>
+          <span class="contract-stat-val" data-slot="excluded"></span>
+          <span class="contract-stat-note mono">absent by design, each with a reason</span>
+        </div>
+      </div>
+      <p class="contract-gate mono" data-slot="gate"></p>
+      <details class="contract-details">
+        <summary class="mono" data-slot="summary">Reviewed exclusions</summary>
+        <div class="contract-excl" data-slot="table"></div>
+      </details>
+      <p class="research-link mono contract-source" data-slot="source"></p>
+    </div>
+  </section>
+
   <section id="releases" class="band">
     <div class="band-head">
-      <span class="kicker mono">05 — releases</span>
+      <span class="kicker mono">06 — releases</span>
       <h2>The current data, read live.</h2>
     </div>
     <div class="prose">
@@ -230,15 +294,30 @@
         <span class="release-meta" data-slot="meta"></span>
       </div>
     </div>
+    <div class="quickstart">
+      <span class="quickstart-label mono">use it — the certified default in two lines</span>
+      <pre class="quickstart-code"><code class="mono"><span class="qs-c"># pip install policyengine   (or: uv pip install policyengine)</span>
+<span class="qs-k">from</span> policyengine.tax_benefit_models.us <span class="qs-k">import</span> managed_microsimulation
+
+sim = managed_microsimulation()<span class="qs-c">   # policyengine_us.Microsimulation on Populace US 2024</span></code></pre>
+      <p class="quickstart-note">
+        <code class="mono">managed_microsimulation()</code> is pinned to the
+        policyengine.py release bundle — the same <strong>certified</strong>
+        build in the row above — so the dataset selection is reproducible, not
+        ad-hoc. It returns a <code class="mono">policyengine_us.Microsimulation</code>;
+        call its API directly.
+      </p>
+    </div>
     <p class="research-link mono">
       <a href="/calibration">Browse every target on the calibration strategy page</a>
+      · <a href="/calibration/dashboard">open the calibration dashboard</a>
       · <a href="https://huggingface.co/datasets/policyengine/populace-us/tree/main">releases on Hugging Face</a>
     </p>
   </section>
 
   <section id="result" class="band band-result">
     <div class="band-head">
-      <span class="kicker mono">06 — evidence</span>
+      <span class="kicker mono">07 — evidence</span>
       <h2>It already matches the data it aims to replace.</h2>
     </div>
     <div class="prose">
@@ -269,7 +348,7 @@
       </div>
     </div>
     <p class="caveat">
-      <span class="mono">build populace-us-2024-5da5a95 · 2026-06-11 · matched 41,314 households, symmetric refit.</span>
+      <span class="mono">frozen benchmark · build populace-us-2024-5da5a95 · 2026-06-11 · matched 41,314 households, symmetric refit.</span>
       Per individual target the incumbent still wins more often (2,528 of 3,704
       to our 1,127) — we win big where we win and lose narrowly where we lose.
       Net short-term capital gains land on the signed PUF-anchored target
@@ -277,7 +356,8 @@
       itemized on the <a href="/calibration">calibration strategy page</a>. The two
       populations share an open-source unit-construction engine, so this measures
       synthesis quality on a partly shared scaffold. We report the gaps, not just
-      the wins.
+      the wins. This head-to-head is a fixed comparison as of that date; the
+      current published build is read live under <a href="#releases">releases</a> above.
     </p>
     <p class="research-link mono">
       <a href="/sparsity/paper">Read the sparsity (L0) paper</a>
@@ -290,7 +370,7 @@
 
   <section id="commons" class="band band-commons">
     <div class="band-head">
-      <span class="kicker mono">07 — the commons</span>
+      <span class="kicker mono">08 — the commons</span>
       <h2>Toward one faithful record per person.</h2>
     </div>
     <div class="prose">
@@ -334,11 +414,18 @@
   <p class="mono foot-fine">
     A weighted synthetic population for public policy. Open source · MIT · a PolicyEngine project.
   </p>
+  <p class="mono foot-fine foot-links">
+    <a href="/calibration/dashboard">calibration dashboard</a> ·
+    <a href="/papers">papers</a> ·
+    <a href="https://github.com/PolicyEngine/populace">source</a> ·
+    <a href="https://huggingface.co/datasets/policyengine/populace-us/tree/main">releases</a>
+  </p>
 </footer>
 
 <script src="./field.js" defer></script>
 <script src="./sources.js" defer></script>
 <script src="./releases.js" defer></script>
+<script src="./contract.js" defer></script>
   <script src="/reveal.js" defer></script>
 </body>
 </html>

@@ -646,3 +646,124 @@ h2 {
 .not-yet .mono { display: block; color: var(--paper-faint); font-size: 12.5px; margin-bottom: 8px; }
 .footer a { color: var(--paper-dim); text-decoration: none; }
 .footer a:hover { color: var(--amber-soft); }
+
+/* ---------- applications strip (03): two application cards ---------- */
+/* Own grid class (not .strategy-grid) so the two-card strip stays two-up on
+   desktop instead of inheriting the six-card grid's three-column rule. */
+.application-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  max-width: 640px;
+}
+@media (min-width: 760px) {
+  .application-grid { grid-template-columns: repeat(2, 1fr); max-width: 1000px; }
+}
+/* the "local" card has no page yet — render it as a static card, no link cues */
+.strategy-card-static { cursor: default; }
+.strategy-card-static:hover { transform: none; border-color: var(--line); }
+
+/* ---------- the contract (05): live input-coverage ---------- */
+.contract-live { margin-top: 44px; }
+.contract-stats {
+  display: grid;
+  grid-template-columns: 1fr;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  overflow: hidden;
+  max-width: 76ch;
+}
+@media (min-width: 640px) { .contract-stats { grid-template-columns: repeat(3, 1fr); } }
+.contract-stat {
+  padding: 26px 24px;
+  border-bottom: 1px solid var(--line-soft);
+}
+@media (min-width: 640px) {
+  .contract-stat { border-bottom: none; border-right: 1px solid var(--line-soft); }
+  .contract-stat:last-child { border-right: none; }
+}
+.contract-stat-label { display: block; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--paper-faint); margin-bottom: 14px; }
+.contract-stat-val { display: block; font-family: var(--display); font-size: 2.8rem; font-weight: 500; color: var(--amber-soft); line-height: 1; }
+.contract-stat-note { display: block; font-size: 11.5px; color: var(--paper-faint); margin-top: 12px; line-height: 1.45; }
+
+.contract-gate {
+  margin-top: 22px;
+  max-width: 76ch;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--paper-faint);
+  border-left: 2px solid var(--primary);
+  padding-left: 16px;
+}
+
+.contract-details { margin-top: 26px; max-width: 76ch; }
+.contract-details summary {
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--amber-soft);
+  padding: 12px 16px;
+  border: 1px solid var(--line-soft);
+  border-radius: 3px;
+  background: var(--background-secondary);
+  list-style: none;
+  user-select: none;
+}
+.contract-details summary::-webkit-details-marker { display: none; }
+.contract-details summary::before { content: "▸ "; color: var(--paper-faint); }
+.contract-details[open] summary::before { content: "▾ "; }
+.contract-details summary:hover { color: var(--amber); border-color: var(--amber); }
+.contract-excl {
+  margin-top: 12px;
+  max-height: 440px;
+  overflow-y: auto;
+  border: 1px solid var(--line-soft);
+  border-radius: 3px;
+  background: var(--background-secondary);
+}
+.contract-excl-row { padding: 14px 16px; border-bottom: 1px solid var(--line-soft); }
+.contract-excl-row:last-child { border-bottom: none; }
+.contract-excl-head { display: flex; align-items: baseline; gap: 10px; justify-content: space-between; }
+.contract-excl-col { font-size: 13px; color: var(--amber); word-break: break-all; }
+.contract-excl-issue { font-size: 12px; color: var(--paper-faint); flex-shrink: 0; text-decoration: none; }
+.contract-excl-issue:hover { color: var(--amber-soft); }
+.contract-excl-reason { font-size: 13.5px; line-height: 1.5; color: var(--paper-dim); margin-top: 6px; }
+.contract-source { margin-top: 18px; }
+.contract-source a { color: var(--amber-soft); text-decoration-color: color-mix(in srgb, var(--primary) 35%, transparent); }
+
+/* ---------- quick-start block (06 releases) ---------- */
+.quickstart {
+  margin-top: 34px;
+  max-width: 76ch;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: var(--background-secondary);
+  padding: 22px 22px 20px;
+}
+.quickstart-label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--paper-faint);
+  margin-bottom: 14px;
+}
+.quickstart-code {
+  margin: 0 0 14px;
+  padding: 16px 18px;
+  background: var(--ink-2);
+  border: 1px solid var(--line-soft);
+  border-radius: 3px;
+  overflow-x: auto;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.quickstart-code code { font-family: var(--mono); color: var(--paper); white-space: pre; }
+.quickstart-code .qs-c { color: var(--paper-faint); }
+.quickstart-code .qs-k { color: var(--amber); }
+.quickstart-note { font-size: 13.5px; line-height: 1.55; color: var(--paper-dim); }
+.quickstart-note code { font-size: 12.5px; color: var(--amber-soft); }
+
+/* ---------- footer links ---------- */
+.foot-links { margin-top: 8px; }
+.foot-links a { color: var(--paper-dim); text-decoration: none; }
+.foot-links a:hover { color: var(--amber-soft); }
