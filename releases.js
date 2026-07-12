@@ -51,4 +51,51 @@
       show("release-row-certified", us.build_id, bits.join(" · "));
     }
   } catch (_) {}
+
+  // Local-area (non-default) row. Same cannot-go-stale contract as the rows
+  // above: list tags from the public HF refs API, keep the -acs-local- builds,
+  // pick the newest by trailing timestamp, then read that release's published
+  // manifests. If no local build is published, the row and its note stay hidden.
+  try {
+    const refs = await getJSON(
+      "https://huggingface.co/api/datasets/policyengine/populace-us/refs"
+    );
+    const localTags = (refs.tags || [])
+      .map((t) => t && t.name)
+      .filter((n) => typeof n === "string" && n.includes("-acs-local-"));
+    if (!localTags.length) throw new Error("no local build");
+
+    // newest by the trailing ...-YYYYMMDDThhmmssZ segment: lexicographic compare
+    // of the last dash-delimited part orders these timestamps chronologically.
+    const trailing = (n) => n.split("-").pop();
+    const id = localTags.reduce((a, b) => (trailing(b) > trailing(a) ? b : a));
+
+    const relDir = "releases/" + id + "/";
+    const rm = await getJSON(HF + relDir + "release_manifest.json");
+    const gs = await getJSON(HF + relDir + "gate_summary.json");
+    const cal = (gs.gates && gs.gates.calibration) || {};
+
+    const bits = [];
+    const date = day((rm.build && rm.build.built_at) || "");
+    if (date) bits.push(date);
+    // household count is the export record count; the two manifests above don't
+    // carry it directly, so read it from the release's calibration diagnostics.
+    try {
+      const cd = await getJSON(HF + relDir + "calibration_diagnostics.json");
+      const n =
+        (cd.target_surface && cd.target_surface.n_records) ?? cd.n_records;
+      if (typeof n === "number")
+        bits.push(n.toLocaleString("en-US") + " households");
+    } catch (_) {}
+    if (typeof cal.n_targets === "number")
+      bits.push(cal.n_targets.toLocaleString("en-US") + " targets");
+    if (typeof cal.fraction_within_10pct === "number")
+      bits.push(
+        Math.round(cal.fraction_within_10pct * 100) + "% of targets within 10%"
+      );
+
+    show("release-row-local", id, bits.join(" · "));
+    const note = document.getElementById("release-local-note");
+    if (note) note.hidden = false;
+  } catch (_) {}
 })();

@@ -341,11 +341,23 @@ h2 {
   border: 1px solid var(--line-soft);
   border-radius: 3px;
   background: var(--background-secondary);
+  scroll-margin-top: 90px;
 }
 .release-row[hidden] { display: none; }
 .release-id { color: var(--paper); word-break: break-all; }
 .release-meta { color: var(--paper-faint); font-size: 12.5px; width: 100%; }
 .tag-cert { background: color-mix(in srgb, var(--primary) 12%, transparent); color: var(--primary); }
+/* local (non-default) release: warm chip, distinct from the certified/latest
+   teal-family so the row reads as clearly not the default. */
+.tag-local, .tag-shipped { background: color-mix(in srgb, var(--text-warning) 14%, transparent); color: var(--text-warning); }
+.release-local-note {
+  max-width: 76ch;
+  margin-top: 14px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--paper-faint);
+}
+.release-local-note[hidden] { display: none; }
 
 /* ---------- commons ---------- */
 .commons-rails {
@@ -659,9 +671,6 @@ h2 {
 @media (min-width: 760px) {
   .application-grid { grid-template-columns: repeat(2, 1fr); max-width: 1000px; }
 }
-/* the "local" card has no page yet — render it as a static card, no link cues */
-.strategy-card-static { cursor: default; }
-.strategy-card-static:hover { transform: none; border-color: var(--line); }
 
 /* ---------- the contract (05): live input-coverage ---------- */
 .contract-live { margin-top: 44px; }
