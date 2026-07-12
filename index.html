@@ -336,18 +336,19 @@
         </p>
         <span class="strategy-paper-link mono">read the application →</span>
       </a>
-      <div class="strategy-card strategy-card-static">
-        <header><span class="card-id mono">local</span><span class="tag tag-wip">in build</span></header>
+      <a class="strategy-card" href="#release-row-local">
+        <header><span class="card-id mono">local</span><span class="tag tag-shipped">shipped</span></header>
         <h3>Down to state, district, and county</h3>
         <p>
           The same stack, resolved below the nation. An American Community
           Survey household spine carries PUMA-anchored geography, so a state,
-          congressional district, or county becomes a filter over one national
+          congressional district, or county is a filter over one national
           file — rather than a separate survey to source and calibrate for
-          every locality.
+          every locality. Calibrated to state administrative totals and
+          state and congressional-district populations.
         </p>
-        <span class="strategy-paper-link mono" style="color: var(--paper-faint);">building now</span>
-      </div>
+        <span class="strategy-paper-link mono">see the release →</span>
+      </a>
       <a class="strategy-card" href="/firms">
         <header><span class="card-id mono">firms</span><span class="tag tag-preprint">preprint</span></header>
         <h3>A new population: UK firms and the VAT threshold</h3>
@@ -426,7 +427,8 @@
         reform validation next to the data. The rows below read the release
         registry directly, so this page cannot go stale: <strong>latest</strong>
         is the newest published build; <strong>certified</strong> is the build
-        pinned as the policyengine.py default.
+        pinned as the policyengine.py default; <strong>local</strong> is the
+        newest local-area build — published, not a default.
       </p>
     </div>
     <div class="release-rows">
@@ -440,7 +442,17 @@
         <span class="release-id" data-slot="id"></span>
         <span class="release-meta" data-slot="meta"></span>
       </div>
+      <div class="release-row" id="release-row-local" hidden>
+        <span class="tag tag-local">local</span>
+        <span class="release-id" data-slot="id"></span>
+        <span class="release-meta" data-slot="meta"></span>
+      </div>
     </div>
+    <p class="release-local-note mono" id="release-local-note" hidden>
+      State, congressional district, and county are filters over this one
+      national file rather than separate local surveys — published for
+      local-area work, not the certified default.
+    </p>
     <div class="quickstart">
       <span class="quickstart-label mono">use it — the certified default in two lines</span>
       <pre class="quickstart-code"><code class="mono"><span class="qs-c"># pip install policyengine   (or: uv pip install policyengine)</span>
