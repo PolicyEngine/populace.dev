@@ -781,3 +781,12 @@ h2 {
 .pipeline-figure { max-width: 1028px; }
 .pipeline-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .pipeline-scroll svg { min-width: 900px; }
+
+.pipeline-state-label {
+  margin: 34px 0 10px;
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+}
+.pipeline-state-label:first-of-type { margin-top: 6px; }
