@@ -6,7 +6,7 @@
 <title>Firms — populace</title>
 <meta name="description" content="The Populace approach pointed at a new population: an open synthetic file of UK businesses, calibrated to HMRC and ONS aggregates, costing VAT registration-threshold reforms at the firm level." />
 <meta property="og:title" content="Firms — populace" />
-<meta property="og:description" content="An open firm-level synthetic population for UK VAT threshold reform: level, shape, and rate reforms costed on one £184.8bn base." />
+<meta property="og:description" content="An open firm-level synthetic population for UK VAT threshold reform: level, shape, and rate reforms costed on one £175.4bn base." />
 <meta property="og:type" content="article" />
 <link rel="icon" type="image/svg+xml" href="/assets/policyengine-mark.svg" />
 <meta name="theme-color" content="#FFFFFF" />
@@ -69,73 +69,76 @@
         its <em>rate</em> (a reduced-rate band above it), and the three are
         not comparable through the reduced-form methods used to study the
         threshold. A firm-level file makes them comparable by construction:
-        every reform is costed statically on the same 2,460,268 weighted
-        firms and the same £184.8bn 2023–24 registered base.
+        every reform is costed statically on the same 2,407,267 weighted
+        firms and the same £175.4bn 2023–24 registered base.
       </p>
     </div>
     <div class="metrics">
       <div class="metric">
         <span class="metric-label mono">raise threshold to £100k</span>
-        <span class="metric-val">−£753m<span class="metric-vs">level: moves the notch</span></span>
+        <span class="metric-val">−£876m<span class="metric-vs">level: moves the notch</span></span>
         <span class="metric-note">static, 2023–24 base</span>
       </div>
       <div class="metric">
-        <span class="metric-label mono">graduated taper £85k–£105k</span>
-        <span class="metric-val">−£520m<span class="metric-vs">shape: removes the notch</span></span>
-        <span class="metric-note">phases the rate in over the band</span>
+        <span class="metric-label mono">graduated taper £85k–£141.7k</span>
+        <span class="metric-val">−£1,525m<span class="metric-vs">shape: removes the notch</span></span>
+        <span class="metric-note">marginal rate phases 0→100% over the band</span>
       </div>
       <div class="metric">
         <span class="metric-label mono">reduced-rate band £85k–£105k</span>
-        <span class="metric-val">−£484m<span class="metric-vs">rate: 10% in the band (−£242m at 15%)</span></span>
+        <span class="metric-val">−£515m<span class="metric-vs">rate: 10% in the band (−£258m at 15%)</span></span>
         <span class="metric-note">splits the notch into two smaller ones</span>
       </div>
     </div>
     <figure class="diagram-figure">
       <svg viewBox="0 0 860 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="firms-menu-title firms-menu-desc">
         <title id="firms-menu-title">Static cost of four VAT threshold reforms on one base</title>
-        <desc id="firms-menu-desc">Horizontal bars compare the static revenue cost of four reforms priced on the same £184.8bn 2023–24 base: raising the threshold to £100,000 costs £753 million, a graduated taper over £85,000 to £105,000 costs £520 million, a 10 percent reduced-rate band costs £484 million, and a 15 percent reduced-rate band costs £242 million.</desc>
+        <desc id="firms-menu-desc">Horizontal bars compare the static revenue cost of four reforms priced on the same £175.4bn 2023–24 base: raising the threshold to £100,000 costs £876 million, a graduated taper over £85,000 to £141,667 costs £1,525 million, a 10 percent reduced-rate band costs £515 million, and a 15 percent reduced-rate band costs £258 million.</desc>
 
         <text class="dg-kicker" x="60" y="40">static revenue change, £m, common 2023–24 base</text>
 
-        <!-- baseline axis at x=790 (0), scale: 753m -> 560px -->
+        <!-- baseline axis at x=790 (0), scale: 1525m -> 560px -->
         <line class="dg-gridline" x1="790" y1="60" x2="790" y2="290"/>
 
-        <!-- raise to 100k: -753 -->
+        <!-- raise to 100k: -876 -->
         <text class="dg-label" x="60" y="87">raise to £100k</text>
-        <rect class="dg-bar-primary" x="230" y="72" width="560" height="26" rx="3"/>
-        <text class="dg-label" x="222" y="90" text-anchor="end" font-weight="600">−753</text>
+        <rect class="dg-bar-primary" x="468" y="72" width="322" height="26" rx="3"/>
+        <text class="dg-label" x="460" y="90" text-anchor="end" font-weight="600">−876</text>
 
-        <!-- taper: -520 -->
+        <!-- taper: -1525 -->
         <text class="dg-label" x="60" y="147">graduated taper</text>
-        <rect class="dg-bar-compare" x="403" y="132" width="387" height="26" rx="3"/>
-        <text class="dg-label" x="395" y="150" text-anchor="end" font-weight="600">−520</text>
+        <rect class="dg-bar-compare" x="230" y="132" width="560" height="26" rx="3"/>
+        <text class="dg-label" x="222" y="150" text-anchor="end" font-weight="600">−1,525</text>
 
-        <!-- reduced rate 10: -484 -->
+        <!-- reduced rate 10: -515 -->
         <text class="dg-label" x="60" y="207">reduced rate 10%</text>
-        <rect class="dg-bar-compare" x="430" y="192" width="360" height="26" rx="3"/>
-        <text class="dg-label" x="422" y="210" text-anchor="end" font-weight="600">−484</text>
+        <rect class="dg-bar-compare" x="601" y="192" width="189" height="26" rx="3"/>
+        <text class="dg-label" x="593" y="210" text-anchor="end" font-weight="600">−515</text>
 
-        <!-- reduced rate 15: -242 -->
+        <!-- reduced rate 15: -258 -->
         <text class="dg-label" x="60" y="267">reduced rate 15%</text>
-        <rect class="dg-bar-compare" x="610" y="252" width="180" height="26" rx="3"/>
-        <text class="dg-label" x="602" y="270" text-anchor="end" font-weight="600">−242</text>
+        <rect class="dg-bar-compare" x="695" y="252" width="95" height="26" rx="3"/>
+        <text class="dg-label" x="687" y="270" text-anchor="end" font-weight="600">−258</text>
 
         <text class="dg-label" x="790" y="310" text-anchor="middle">£0</text>
       </svg>
       <figcaption class="mono">
-        Table 3 of the paper: level, shape, and rate reforms priced statically
-        on the £85,000-notch / £184.8bn 2023–24 baseline.
+        Table 2 of the paper: level, shape, and rate reforms priced statically
+        on the £85,000-notch / £175.4bn 2023–24 baseline.
       </figcaption>
     </figure>
     <p class="caveat">
-      <span class="mono">firm-microsim-paper, 2023–24 vintage; seed half-ranges ±£2.1m (raise) and ±£1.5m (taper) across generator seeds.</span>
-      Conditional on an assumed turnover elasticity, intensive-margin
-      re-optimisation barely moves these figures in the paper's
-      region-confined model: a threshold raise there has zero
-      intensive-margin offset — released firms leave the VAT base, so
-      their expansion is untaxed — and the reduced-rate bands recover at
-      most £17m of £484m at the highest elasticity swept. The static menu
-      is the costing.
+      <span class="mono">firm-microsim-paper, 2023–24 vintage; seed half-ranges ±£1.4m (raise) and ±£0.3m (taper) across generator seeds.</span>
+      The taper's wide band is forced, not chosen: removing the dominated
+      region while confining relief to the band pins the band top at
+      £141,667 — a taper reaching the full rate by £105,000 recreates a
+      dominated interval smoothly. Conditional on an assumed turnover
+      elasticity, intensive-margin re-optimisation barely moves these
+      figures in the paper's region-confined model: a threshold raise
+      there has zero intensive-margin offset — released firms leave the
+      VAT base, so their expansion is untaxed — and the reduced-rate
+      bands recover at most £18m of £515m at the highest elasticity
+      swept. The static menu is the costing.
     </p>
   </section>
 
@@ -147,7 +150,7 @@
     <div class="prose">
       <p>
         The pipeline is two stages, parameterised by a single threshold.
-        <strong>Draw</strong>: sample 2,941,232 firm records — continuous
+        <strong>Draw</strong>: sample 2,941,275 firm records — continuous
         within-band turnover, employment, sector, and intermediate inputs —
         from the ONS business-register structure, so the file has firm-level
         resolution the published bands lack. <strong>Calibrate</strong>:
@@ -172,13 +175,13 @@
     <div class="metrics">
       <div class="metric">
         <span class="metric-label mono">calibration, 2023–24</span>
-        <span class="metric-val">89.2%<span class="metric-vs">across five calibrated dimensions</span></span>
-        <span class="metric-note">turnover bands 93.8% · liability by band 91.3%</span>
+        <span class="metric-val">92.9%<span class="metric-vs">across five calibrated dimensions</span></span>
+        <span class="metric-note">turnover bands 97.3% · liability by band 96.5%</span>
       </div>
       <div class="metric">
         <span class="metric-label mono">calibration, 2024–25</span>
-        <span class="metric-val">92.8%<span class="metric-vs">£90k threshold vintage, one-line switch</span></span>
-        <span class="metric-note">2,945,974 rows → 2,531,324 weighted firms</span>
+        <span class="metric-val">93.5%<span class="metric-vs">£90k threshold vintage, one-line switch</span></span>
+        <span class="metric-note">2,946,015 rows → 2,490,407 weighted firms</span>
       </div>
       <div class="metric">
         <span class="metric-label mono">dominated region</span>
@@ -206,37 +209,38 @@
       <p>
         The generator has no location-choice model, so any excess mass below
         the threshold is inherited from the calibration targets, not
-        discovered. The paper measures this directly: on the 2023–24 build
-        the bunching estimator reads excess mass E = 7,933 firms
-        (b<sub>LLAT</sub> = 1.91, roughly 1.4× the administrative-data
-        estimate of Liu et al.), but a placebo population regenerated with
-        the near-threshold step removed from the targets returns zero excess
-        mass. The estimator also recovers injected bunching cleanly — the
-        machinery works; the synthetic data simply contain no behavioural
-        signal of their own. The paper therefore reports bunching geometry
-        as a target-consistency diagnostic and computes no elasticities
-        from it.
+        discovered. The paper reports what the estimator reads back as an
+        audit of the construction, not as evidence: on the 2023–24 build the
+        baseline specification returns E = 10,418 firms
+        (b<sub>LLAT</sub> = 5.13) — a readback of the OBR £1,000-band
+        profile the population is calibrated to. Across the paper's
+        degree-and-window grid the same statistic swings from zero to about
+        25,100, and the fitted missing mass above the threshold is zero in
+        the headline specification. The readback is not a second estimate
+        of the administrative bunching ratio (b = 1.361 in Liu, Lockwood,
+        Almunia and Tam's HMRC micro-data); the paper therefore computes no
+        elasticities from bunching.
       </p>
     </div>
     <div class="metrics">
       <div class="metric">
-        <span class="metric-label mono">measured excess mass, 2023–24</span>
-        <span class="metric-val">E = 7,933<span class="metric-vs">b_LLAT = 1.91 at the £85k notch</span></span>
-        <span class="metric-note">seed half-range ±161</span>
+        <span class="metric-label mono">target readback, 2023–24</span>
+        <span class="metric-val">E = 10,418<span class="metric-vs">b_LLAT = 5.13 at the £85k notch</span></span>
+        <span class="metric-note">seed half-range ±111 · grid range 0 → ~25,100</span>
       </div>
       <div class="metric">
-        <span class="metric-label mono">placebo without the target step</span>
-        <span class="metric-val">E = 0<span class="metric-vs">smooth-density regeneration</span></span>
-        <span class="metric-note">the shape is target-inherited</span>
+        <span class="metric-label mono">administrative benchmark</span>
+        <span class="metric-val">b = 1.361<span class="metric-vs">Liu et al., HMRC micro-data 2004–15</span></span>
+        <span class="metric-note">the readback is not a second estimate of this</span>
       </div>
     </div>
     <p class="caveat">
-      <span class="mono">results/bunching_inference.txt, placebo_bunching.txt, recovery_bunching.txt, seed_sensitivity.txt.</span>
-      On the 2024–25 vintage the £90,000 threshold sits on an OBR band edge,
-      and the estimator reads E = 11,072 there — a window-edge measurement
-      artifact the paper flags rather than hides. No standard errors are
-      reported because there is no estimand: the quantity is a property of
-      the calibrated file, not of firm behaviour.
+      <span class="mono">results/bunching_inference.txt, seed_sensitivity.txt.</span>
+      On the 2024–25 vintage the estimator reads E = 25,227 at the
+      £90,000 threshold — the same target-inheritance object on the newer
+      vintage. No standard errors are reported because there is no
+      estimand: the quantity is a property of the calibrated file, not of
+      firm behaviour.
     </p>
   </section>
 
